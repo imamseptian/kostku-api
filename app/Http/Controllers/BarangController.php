@@ -27,7 +27,8 @@ class BarangController extends Controller
         $thumbnailImage->stream(); // <-- Key point
         Storage::disk('local')->put('public/images/' . $imageName, $thumbnailImage);
         return response()->json([
-            "code" => 200
+            "code" => 200,
+            "ayaya" => storage_path()
 
         ]);
     }
