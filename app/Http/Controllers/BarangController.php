@@ -27,7 +27,6 @@ class BarangController extends Controller
         return response()->json([
             "code" => 200,
             "ayaya" => storage_path()
-
         ]);
     }
 

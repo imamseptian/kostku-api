@@ -340,9 +340,7 @@ class KostController extends Controller
             ]
         );
 
-        // if ($validator->fails()) {
-        //     return response()->json(["message" => "ada error", 'errors' => $validator->errors()->messages()]);
-        // }
+
         if ($validator->fails()) {
             return response()->json(["code" => 400, "success" => FALSE, "message" => "ada error", 'errors' => $validator->errors()->messages()]);
         }
@@ -356,34 +354,15 @@ class KostController extends Controller
 
             $replace = substr($image_64, 0, strpos($image_64, ',') + 1);
 
-            //   find substring fro replace here eg: data:image/png;base64,
-
             $image = str_replace($replace, '', $image_64);
 
             $image = str_replace(' ', '+', $image);
 
             $imageName = Str::random(10) . '.' . $extension;
 
-            // // $convert_img = base64_decode($image);
-
-
             $thumbnailImage = Image::make($image_64);
-            // $width = Image::make($image_64)->width();
-            // $height = Image::make($image_64)->height();
-
-            // if ($width < $height) {
-            //     $thumbnailImage->resize(720, null, function ($constraint) {
-            //         $constraint->aspectRatio();
-            //     });
-            // } else {
-            //     $thumbnailImage->resize(null, 480, function ($constraint) {
-            //         $constraint->aspectRatio();
-            //     });
-            // }
-
-            // $thumbnailImage->crop(720, 480);
-            $avatarpath = public_path('/kostdata/kost/foto/');
-            $thumbnailImage->save($avatarpath . $imageName);
+            $thumbnailImage->stream(); // <-- Key point
+            Storage::disk('local')->put('public/images/kost/' . $imageName, $thumbnailImage);
 
 
             $kost = new Kost();
@@ -406,7 +385,6 @@ class KostController extends Controller
                 "message" => "Success create foto",
                 "data" => $kost,
                 "user" => $user,
-                "path" => $avatarpath
             ]);
         }
 
