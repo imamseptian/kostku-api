@@ -179,10 +179,10 @@ class PendaftarController extends Controller
                 });
             }
 
+            $thumbnailImage->crop(720, 480);
             $thumbnailImage->stream(); // <-- Key point
-            Storage::disk('local')->put('public/images/' . $imageName, $thumbnailImage);
+            Storage::disk('local')->put('public/images/pendaftar/' . $imageName, $thumbnailImage);
 
-            // $thumbnailImage->crop(720, 480);
             $foto_ktp = $imageName;
         }
         if ($request->has('foto_diri')) {
@@ -213,9 +213,9 @@ class PendaftarController extends Controller
                 });
             }
 
-            // $thumbnailImage->crop(512, 512);
-            $avatarpath = public_path('/kostdata/pendaftar/foto/');
-            $thumbnailImage->save($avatarpath . $imageName);
+            $thumbnailImage->crop(512, 512);
+            $thumbnailImage->stream(); // <-- Key point
+            Storage::disk('local')->put('public/images/pendaftar/' . $imageName, $thumbnailImage);
             $foto_diri = $imageName;
         }
 
