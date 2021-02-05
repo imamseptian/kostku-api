@@ -24,7 +24,7 @@ class PenghuniController extends Controller
         // $pendaftar = Calon_Penghuni::where('id',$id)->first();
         $owner = $request->user();
         $mykeyword = $request->namakeyword;
-        $data = Penghuni::where('id_kost', $request->id_kost)->where('active', TRUE)->where('nama', 'ilike', '%' . $mykeyword . '%')->orderBy($request->sortname, $request->orderby)->paginate(10);
+        $data = Penghuni::where('id_kost', $request->id_kost)->where('active', TRUE)->where('nama', 'like', '%' . $mykeyword . '%')->orderBy($request->sortname, $request->orderby)->paginate(10);
 
         // if ($request->has('sortname')) {
         //     // $data = Penghuni::where('id_kost',$owner['id'])->where('active',TRUE)->where('nama', 'ilike','%'. $request->namakeyword.'%')->orderBy($request->sortname, $request->orderby)->paginate(10);
