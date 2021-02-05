@@ -56,7 +56,7 @@ return [
         // ],
         'public' => [
             'driver' => 'local',
-            'root' => '/home2/domainnyaa/public_html/storage/',
+            'root' => '/home/apikostk/public_html/storage/',
             'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
