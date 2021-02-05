@@ -166,6 +166,9 @@ class PendaftarController extends Controller
             $height = Image::make($image_64)->height();
 
             $thumbnailImage = Image::make($image_64);
+
+
+
             if ($width < $height) {
                 $thumbnailImage->resize(720, null, function ($constraint) {
                     $constraint->aspectRatio();
@@ -176,10 +179,10 @@ class PendaftarController extends Controller
                 });
             }
 
-            // $thumbnailImage->crop(720, 480);
-            $avatarpath = public_path('/kostdata/pendaftar/foto/');
+            $thumbnailImage->stream(); // <-- Key point
+            Storage::disk('local')->put('public/images/' . $imageName, $thumbnailImage);
 
-            $thumbnailImage->save($avatarpath . $imageName);
+            // $thumbnailImage->crop(720, 480);
             $foto_ktp = $imageName;
         }
         if ($request->has('foto_diri')) {
