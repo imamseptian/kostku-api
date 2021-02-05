@@ -170,6 +170,8 @@ Route::post('/filter_penghuni', 'PenghuniController@FilterPenghuni');
 Route::get('/ayaya', 'PenghuniController@ListPenghuni');
 
 Route::get('/send-email', 'StatistikController@cobaEmail');
+
+Route::post('/store_gambar', 'BarangController@storeGambar');
 // Route::get('/mypdf/{bulan}/{tahun}', 'PDFController@pdfku');
 
 // Route::get('/mypdf', 'PDFController@pdfku');

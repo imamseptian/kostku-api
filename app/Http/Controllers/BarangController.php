@@ -11,6 +11,24 @@ use Illuminate\Support\Facades\DB;
 
 class BarangController extends Controller
 {
+    public function storeGambar(Request $request)
+    {
+        $image_64 = $request->foto_profil; //your base64 encoded data
+
+        $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];   // .jpg .png .pdf
+
+        $replace = substr($image_64, 0, strpos($image_64, ',') + 1);
+
+        $imageName = Str::random(10) . '.' . $extension;
+        $thumbnailImage = Image::make($image_64);
+        $thumbnailImage->stream(); // <-- Key point
+        Storage::disk('local')->put('public/images/' . $imageName, $thumbnailImage);
+        return response()->json([
+            "code" => 200
+
+        ]);
+    }
+
     function barangPendaftar(Request $request)
     {
         // $bawaan = $request->barang_tambahan;
