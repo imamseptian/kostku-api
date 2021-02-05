@@ -29,7 +29,7 @@ class PendaftarController extends Controller
         $owner = $request->user();
         $mykeyword = $request->namakeyword;
         if ($request->has('sortname')) {
-            $data = Pendaftar::where('id_kost', $request->id_kost)->where('active', TRUE)->where('nama', 'ilike', '%' . $mykeyword . '%')->orderBy($request->sortname, $request->orderby)->paginate(10);
+            $data = Pendaftar::where('id_kost', $request->id_kost)->where('active', TRUE)->where('nama', 'like', '%' . $mykeyword . '%')->orderBy($request->sortname, $request->orderby)->paginate(10);
         } else {
             $data = Pendaftar::where('id_kost', $request->id_kost)->where('active', TRUE)->orderBy('isread', 'desc')->paginate(10);
         }
