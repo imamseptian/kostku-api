@@ -96,7 +96,8 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        // public_path('storage') => storage_path('app/public'),
+        base_path('/public_html/storage') => storage_path('app/public'),
         // public_path('public') => public_path(),
         // public_path('foto_kelas') => storage_path('app/public/foto_kelas'),
         // public_path('image_kelas') => public_path('image_kelas'),
