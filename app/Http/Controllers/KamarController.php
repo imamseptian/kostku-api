@@ -35,7 +35,7 @@ class KamarController extends Controller
 
     function daftarKamar(Request $request)
     {
-        $data = Kamar::where('id_kelas', $request->id)->where('active', TRUE)->where('nama', 'ilike', '%' . $request->namakeyword . '%')->orderBy($request->sortname, $request->orderby)->paginate(10);
+        $data = Kamar::where('id_kelas', $request->id)->where('active', TRUE)->where('nama', 'like', '%' . $request->namakeyword . '%')->orderBy($request->sortname, $request->orderby)->paginate(10);
         // $data = Kamar::where('id',$request->id)->get();
         for ($x = 0; $x < count($data); $x++) {
             $penghuni = Penghuni::where('id_kamar', $data[$x]['id'])->get();
