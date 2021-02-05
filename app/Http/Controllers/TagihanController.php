@@ -1,0 +1,246 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Barang_Tambahan_Penghuni;
+use App\Penghuni;
+use App\Tagihan;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class TagihanController extends Controller
+{
+    function getAll()
+    {
+        $data = Tagihan::orderBy('tanggal_tagihan', 'asc')->get();
+
+        return response()->json([
+            "code" => 200,
+            "success" => TRUE,
+            "message" => "tagihan berhasil",
+            "data" => $data,
+            // 'myfile'=>$files
+        ]);
+    }
+
+    function tagihanPenghuni()
+    {
+        $kamarku = DB::table('penghuni')
+            ->join('kamars', 'penghuni.kamar', '=', 'kamars.id')
+            ->join('class_kamar', 'kamars.kelas', '=', 'class_kamar.id')
+            ->select('penghuni.*', 'kamars.nama as nama_kamar', 'class_kamar.harga as harga_kamar')
+            ->get();
+
+        for ($x = 0; $x < count($kamarku); $x++) {
+
+            // $kamarku[$x]->yaya = $kamarku[$x]->harga_kamar - 100;
+            $tagih = new Tagihan();
+            $tagih->id_kost = $kamarku[$x]->id_kost;
+            $tagih->id_penghuni = $kamarku[$x]->id;
+            $tagih->judul = "Tagihan bulanan penghuni";
+            $tagih->desc = "Tagihan bulanan penghuni " . $kamarku[$x]->nama  . '(id:' . $kamarku[$x]->id . ')';
+            $tagih->jumlah = $kamarku[$x]->harga_kamar;
+            $tagih->status = 0;
+
+            $tagih->save();
+
+            // $data[$x]['hari'] = Carbon::parse($data[$x]['tanggal_daftar'])->format('d');
+            // $data[$x]['bulan'] = $namabulan;
+            // $data[$x]['tahun'] = Carbon::parse($data[$x]['tanggal_daftar'])->format('Y');
+        }
+
+        // foreach ($kamarku as $kk) {
+        //     $kk->jas = 5000;
+        // }
+        return response()->json([
+            "code" => 200,
+            "success" => TRUE,
+            "message" => "tagihan berhasil",
+            // 'myfile'=>$files
+        ]);
+    }
+
+    function riwayatPembayaranSewa($id, Request $request)
+    {
+        $data = Tagihan::where('id_penghuni', $id)->where('lunas', TRUE)->get();
+        // $data = DB::table('tagihan')
+        //     ->leftJoin('penghuni', 'tagihan.id_penghuni', '=', 'penghuni.id')
+
+        //     ->select('transaksi.*', 'penghuni.nama_depan as nama_depan', 'penghuni.nama_belakang as nama_belakang')
+        //     ->where('transaksi.id_kost', $request->id_kost)
+        //     ->whereYear('transaksi.tanggal_transaksi', $request->tahun)
+        //     ->whereMonth('transaksi.tanggal_transaksi', $request->bulan)
+        //     ->where('transaksi.jenis', 1)
+        //     ->orderBy('transaksi.tanggal_transaksi', 'asc')
+        //     ->get();
+        for ($x = 0; $x < count($data); $x++) {
+            $tanggal_tagihan = $data[$x]['tanggal_tagihan'];
+
+            $data[$x]['tanggal_tagihan'] = Carbon::parse($tanggal_tagihan);
+            $data[$x]['tanggal_pelunasan'] = Carbon::parse($data[$x]['tanggal_pelunasan']);
+            $data[$x]['kamar'] = DB::table('penghuni')
+                ->join('kamars', 'kamars.id', '=', 'penghuni.id_kamar')
+                ->join('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
+                // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
+                ->select('class_kamar.*')
+                ->where('penghuni.id', $id)
+                ->first();
+
+
+
+            $data[$x]['barang'] = DB::table('barang_tambahan_penghuni')
+                ->leftJoin('barang', 'barang_tambahan_penghuni.id_barang', '=', 'barang.id')
+                // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
+                ->select('barang_tambahan_penghuni.*', 'barang.nama as nama')
+                ->where('barang_tambahan_penghuni.id_penghuni', $id)
+                ->where('barang_tambahan_penghuni.tanggal_masuk', '<=', Carbon::parse($tanggal_tagihan))
+                ->where(function ($query) use ($tanggal_tagihan) {
+                    $query->where('barang_tambahan_penghuni.tanggal_keluar', '>=', Carbon::parse($tanggal_tagihan))
+                        ->orWhere('barang_tambahan_penghuni.tanggal_keluar', null);
+                })
+
+                ->get();
+
+            // $data[$x]['barang'] = Barang_Tambahan_Penghuni::whereDate('tanggal_masuk', '<=', $data[$x]['tanggal_tagihan'])
+            //     ->whereDate('tanggal_keluar', '>=', $data[$x]['tanggal_tagihan'])
+            //     ->orWhere('tanggal_keluar', null)
+            //     ->get();
+        }
+
+        return response()->json([
+            "code" => 200,
+            "success" => TRUE,
+            "message" => "get riwayat berhasil",
+            "data" => $data
+            // 'myfile'=>$files
+        ]);
+    }
+
+    function getTagihan($id)
+    {
+        // $data = Tagihan::where('id_penghuni', $id)->where('lunas', FALSE)->orderBy('tanggal_tagihan', 'asc')->get();
+        $data = DB::table('tagihan')
+            ->join('penghuni', 'tagihan.id_penghuni', '=', 'penghuni.id')
+            ->join('kamars', 'penghuni.id_kamar', '=', 'kamars.id')
+            ->join('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
+            ->select('tagihan.*', 'kamars.nama as nama_kamar', 'class_kamar.harga as harga_kamar')
+            ->where('tagihan.id_penghuni', $id)
+            ->where('tagihan.lunas', FALSE)
+            ->orderBy('tagihan.tanggal_tagihan', 'asc')
+            ->get();
+        for ($x = 0; $x < count($data); $x++) {
+            $tanggal_tagihan = $data[$x]->tanggal_tagihan;
+            $data[$x]->tanggal_tagihan = Carbon::parse($tanggal_tagihan);
+            // $data[$x]['barang'] = Carbon::parse($data[$x]['tanggal_tagihan']);
+            $data[$x]->barang = DB::table('barang_tambahan_penghuni')
+                ->leftJoin('barang', 'barang_tambahan_penghuni.id_barang', '=', 'barang.id')
+                // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
+                ->select('barang_tambahan_penghuni.*', 'barang.nama as nama')
+                ->where('barang_tambahan_penghuni.id_penghuni', $id)
+                ->where('barang_tambahan_penghuni.tanggal_masuk', '<=', Carbon::parse($tanggal_tagihan))
+                ->where(function ($query) use ($tanggal_tagihan) {
+                    $query->where('barang_tambahan_penghuni.tanggal_keluar', '>=', Carbon::parse($tanggal_tagihan))
+                        ->orWhere('barang_tambahan_penghuni.tanggal_keluar', null);
+                })
+
+                ->get();
+            // $mybulan = $data[$x]['tanggal_daftar']->format('m');
+        }
+
+        return response()->json([
+            "code" => 200,
+            "success" => TRUE,
+            "message" => "get berhasil",
+            "tagihan" => $data,
+            // 'myfile'=>$files
+        ]);
+    }
+
+    function createCustomTagihan(Request $request)
+    {
+        // $customday = Carbon::now('Asia/Jakarta')->month($request->month)->year($request->year);
+
+
+        $kamarku = DB::table('penghuni')
+            ->leftJoin('kamars', 'penghuni.id_kamar', '=', 'kamars.id')
+            ->leftJoin('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
+            ->select('penghuni.*', 'kamars.id as id_kamar', 'kamars.nama as nama_kamar', 'class_kamar.harga as harga_kamar')
+            ->where('penghuni.id_kost', $request->id_kost)
+            ->get();
+
+
+        // $mytime = Carbon::now('Asia/Jakarta')->subMonth($j);
+        // $mytime = Carbon::now('Asia/Jakarta')->month($request->month)->year($request->year);
+        $mytime = Carbon::now('Asia/Jakarta');
+
+
+        // $kamarku[$x]->yaya = $kamarku[$x]->harga_kamar - 100;
+
+        // jika kurang dari tagihan kurang dari 0 tidak perlu karena berarti memiliki kelebihan bayar
+
+
+        for ($x = 0; $x < count($kamarku); $x++) {
+
+            // $biaya_barang = DB::table('barang_tambahan_penghuni')
+            //     ->leftJoin('barang', 'barang_tambahan_penghuni.id_barang', '=', 'barang.id')
+            //     // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
+            //     ->select('barang_tambahan_penghuni.*', 'barang.nama as nama')
+            //     ->where('barang_tambahan_penghuni.id_penghuni', $kamarku[$x]->id)
+            //     ->where('barang_tambahan_penghuni.active', TRUE)
+            //     ->sum('barang_tambahan_penghuni.total');
+
+            // $biaya_barang = DB::table('barang_tambahan_penghuni')
+            //     ->leftJoin('barang', 'barang_tambahan_penghuni.id_barang', '=', 'barang.id')
+            //     // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
+            //     ->select('barang_tambahan_penghuni.*', 'barang.nama as nama')
+            //     ->where(function ($query) use ($mytime) {
+            //         $query->whereDate('barang_tambahan_penghuni.tanggal_masuk', '<=', $mytime)
+            //             ->whereTime('barang_tambahan_penghuni.tanggal_masuk', '<=', $mytime->format('H:i:s'));
+            //     })->where(function ($query) use ($mytime) {
+            //         $query->where(function ($query) use ($mytime) {
+            //             $query->whereDate('barang_tambahan_penghuni.tanggal_keluar', '>=', $mytime)
+            //                 ->whereTime('barang_tambahan_penghuni.tanggal_keluar', '>=', $mytime->format('H:i:s'));
+            //         })->orWhere('barang_tambahan_penghuni.tanggal_keluar', null);
+            //     })->sum('barang_tambahan_penghuni.total');
+
+            $biaya_barang = DB::table('barang_tambahan_penghuni')
+                ->leftJoin('barang', 'barang_tambahan_penghuni.id_barang', '=', 'barang.id')
+                // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
+                ->select('barang_tambahan_penghuni.*', 'barang.nama as nama')
+                ->where('barang_tambahan_penghuni.tanggal_masuk', '<=', $mytime)
+                ->where(function ($query) use ($mytime) {
+                    $query->where('barang_tambahan_penghuni.tanggal_keluar', '>=', $mytime)
+                        ->orWhere('barang_tambahan_penghuni.tanggal_keluar', null);
+                    // $query->where(function ($query) use ($tanggal_tagihan) {
+                    //     $query->where('barang_tambahan_penghuni.tanggal_masuk', '<=', Carbon::parse($tanggal_tagihan));
+                    // })->orWhere('barang_tambahan_penghuni.tanggal_keluar', null);
+                })
+                ->sum('barang_tambahan_penghuni.total');
+
+            $tagih = new Tagihan();
+            $tagih->id_kamar = $kamarku[$x]->id_kamar;
+            $tagih->id_penghuni = $kamarku[$x]->id;
+            $tagih->jumlah = $kamarku[$x]->harga_kamar + $biaya_barang;
+            $tagih->tanggal_tagihan = $mytime;
+            $tagih->lunas = FALSE;
+
+            $tagih->save();
+        }
+
+
+
+
+
+        // $customjam = Carbon::now('Asia/Jakarta')->month(10)->year(2020)->format('H:i');
+        // $sekarang = Carbon::now('Asia/Jakarta');
+        return response()->json([
+            "code" => 200,
+            "success" => TRUE,
+            "mytime" => $mytime,
+            "bulan" => $request->month,
+            "tahun" => $request->year,
+            "kon" => 'brutus'
+        ]);
+    }
+}
