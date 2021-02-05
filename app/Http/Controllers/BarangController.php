@@ -20,8 +20,6 @@ class BarangController extends Controller
 
         $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];   // .jpg .png .pdf
 
-        $replace = substr($image_64, 0, strpos($image_64, ',') + 1);
-
         $imageName = Str::random(10) . '.' . $extension;
         $thumbnailImage = Image::make($image_64);
         $thumbnailImage->stream(); // <-- Key point

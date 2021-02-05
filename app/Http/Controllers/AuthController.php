@@ -70,26 +70,12 @@ class AuthController extends Controller
 
             $imageName = Str::random(10) . '.' . $extension;
 
-            // // $convert_img = base64_decode($image);
+
 
             $thumbnailImage = Image::make($image_64);
-
-            // $width = Image::make($image_64)->width();
-            // $height = Image::make($image_64)->height();
-
-            // if ($width < $height) {
-            //     $thumbnailImage->resize(512, null, function ($constraint) {
-            //         $constraint->aspectRatio();
-            //     });
-            // } else {
-            //     $thumbnailImage->resize(null, 512, function ($constraint) {
-            //         $constraint->aspectRatio();
-            //     });
-            // }
-
-            // $thumbnailImage->crop(512, 512);
-            $avatarpath = public_path('/kostdata/pemilik/foto/');
-            $thumbnailImage->save($avatarpath . $imageName);
+            $thumbnailImage = Image::make($image_64);
+            $thumbnailImage->stream(); // <-- Key point
+            Storage::disk('local')->put('public/images/users/' . $imageName, $thumbnailImage);
 
             $tanggal_lahirku = Carbon::parse($request->tanggal_lahir);
 
@@ -108,7 +94,6 @@ class AuthController extends Controller
                 'success' => TRUE,
                 'message' => 'Successfully created user with photo!',
                 'user' => $user,
-                'path' => $avatarpath,
             ], 201);
         }
         $tanggal_daftar = Carbon::parse($request->tanggal_lahir);
