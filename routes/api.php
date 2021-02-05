@@ -176,6 +176,12 @@ Route::post('/store_gambar', 'BarangController@storeGambar');
 Route::get('/linkstorage', function () {
     Artisan::call('storage:link');
 });
+
+Route::get('/link', function () {
+    $target = '/home/apikostk/APIKost/storage/app/public';
+    $shortcut = '/home/public_html/public/storage';
+    symlink($target, $shortcut);
+});
 // Route::get('/mypdf/{bulan}/{tahun}', 'PDFController@pdfku');
 
 // Route::get('/mypdf', 'PDFController@pdfku');
