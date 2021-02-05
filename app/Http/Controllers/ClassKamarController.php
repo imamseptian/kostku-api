@@ -183,13 +183,7 @@ class ClassKamarController extends Controller
             return response()->json(["code" => 400, "success" => FALSE, "message" => "ada error", 'errors' => $validator->errors()->messages()]);
         }
 
-        // $validator_fasilitas = Validator::make(
-        //     $request->all(),
-        //     [
-        //         'fasilitas.*' => 'required|min:6',
 
-        //     ]
-        // );
 
         $data_fasilitas = $request->fasilitas;
 
@@ -200,7 +194,7 @@ class ClassKamarController extends Controller
 
             $replace = substr($image_64, 0, strpos($image_64, ',') + 1);
 
-            //   find substring fro replace here eg: data:image/png;base64,
+
 
             $image = str_replace($replace, '', $image_64);
 
@@ -208,29 +202,13 @@ class ClassKamarController extends Controller
 
             $imageName = Str::random(10) . '.' . $extension;
 
-            // // $convert_img = base64_decode($image);
+
 
             $thumbnailImage = Image::make($image_64);
 
-            // $width = Image::make($image_64)->width();
-            // $height = Image::make($image_64)->height();
+            $thumbnailImage->stream(); // <-- Key point
+            Storage::disk('local')->put('public/images/kelas/' . $imageName, $thumbnailImage);
 
-            // if ($width < $height) {
-            //     $thumbnailImage->resize(720, null, function ($constraint) {
-            //         $constraint->aspectRatio();
-            //     });
-            // } else {
-            //     $thumbnailImage->resize(null, 480, function ($constraint) {
-            //         $constraint->aspectRatio();
-            //     });
-            // }
-
-            // $thumbnailImage->crop(720, 480);
-            $avatarpath = public_path('/kostdata/kelas_kamar/foto/');
-            $thumbnailImage->save($avatarpath . $imageName);
-
-            //    Storage::disk('image_kelas')->put($imageName, base64_decode($image));
-            //    Storage::disk('image_kelas')->put($imageName, base64_decode($thumbnailImage));
 
             $class_kamar = new ClassKamar();
             $class_kamar->nama = $request->nama;
