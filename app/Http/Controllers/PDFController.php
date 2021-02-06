@@ -232,15 +232,15 @@ class PDFController extends Controller
         // $data->judul = Carbon::now('Asia/Jakarta');
 
         // dd($data_pemasukan);
-        $pdf = PDF::loadView('pdf',  [
-            "judul" => "Laporan Bulanan " . $kost->nama,
-            "periode" => "Periode " . $bulanperiode . " - " . $periodetahun,
-            "data_pemasukan" => $data_pemasukan,
-            "total_pemasukan" => $total_pemasukan,
-            "data_pengeluaran" => $data_pengeluaran,
-            "total_pengeluaran" => $total_pengeluaran,
-        ]);
-        return $pdf->download('Laporan.pdf');
+        // $pdf = PDF::loadView('pdf',  [
+        //     "judul" => "Laporan Bulanan " . $kost->nama,
+        //     "periode" => "Periode " . $bulanperiode . " - " . $periodetahun,
+        //     "data_pemasukan" => $data_pemasukan,
+        //     "total_pemasukan" => $total_pemasukan,
+        //     "data_pengeluaran" => $data_pengeluaran,
+        //     "total_pengeluaran" => $total_pengeluaran,
+        // ]);
+        // return $pdf->download('Laporan.pdf');
 
         // return response()->json([
         //     "code" => 200,
@@ -251,14 +251,14 @@ class PDFController extends Controller
         //     "total_pengeluaran" => $total_pengeluaran,
         // ]);
 
-        // return view('pdf', [
-        //     "judul" => "Laporan Bulanan " . $kost->nama,
-        //     "periode" => "Periode " . $bulanperiode . " - 2020",
-        //     "data_pemasukan" => $data_pemasukan,
-        //     "total_pemasukan" => $total_pemasukan,
-        //     // "data_pengeluaran" => $data_pengeluaran,
-        //     // "total_pengeluaran" => $total_pengeluaran,
-        // ]);
+        return view('pdf', [
+            "judul" => "Laporan Bulanan " . $kost->nama,
+            "periode" => "Periode " . $bulanperiode . " - 2020",
+            "data_pemasukan" => $data_pemasukan,
+            "total_pemasukan" => $total_pemasukan,
+            "data_pengeluaran" => $data_pengeluaran,
+            "total_pengeluaran" => $total_pengeluaran,
+        ]);
     }
 
     function bruh()
