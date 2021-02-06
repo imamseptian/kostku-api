@@ -69,7 +69,8 @@ class PDFController extends Controller
         // $user = User::where('id', 1)->first();
         // $kostku = Kost::where('owner',$user->id)->first;
 
-        $kost = Kost::where('owner', $user->id)->first();
+        // $kost = Kost::where('owner', $user->id)->first();
+        $kost = Kost::where('owner', 1)->first();
         // $kost = Kost::where('id', 1)->first();
         // $data_pemasukan = DB::table('transaksi')
         //     ->leftJoin('penghuni', 'transaksi.id_penghuni', '=', 'penghuni.id')

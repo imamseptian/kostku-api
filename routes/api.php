@@ -94,7 +94,7 @@ Route::group([
     Route::post('/pengeluaran', 'TransaksiController@addPengeluaran');
     Route::post('/filterpengeluaran', 'TransaksiController@filterPengeluaran');
     Route::post('/filterpemasukan', 'TransaksiController@filterPemasukan');
-    Route::get('/mypdf/{bulan}/{tahun}', 'PDFController@pdfku');
+    // Route::get('/mypdf/{bulan}/{tahun}', 'PDFController@pdfku');
     Route::get('/namapdf/{bulan}/{tahun}', 'PDFController@getNamaPDF');
 });
 
@@ -182,9 +182,9 @@ Route::get('/link', function () {
     $shortcut = '/home/public_html/public/storage';
     symlink($target, $shortcut);
 });
-// Route::get('/mypdf/{bulan}/{tahun}', 'PDFController@pdfku');
+Route::get('/mypdf/{bulan}/{tahun}', 'PDFController@pdfku');
 
-// Route::get('/mypdf', 'PDFController@pdfku');
+
 
 
 
