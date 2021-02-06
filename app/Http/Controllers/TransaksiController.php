@@ -608,7 +608,7 @@ class TransaksiController extends Controller
             ->leftJoin('penghuni', 'penghuni.id', '=', 'tagihan.id_penghuni')
             ->leftJoin('kamars', 'penghuni.id_kamar', '=', 'kamars.id')
             ->leftJoin('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
-            ->select('transaksi.*', 'penghuni.nama as nama_penghuni',  'penghuni.id as id_penghuni', 'kamars.nama as nama_kamar', 'class_kamar.harga as harga_kamar')
+            ->select('transaksi.*', 'penghuni.nama as nama_penghuni',  'penghuni.id as id_penghuni', 'penghuni.foto_diri as foto_diri', 'kamars.nama as nama_kamar', 'class_kamar.harga as harga_kamar')
             ->where('transaksi.id_kost', $request->id_kost)
             ->whereYear('transaksi.tanggal_transaksi', $request->tahun)
             ->whereMonth('transaksi.tanggal_transaksi', $request->bulan)
