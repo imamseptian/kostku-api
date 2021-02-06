@@ -175,54 +175,54 @@ class PDFController extends Controller
 
 
 
-        // $data_pengeluaran = DB::table('transaksi')
-        //     ->where('transaksi.id_kost', 1)
-        //     ->whereYear('transaksi.tanggal_transaksi', $tahun)
-        //     ->whereMonth('transaksi.tanggal_transaksi', $bulan)
-        //     ->where('transaksi.jenis', 2)
-        //     ->get();
+        $data_pengeluaran = DB::table('transaksi')
+            ->where('transaksi.id_kost', 1)
+            ->whereYear('transaksi.tanggal_transaksi', $tahun)
+            ->whereMonth('transaksi.tanggal_transaksi', $bulan)
+            ->where('transaksi.jenis', 2)
+            ->get();
 
-        // $total_pengeluaran = DB::table('transaksi')
-        //     ->where('transaksi.id_kost', $kost['id'])
-        //     ->whereYear('transaksi.tanggal_transaksi', $tahun)
-        //     ->whereMonth('transaksi.tanggal_transaksi', $bulan)
-        //     ->where('transaksi.jenis', 2)
-        //     ->sum('transaksi.jumlah');
+        $total_pengeluaran = DB::table('transaksi')
+            ->where('transaksi.id_kost', $kost['id'])
+            ->whereYear('transaksi.tanggal_transaksi', $tahun)
+            ->whereMonth('transaksi.tanggal_transaksi', $bulan)
+            ->where('transaksi.jenis', 2)
+            ->sum('transaksi.jumlah');
 
-        // for ($x = 0; $x < count($data_pengeluaran); $x++) {
-        //     $mybulan = Carbon::parse($data_pengeluaran[$x]->tanggal_transaksi)->format('m');
-        //     // $mybulan = $data_pengeluaran[$x]['tanggal_daftar']->format('m');
-        //     $namabulan = '';
-        //     if ($mybulan == '01') {
-        //         $namabulan = 'Januari';
-        //     } elseif ($mybulan == '02') {
-        //         $namabulan = 'Februari';
-        //     } elseif ($mybulan == '03') {
-        //         $namabulan = 'Maret';
-        //     } elseif ($mybulan == '04') {
-        //         $namabulan = 'April';
-        //     } elseif ($mybulan == '05') {
-        //         $namabulan = 'Mei';
-        //     } elseif ($mybulan == '06') {
-        //         $namabulan = 'Juni';
-        //     } elseif ($mybulan == '07') {
-        //         $namabulan = 'Juli';
-        //     } elseif ($mybulan == '08') {
-        //         $namabulan = 'Agustus';
-        //     } elseif ($mybulan == '09') {
-        //         $namabulan = 'September';
-        //     } elseif ($mybulan == '10') {
-        //         $namabulan = 'Oktober';
-        //     } elseif ($mybulan == '11') {
-        //         $namabulan = 'November';
-        //     } else {
-        //         $namabulan = 'Desember';
-        //     }
+        for ($x = 0; $x < count($data_pengeluaran); $x++) {
+            $mybulan = Carbon::parse($data_pengeluaran[$x]->tanggal_transaksi)->format('m');
+            // $mybulan = $data_pengeluaran[$x]['tanggal_daftar']->format('m');
+            $namabulan = '';
+            if ($mybulan == '01') {
+                $namabulan = 'Januari';
+            } elseif ($mybulan == '02') {
+                $namabulan = 'Februari';
+            } elseif ($mybulan == '03') {
+                $namabulan = 'Maret';
+            } elseif ($mybulan == '04') {
+                $namabulan = 'April';
+            } elseif ($mybulan == '05') {
+                $namabulan = 'Mei';
+            } elseif ($mybulan == '06') {
+                $namabulan = 'Juni';
+            } elseif ($mybulan == '07') {
+                $namabulan = 'Juli';
+            } elseif ($mybulan == '08') {
+                $namabulan = 'Agustus';
+            } elseif ($mybulan == '09') {
+                $namabulan = 'September';
+            } elseif ($mybulan == '10') {
+                $namabulan = 'Oktober';
+            } elseif ($mybulan == '11') {
+                $namabulan = 'November';
+            } else {
+                $namabulan = 'Desember';
+            }
 
-        //     $data_pengeluaran[$x]->hari = Carbon::parse($data_pengeluaran[$x]->tanggal_transaksi)->format('d');
-        //     $data_pengeluaran[$x]->bulan = $namabulan;
-        //     $data_pengeluaran[$x]->tahun = Carbon::parse($data_pengeluaran[$x]->tanggal_transaksi)->format('Y');
-        // }
+            $data_pengeluaran[$x]->hari = Carbon::parse($data_pengeluaran[$x]->tanggal_transaksi)->format('d');
+            $data_pengeluaran[$x]->bulan = $namabulan;
+            $data_pengeluaran[$x]->tahun = Carbon::parse($data_pengeluaran[$x]->tanggal_transaksi)->format('Y');
+        }
 
 
 
@@ -245,7 +245,9 @@ class PDFController extends Controller
             "code" => 200,
             "success" => TRUE,
             "pemasukan" => $data_pemasukan,
-            "total" => $total_pemasukan,
+            "total_pemasukan" => $total_pemasukan,
+            "pengeluaran" => $data_pengeluaran,
+            "total_pengeluaran" => $total_pengeluaran,
         ]);
 
         // return view('pdf', [
