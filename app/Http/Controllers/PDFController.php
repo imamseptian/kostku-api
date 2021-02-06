@@ -240,14 +240,22 @@ class PDFController extends Controller
         //     // "total_pengeluaran" => $total_pengeluaran,
         // ]);
         // return $pdf->download('Laporan.pdf');
-        return view('pdf', [
-            "judul" => "Laporan Bulanan " . $kost->nama,
-            "periode" => "Periode " . $bulanperiode . " - 2020",
-            "data_pemasukan" => $data_pemasukan,
-            "total_pemasukan" => $total_pemasukan,
-            // "data_pengeluaran" => $data_pengeluaran,
-            // "total_pengeluaran" => $total_pengeluaran,
+
+        return response()->json([
+            "code" => 200,
+            "success" => TRUE,
+            "pemasukan" => $data_pemasukan,
+            "total" => $total_pemasukan,
         ]);
+
+        // return view('pdf', [
+        //     "judul" => "Laporan Bulanan " . $kost->nama,
+        //     "periode" => "Periode " . $bulanperiode . " - 2020",
+        //     "data_pemasukan" => $data_pemasukan,
+        //     "total_pemasukan" => $total_pemasukan,
+        //     // "data_pengeluaran" => $data_pengeluaran,
+        //     // "total_pengeluaran" => $total_pengeluaran,
+        // ]);
     }
 
     function bruh()
