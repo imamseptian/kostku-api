@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use App\Kamar;
 use App\Tagihan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
@@ -196,8 +197,8 @@ class PenghuniController extends Controller
                 $image = str_replace(' ', '+', $image);
                 $nama_foto_diri = Str::random(10) . '.' . $extension;
                 $thumbnailImage = Image::make($image_64);
-                $avatarpath = public_path('/kostdata/pendaftar/foto/');
-                $thumbnailImage->save($avatarpath . $nama_foto_diri);
+                $thumbnailImage->stream(); // <-- Key point
+                Storage::disk('local')->put('public/images/pendaftar/' . $nama_foto_diri, $thumbnailImage);
             }
             $nama_foto_ktp = $data_penghuni->foto_ktp;
             if ($request->new_foto_ktp != null) {
@@ -208,8 +209,9 @@ class PenghuniController extends Controller
                 $image = str_replace(' ', '+', $image);
                 $nama_foto_ktp = Str::random(10) . '.' . $extension;
                 $thumbnailImage = Image::make($image_64);
-                $avatarpath = public_path('/kostdata/pendaftar/foto/');
-                $thumbnailImage->save($avatarpath . $nama_foto_ktp);
+
+                $thumbnailImage->stream(); // <-- Key point
+                Storage::disk('local')->put('public/images/pendaftar/' . $nama_foto_ktp, $thumbnailImage);
             }
 
             $tanggal_lahir = Carbon::parse($request->tanggal_lahir);
