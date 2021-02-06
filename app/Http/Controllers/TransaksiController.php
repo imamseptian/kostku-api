@@ -361,7 +361,7 @@ class TransaksiController extends Controller
             ->leftJoin('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
             ->select('penghuni.*', 'kamars.nama as nama_kamar', 'class_kamar.harga as harga_kamar')
             ->where('class_kamar.id_kost', $request->id_kost)
-            ->where('penghuni.nama', 'ilike', '%' . $keyword . '%')
+            ->where('penghuni.nama', 'like', '%' . $keyword . '%')
             ->get();
 
         for ($x = 0; $x < count($data); $x++) {
