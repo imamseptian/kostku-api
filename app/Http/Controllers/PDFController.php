@@ -69,8 +69,8 @@ class PDFController extends Controller
         // $user = User::where('id', 1)->first();
         // $kostku = Kost::where('owner',$user->id)->first;
 
-        // $kost = Kost::where('owner', $user->id)->first();
-        $kost = Kost::where('owner', 1)->first();
+        $kost = Kost::where('owner', $user->id)->first();
+        // $kost = Kost::where('owner', 1)->first();
         // $kost = Kost::where('id', 1)->first();
         // $data_pemasukan = DB::table('transaksi')
         //     ->leftJoin('penghuni', 'transaksi.id_penghuni', '=', 'penghuni.id')
@@ -237,8 +237,8 @@ class PDFController extends Controller
             "periode" => "Periode " . $bulanperiode . " - " . $periodetahun,
             "data_pemasukan" => $data_pemasukan,
             "total_pemasukan" => $total_pemasukan,
-            // "data_pengeluaran" => $data_pengeluaran,
-            // "total_pengeluaran" => $total_pengeluaran,
+            "data_pengeluaran" => $data_pengeluaran,
+            "total_pengeluaran" => $total_pengeluaran,
         ]);
         return $pdf->download('Laporan.pdf');
 

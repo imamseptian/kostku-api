@@ -73,7 +73,7 @@
               </tr>
 
           </table>
-          {{-- <h4>Data Pengeluaran</h4>
+          <h4>Data Pengeluaran</h4>
           <table class="customers">
             <tr>
               <th>No</th>
@@ -98,6 +98,6 @@
                 <td> <b>{{ rupiah($total_pengeluaran) }}</b> </td>
               </tr>
 
-          </table> --}}
+          </table>
     </body>
 </html>
