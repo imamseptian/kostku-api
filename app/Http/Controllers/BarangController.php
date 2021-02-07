@@ -22,7 +22,7 @@ class BarangController extends Controller
 
         $data = array(
             'number' => $request->number,
-            'message' => $request->number
+            'message' => $request->message
         );
 
         $payload = json_encode($data);
