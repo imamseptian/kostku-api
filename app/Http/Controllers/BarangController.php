@@ -43,6 +43,7 @@ class BarangController extends Controller
             "code" => 200,
             "number" => $request->number,
             "message" => $request->message,
+            "server_output" => $server_output
 
         ]);
 
