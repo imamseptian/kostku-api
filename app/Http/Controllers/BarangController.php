@@ -17,33 +17,44 @@ class BarangController extends Controller
 
     public function testNotifWa(Request $request)
     {
-        $fields = array('number' => $request->number, 'message' => $request->message);
+        // $fields = array('number' => $request->number, 'message' => $request->number);
 
-        $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, "https://api-whatsapp-kostku.herokuapp.com/send-message");
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt(
-            $ch,
-            CURLOPT_POSTFIELDS,
-            json_encode($fields)
+        $data = array(
+            'number' => $request->number,
+            'message' => $request->number
         );
 
-        // In real life you should use something like:
-        // curl_setopt($ch, CURLOPT_POSTFIELDS,
-        //          http_build_query(array('postvar1' => 'value1')));
+        $payload = json_encode($data);
 
-        // Receive server response ...
+        // Prepare new cURL resource
+        $ch = curl_init('https://api-whatsapp-kostku.herokuapp.com/send-message');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
 
-        $server_output = curl_exec($ch);
+        // Set HTTP Header for POST request
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($payload)
+            )
+        );
 
+        // Submit the POST request
+        $result = curl_exec($ch);
+
+        // Close cURL session handle
         curl_close($ch);
+
         return response()->json([
             "code" => 200,
             "number" => $request->number,
             "message" => $request->message,
-            "server_output" => $server_output
+
 
         ]);
 
