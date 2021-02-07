@@ -26,7 +26,7 @@ class BarangController extends Controller
         curl_setopt(
             $ch,
             CURLOPT_POSTFIELDS,
-            "postvar1=value1&postvar2=value2&postvar3=value3"
+            json_encode($fields)
         );
 
         // In real life you should use something like:
@@ -41,7 +41,9 @@ class BarangController extends Controller
         curl_close($ch);
         return response()->json([
             "code" => 200,
-            "ayaya" => "success"
+            "number" => $request->number,
+            "message" => $request->message,
+
         ]);
 
 
