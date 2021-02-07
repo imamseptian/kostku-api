@@ -173,15 +173,16 @@ Route::get('/ayaya', 'PenghuniController@ListPenghuni');
 Route::get('/send-email', 'StatistikController@cobaEmail');
 
 Route::post('/store_gambar', 'BarangController@storeGambar');
-Route::get('/linkstorage', function () {
-    Artisan::call('storage:link');
-});
+Route::post('/send_wa_notif', 'BarangController@testNotifWa');
+// Route::get('/linkstorage', function () {
+//     Artisan::call('storage:link');
+// });
 
-Route::get('/link', function () {
-    $target = '/home/apikostk/APIKost/storage/app/public';
-    $shortcut = '/home/public_html/public/storage';
-    symlink($target, $shortcut);
-});
+// Route::get('/link', function () {
+//     $target = '/home/apikostk/APIKost/storage/app/public';
+//     $shortcut = '/home/public_html/public/storage';
+//     symlink($target, $shortcut);
+// });
 // Route::get('/mypdf/{bulan}/{tahun}', 'PDFController@pdfku');
 
 

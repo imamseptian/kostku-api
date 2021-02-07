@@ -14,6 +14,33 @@ use Intervention\Image\Facades\Image;
 
 class BarangController extends Controller
 {
+
+    public function testNotifWa(Request $request)
+    {
+        $fields = array('number' => $request->number, 'message' => $request->message);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api-whatsapp-kostku.herokuapp.com/send-message');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        $result = curl_exec($ch);
+        curl_close($ch);
+        if ($result == "OK") {
+            return response()->json([
+                "code" => 200,
+                "ayaya" => "success"
+            ]);
+        } else {
+            return response()->json([
+                "code" => 500,
+                "ayaya" => "failed"
+            ]);
+        }
+    }
+
     public function storeGambar(Request $request)
     {
         $image_64 = $request->foto_profil; //your base64 encoded data
