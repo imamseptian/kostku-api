@@ -147,7 +147,7 @@ class PenghuniController extends Controller
                         $oldpendaftar->save();
                     }
 
-                    // $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, '');
+                    $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, '');
                     $this->notifikasiWA($request->terima, $request->notelp, $request->id_kost, $request->alasan, $penghuni->id);
                     return response()->json([
                         "code" => 200,
