@@ -15,6 +15,7 @@ use App\Kamar;
 use App\Kost;
 use App\Mail\CobaMail;
 use App\Tagihan;
+use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -319,7 +320,7 @@ class PenghuniController extends Controller
         // $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
 
         $kost = Kost::where('id', $request->id_kost)->first();
-        $owner = Kost::where('id', $kost->owner)->first();
+        $owner = User::where('id', $kost->owner)->first();
 
         $details = [
             'nama' => $request->nama,
