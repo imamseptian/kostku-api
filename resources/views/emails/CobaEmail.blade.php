@@ -74,7 +74,7 @@
 
 		<p style="font-size: 15px; line-height: 1.5; word-break: break-word; text-align: left; font-family: Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif; mso-line-height-alt: 23px; margin: 0;"><span style="color: #2b303a; font-size: 15px;">
         @if($details['terima'])
-            Selamat anda sudah diterima menjadi penghuni {{$details['nama_kost']}}. Silahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin.
+            Selamat anda sudah diterima menjadi penghuni {{$details['nama_kost']}}. Untuk informasi seputar tagihan sewa bulan pertama pihak kost sudah mengirim pesan WhatsApp ke nomor yang anda daftarkan. Silahkan segera persiapkan perpindahan dan melakukan pembayaran sewa bulan pertama ditempat agar dapat menghuni kamar yang dipesan.
         @else
             TIDAK DITERIMA
         @endif

@@ -314,7 +314,7 @@ class TagihanController extends Controller
 
 
         // $pesan = 'Hai ' . $penghuni->nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\nSilahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin\n\nHubungi pengelola kost ernis @' . $kost->notelp . ' untuk informasi lebih lanjut.\nTerima Kasih';
-        $pesan = 'Hai ' . $penghuni->nama . '\n\n Berikut adalah tagihan bulanan sewa kamar kost anda periode ' . $namabulan . ' - ' . $mytahun . ':\n\nBiaya barang bawaan = Rp' . $biaya_barang . '\nBiaya sewa kamar = Rp' . $penghuni->harga_kamar . '\n\nTotal tagihan bulan ini = Rp' . ($biaya_barang + $penghuni->harga_kamar) . '\n\nSilahkan hubungi pengelola kost pada @' . $penghuni->notelp_kost . ' untuk informasi lebih lanjut.\n\nTerima Kasih\n-Pengelola ' . $penghuni->nama_kost;
+        $pesan = 'Hai ' . $penghuni->nama . '\n\nBerikut adalah tagihan bulanan sewa kamar kost anda periode ' . $namabulan . '-' . $mytahun . ' :\n\nBiaya barang bawaan = Rp ' . $biaya_barang . '\nBiaya sewa kamar = Rp ' . $penghuni->harga_kamar . '\n\nTotal tagihan bulan ini = Rp ' . ($biaya_barang + $penghuni->harga_kamar) . '\n\nSilahkan hubungi pengelola kost pada @' . $penghuni->notelp_kost . ' untuk informasi lebih lanjut.\n\nTerima Kasih\n-Pengelola ' . $penghuni->nama_kost;
         $pesan1 = str_replace(array("\\n", "\\r"), array("\n", "\r"), $pesan);
 
 

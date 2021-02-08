@@ -148,7 +148,7 @@ class PenghuniController extends Controller
                     }
 
                     // $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, '');
-                    $this->notifikasiWA($request->terima, $request->nama, $request->notelp, $request->id_kost, $request->alasan);
+                    $this->notifikasiWA($request->terima, $request->notelp, $request->id_kost, $request->alasan, $penghuni->id);
                     return response()->json([
                         "code" => 200,
                         "success" => TRUE,
@@ -181,7 +181,7 @@ class PenghuniController extends Controller
             }
 
             $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
-            $this->notifikasiWA($request->terima, $request->nama, $request->notelp, $request->id_kost, $request->alasan);
+            // $this->notifikasiWA($request->terima, $request->nama, $request->notelp, $request->id_kost, $request->alasan);
 
 
             return response()->json([
@@ -342,7 +342,7 @@ class PenghuniController extends Controller
         ]);
     }
 
-    public function notifikasiWA($terima, $nama, $notelp, $id_kost, $alasan)
+    public function notifikasiWA($terima, $notelp, $id_kost, $alasan, $id_penghuni)
     {
         // $terima, $nama, $notelp, $id_kost, $alasan
         // $fields = array('number' => $request->number, 'message' => $request->number);
@@ -350,7 +350,35 @@ class PenghuniController extends Controller
 
         $kost = Kost::where('id', $id_kost)->first();
         $owner = Kost::where('id', $kost->owner)->first();
-        $pesan = 'Hai ' . $nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\nSilahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin\n\nHubungi pengelola kost ernis @' . $kost->notelp . ' untuk informasi lebih lanjut.\nTerima Kasih';
+
+        $mytime = Carbon::now('Asia/Jakarta');
+        $biaya_barang = DB::table('barang_tambahan_penghuni')
+            ->leftJoin('penghuni', 'penghuni.id', '=', 'barang_tambahan_penghuni.id_penghuni')
+            ->leftJoin('barang', 'barang_tambahan_penghuni.id_barang', '=', 'barang.id')
+            // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
+            ->select('barang_tambahan_penghuni.*', 'barang.nama as nama')
+            ->where('barang_tambahan_penghuni.tanggal_masuk', '<=', $mytime)
+            ->where(function ($query) use ($mytime) {
+                $query->where('barang_tambahan_penghuni.tanggal_keluar', '>=', $mytime)
+                    ->orWhere('barang_tambahan_penghuni.tanggal_keluar', null);
+                // $query->where(function ($query) use ($tanggal_tagihan) {
+                //     $query->where('barang_tambahan_penghuni.tanggal_masuk', '<=', Carbon::parse($tanggal_tagihan));
+                // })->orWhere('barang_tambahan_penghuni.tanggal_keluar', null);
+            })
+            ->where('penghuni.id', $id_penghuni)
+            ->sum('barang_tambahan_penghuni.total');
+
+        $penghuni = DB::table('penghuni')
+            ->join('kamars', 'penghuni.id_kamar', '=', 'kamars.id')
+            ->join('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
+            ->join('kosts', 'class_kamar.id_kost', '=', 'kosts.id')
+            ->select('penghuni.*', 'class_kamar.harga as harga_kamar', 'class_kamar.nama as nama_kamar', 'kosts.nama as nama_kost', 'kosts.notelp as notelp_kost')
+            ->where('penghuni.id', $id_penghuni)
+            ->first();
+        $pesan = 'Hai ' . $penghuni->nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\nUntuk tagihan sewa bulan pertama anda adalah sebagai berikut:\n';
+        $pesan .= 'Biaya barang bawaan = Rp ' . $biaya_barang . '\nBiaya sewa kamar = Rp ' . $penghuni->harga_kamar . '\n\nTotal tagihan bulan ini = Rp ' . ($biaya_barang + $penghuni->harga_kamar);
+        $pesan .= '\n\nHubungi pengelola ' . $kost->nama . ' @' . $kost->notelp . ' untuk informasi lebih lanjut.\nTerima Kasih';
+
         $pesan1 = str_replace(array("\\n", "\\r"), array("\n", "\r"), $pesan);
         $data = array(
             'number' => $notelp,
