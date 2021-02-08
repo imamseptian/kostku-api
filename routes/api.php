@@ -174,7 +174,7 @@ Route::get('/send-email', 'StatistikController@cobaEmail');
 Route::get('/email_penghuni/{terima}/{nama}/{email_penghuni}/{id_kost}/{alasan}', 'StatistikController@cobaEmail');
 
 Route::post('/store_gambar', 'BarangController@storeGambar');
-Route::post('/send_wa_notif', 'BarangController@testNotifWa');
+Route::post('/send_wa_notif', 'PenghuniController@testNotifWa');
 // Route::get('/linkstorage', function () {
 //     Artisan::call('storage:link');
 // });
