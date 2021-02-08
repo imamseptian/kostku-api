@@ -340,17 +340,18 @@ class PenghuniController extends Controller
         ]);
     }
 
-    public function notifikasiWA($terima, $nama, $notelp, $id_kost, $alasan)
+    public function notifikasiWA(Request $request)
     {
+        // $terima, $nama, $notelp, $id_kost, $alasan
         // $fields = array('number' => $request->number, 'message' => $request->number);
         // $this->notifikasiWA($request->terima,$request->nama, $request->email, $request->id_kost, $request->alasan);
 
-        $kost = Kost::where('id', $id_kost)->first();
+        $kost = Kost::where('id', $request->id_kost)->first();
         $owner = Kost::where('id', $kost->owner)->first();
 
         $data = array(
-            'number' => $notelp,
-            'message' => 'Hai ' . $nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\n\nSilahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin\n\nHubungi pengelola kost ernis @' . $kost->notelp . ' untuk informasi lebih lanjut.\n\nTerima Kasih'
+            'number' => $request->notelp,
+            'message' => 'Hai ' . $request->nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\n\nSilahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin\n\nHubungi pengelola kost ernis @' . $kost->notelp . ' untuk informasi lebih lanjut.\n\nTerima Kasih'
         );
 
         $payload = json_encode($data);
