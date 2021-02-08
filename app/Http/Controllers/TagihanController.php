@@ -246,7 +246,7 @@ class TagihanController extends Controller
         ]);
     }
 
-    public function notifikasiTagihan($id)
+    public function notifikasiTagihan(Request $request)
     {
         // $terima, $nama, $notelp, $id_kost, $alasan
         // $fields = array('number' => $request->number, 'message' => $request->number);
@@ -262,7 +262,7 @@ class TagihanController extends Controller
             ->join('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
             ->join('kosts', 'class_kamar.id_kost', '=', 'kosts.id')
             ->select('penghuni.*', 'class_kamar.harga as harga_kamar', 'class_kamar.nama as nama_kamar', 'kosts.nama as nama_kost', 'kosts.notelp as notelp_kost')
-            ->where('penghuni.id', $id)
+            ->where('penghuni.id', $request->id)
             ->first();
 
         $biaya_barang = DB::table('barang_tambahan_penghuni')
@@ -278,58 +278,58 @@ class TagihanController extends Controller
                 //     $query->where('barang_tambahan_penghuni.tanggal_masuk', '<=', Carbon::parse($tanggal_tagihan));
                 // })->orWhere('barang_tambahan_penghuni.tanggal_keluar', null);
             })
-            ->where('penghuni.id', $id)
+            ->where('penghuni.id', $request->id)
             ->sum('barang_tambahan_penghuni.total');
 
 
         // $pesan = 'Hai ' . $penghuni->nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\nSilahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin\n\nHubungi pengelola kost ernis @' . $kost->notelp . ' untuk informasi lebih lanjut.\nTerima Kasih';
-        // $pesan1 = str_replace(array("\\n", "\\r"), array("\n", "\r"), $pesan);
-        $pesan = 'Hai ' . $penghuni->nama . '\n\n Berikut adalah tagihan bulanan sewa kamar kost anda:\n\nBiaya barang bawaan = Rp' . $biaya_barang . '\nBiaya sewa kamar = ' . $penghuni->harga_kamar . '\n\nTotal tagihan bulan ini = ' . ($biaya_barang + $penghuni->harga_kamar) . '\n\nSilahkan hubungi pengelola kost pada @' . $penghuni->notelp_kost . ' untuk informasi lebih lanjut.\n\nTerima Kasih\nPengelola' . $penghuni->nama_kost;
+        $pesan = 'Hai ' . $penghuni->nama . '\n\n Berikut adalah tagihan bulanan sewa kamar kost anda:\n\nBiaya barang bawaan = Rp' . $biaya_barang . '\nBiaya sewa kamar = Rp' . $penghuni->harga_kamar . '\n\nTotal tagihan bulan ini = ' . ($biaya_barang + $penghuni->harga_kamar) . '\n\nSilahkan hubungi pengelola kost pada @' . $penghuni->notelp_kost . ' untuk informasi lebih lanjut.\n\nTerima Kasih\nPengelola' . $penghuni->nama_kost;
+        $pesan1 = str_replace(array("\\n", "\\r"), array("\n", "\r"), $pesan);
 
 
-
-        return response()->json([
-            "code" => 200,
-            "penghuni" => $penghuni,
-            "biaya" => $biaya_barang,
-            "pesan" => $pesan
-        ]);
-        // $data = array(
-        //     'number' => $request->notelp,
-        //     'message' => $pesan1
-        //     // 'message' => $pesan
-        // );
-
-        // $payload = json_encode($data);
-
-        // // Prepare new cURL resource
-        // $ch = curl_init('https://kostku-whatsapp-api.herokuapp.com/send-message');
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($ch, CURLINFO_HEADER_OUT, true);
-        // curl_setopt($ch, CURLOPT_POST, true);
-        // curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-
-        // // Set HTTP Header for POST request
-        // curl_setopt(
-        //     $ch,
-        //     CURLOPT_HTTPHEADER,
-        //     array(
-        //         'Content-Type: application/json',
-        //         'Content-Length: ' . strlen($payload)
-        //     )
-        // );
-
-        // // Submit the POST request
-        // $result = curl_exec($ch);
-
-        // // Close cURL session handle
-        // curl_close($ch);
 
         // return response()->json([
         //     "code" => 200,
-        //     "res" => $result,
-        //     "message" => $pesan,
-        //     "message1" => $pesan1
+        //     "penghuni" => $penghuni,
+        //     "biaya" => $biaya_barang,
+        //     "pesan" => $pesan
         // ]);
+        $data = array(
+            'number' => $request->notelp,
+            'message' => $pesan1
+            // 'message' => $pesan
+        );
+
+        $payload = json_encode($data);
+
+        // Prepare new cURL resource
+        $ch = curl_init('https://kostku-whatsapp-api.herokuapp.com/send-message');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+        // Set HTTP Header for POST request
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($payload)
+            )
+        );
+
+        // Submit the POST request
+        $result = curl_exec($ch);
+
+        // Close cURL session handle
+        curl_close($ch);
+
+        return response()->json([
+            "code" => 200,
+            "res" => $result,
+            "message" => $pesan,
+            "message1" => $pesan1
+        ]);
     }
 }
