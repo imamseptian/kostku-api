@@ -180,6 +180,7 @@ class PenghuniController extends Controller
             }
 
             $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
+            $this->notifikasiWA($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
 
             return response()->json([
                 "code" => 200,
@@ -334,6 +335,49 @@ class PenghuniController extends Controller
             "success" => TRUE,
             "message" => "email send",
 
+        ]);
+    }
+
+    public function notifikasiWA($terima, $nama, $notelp, $id_kost, $alasan)
+    {
+        // $fields = array('number' => $request->number, 'message' => $request->number);
+        // $this->notifikasiWA($request->terima,$request->nama, $request->email, $request->id_kost, $request->alasan);
+
+        $kost = Kost::where('id', $id_kost)->first();
+        $owner = Kost::where('id', $kost->owner)->first();
+
+        $data = array(
+            'number' => $notelp,
+            'message' => 'Hai ' . $nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\n\nSilahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin\n\nHubungi pengelola kost ernis @' . $kost->notelp . ' untuk informasi lebih lanjut.\n\nTerima Kasih'
+        );
+
+        $payload = json_encode($data);
+
+        // Prepare new cURL resource
+        $ch = curl_init('https://kostku-whatsapp-api.herokuapp.com');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+        // Set HTTP Header for POST request
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($payload)
+            )
+        );
+
+        // Submit the POST request
+        $result = curl_exec($ch);
+
+        // Close cURL session handle
+        curl_close($ch);
+
+        return response()->json([
+            "code" => 200,
         ]);
     }
 }
