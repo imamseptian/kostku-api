@@ -67,7 +67,7 @@ class PenghuniController extends Controller
     {
 
         $kamar = Kamar::where('id', $request->request_kamar)->first();
-        $kelas = ClassKamar::where('id', $kamar->id_kelas)->first();
+        $kelas = ClassKamar::where('id', $kamar['id_kelas'])->first();
         $bawaan = $request->barang_tambahan;
         if ($kamar) {
             if ($request->terima === TRUE) {
