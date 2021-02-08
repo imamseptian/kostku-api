@@ -205,6 +205,7 @@ class TagihanController extends Controller
             //     })->sum('barang_tambahan_penghuni.total');
 
             $biaya_barang = DB::table('barang_tambahan_penghuni')
+                ->leftJoin('penghuni', 'penghuni.id', '=', 'barang_tambahan_penghuni.id_penghuni')
                 ->leftJoin('barang', 'barang_tambahan_penghuni.id_barang', '=', 'barang.id')
                 // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
                 ->select('barang_tambahan_penghuni.*', 'barang.nama as nama')
@@ -216,6 +217,7 @@ class TagihanController extends Controller
                     //     $query->where('barang_tambahan_penghuni.tanggal_masuk', '<=', Carbon::parse($tanggal_tagihan));
                     // })->orWhere('barang_tambahan_penghuni.tanggal_keluar', null);
                 })
+                ->where('penghuni.id', $kamarku[$x]->id)
                 ->sum('barang_tambahan_penghuni.total');
 
             $tagih = new Tagihan();
@@ -240,7 +242,70 @@ class TagihanController extends Controller
             "mytime" => $mytime,
             "bulan" => $request->month,
             "tahun" => $request->year,
-            "kon" => 'brutus'
+
         ]);
     }
+
+    // public function notifikasiWA($terima, $nama, $notelp, $id_kost, $alasan)
+    // {
+    //     // $terima, $nama, $notelp, $id_kost, $alasan
+    //     // $fields = array('number' => $request->number, 'message' => $request->number);
+    //     // $this->notifikasiWA($request->terima,$request->nama, $request->email, $request->id_kost, $request->alasan);
+
+    //     // $kost = Kost::where('id', $id_kost)->first();
+    //     // $owner = Kost::where('id', $kost->owner)->first();
+    //     $mytime = Carbon::now('Asia/Jakarta');
+    //     $barang_penghuni = DB::table('barang_tambahan_penghuni')
+    //         ->leftJoin('barang', 'barang_tambahan_penghuni.id_barang', '=', 'barang.id')
+    //         // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
+    //         ->select('barang_tambahan_penghuni.*', 'barang.nama as nama')
+    //         ->where('barang_tambahan_penghuni.tanggal_masuk', '<=', $mytime)
+    //         ->where(function ($query) use ($mytime) {
+    //             $query->where('barang_tambahan_penghuni.tanggal_keluar', '>=', $mytime)
+    //                 ->orWhere('barang_tambahan_penghuni.tanggal_keluar', null);
+    //         })
+    //         ->where('penghuni.id')
+    //         ->get();
+
+
+    //     $pesan = 'Hai ' . $nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\nSilahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin\n\nHubungi pengelola kost ernis @' . $kost->notelp . ' untuk informasi lebih lanjut.\nTerima Kasih';
+    //     $pesan1 = str_replace(array("\\n", "\\r"), array("\n", "\r"), $pesan);
+    //     $data = array(
+    //         'number' => $notelp,
+    //         'message' => $pesan1
+    //         // 'message' => $pesan
+    //     );
+
+    //     $payload = json_encode($data);
+
+    //     // Prepare new cURL resource
+    //     $ch = curl_init('https://kostku-whatsapp-api.herokuapp.com/send-message');
+    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    //     curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+    //     curl_setopt($ch, CURLOPT_POST, true);
+    //     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+    //     // Set HTTP Header for POST request
+    //     curl_setopt(
+    //         $ch,
+    //         CURLOPT_HTTPHEADER,
+    //         array(
+    //             'Content-Type: application/json',
+    //             'Content-Length: ' . strlen($payload)
+    //         )
+    //     );
+
+    //     // Submit the POST request
+    //     $result = curl_exec($ch);
+
+    //     // Close cURL session handle
+    //     curl_close($ch);
+
+    //     return response()->json([
+    //         "code" => 200,
+    //         "res" => $result,
+    //         "message" => $pesan,
+    //         "message1" => $pesan1
+    //     ]);
+    // }
 }
