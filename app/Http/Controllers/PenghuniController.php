@@ -180,7 +180,7 @@ class PenghuniController extends Controller
                 $oldpendaftar->save();
             }
 
-            $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
+            // $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
             // $this->notifikasiWA($request->terima, $request->nama, $request->notelp, $request->id_kost, $request->alasan);
 
 
@@ -314,25 +314,25 @@ class PenghuniController extends Controller
         }
     }
 
-    public function kirimEmail(Request $request)
+    public function kirimEmail($terima, $nama, $email_penghuni, $id_kost, $alasan)
     {
         // $terima, $nama, $email_penghuni, $id_kost, $alasan
         // $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
 
-        $kost = Kost::where('id', $request->id_kost)->first();
+        $kost = Kost::where('id', $id_kost)->first();
         $owner = User::where('id', $kost->owner)->first();
 
         $details = [
-            'nama' => $request->nama,
+            'nama' => $nama,
             'nama_kost' => $kost->nama,
-            "terima" => $request->terima,
+            "terima" => $terima,
             'number' => $kost->notelp,
             'urlkost' => 'https://apikostku.xyz/storage/images/kost/' . $kost->foto_kost,
             'owner' => $owner->nama,
         ];
 
         // Mail::to($email_penghuni)->send(new CobaMail($details));
-        Mail::to($request->email_penghuni)->send(new CobaMail($details));
+        Mail::to($email_penghuni)->send(new CobaMail($details));
 
         return response()->json([
             "code" => 200,
@@ -375,7 +375,7 @@ class PenghuniController extends Controller
             ->select('penghuni.*', 'class_kamar.harga as harga_kamar', 'class_kamar.nama as nama_kamar', 'kosts.nama as nama_kost', 'kosts.notelp as notelp_kost')
             ->where('penghuni.id', $id_penghuni)
             ->first();
-        $pesan = 'Hai ' . $penghuni->nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\nUntuk tagihan sewa bulan pertama anda adalah sebagai berikut:\n';
+        $pesan = 'Hai ' . $penghuni->nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\nUntuk tagihan sewa bulan pertama anda adalah sebagai berikut:\n\n';
         $pesan .= 'Biaya barang bawaan = Rp ' . $biaya_barang . '\nBiaya sewa kamar = Rp ' . $penghuni->harga_kamar . '\n\nTotal tagihan bulan ini = Rp ' . ($biaya_barang + $penghuni->harga_kamar);
         $pesan .= '\n\nHubungi pengelola ' . $kost->nama . ' @' . $kost->notelp . ' untuk informasi lebih lanjut.\nTerima Kasih';
 
