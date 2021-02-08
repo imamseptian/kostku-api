@@ -382,6 +382,7 @@ class PenghuniController extends Controller
         return response()->json([
             "code" => 200,
             "res" => $result,
+            "message" => 'Hai ' . $request->nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\n\nSilahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin\n\nHubungi pengelola kost ernis @' . $kost->notelp . ' untuk informasi lebih lanjut.\n\nTerima Kasih'
         ]);
     }
 }
