@@ -348,7 +348,7 @@ class PenghuniController extends Controller
 
         $kost = Kost::where('id', $request->id_kost)->first();
         $owner = Kost::where('id', $kost->owner)->first();
-        $pesan = 'Hai ' . $request->nama . '\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\nSilahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin\nHubungi pengelola kost ernis @' . $kost->notelp . ' untuk informasi lebih lanjut.\nTerima Kasih';
+        $pesan = 'Hai ' . $request->nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\nSilahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin\n\nHubungi pengelola kost ernis @' . $kost->notelp . ' untuk informasi lebih lanjut.\nTerima Kasih';
         $pesan1 = str_replace(array("\\n", "\\r"), array("\n", "\r"), $pesan);
         $data = array(
             'number' => $request->notelp,
