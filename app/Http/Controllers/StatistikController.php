@@ -215,8 +215,11 @@ class StatistikController extends Controller
     function cobaEmail()
     {
         $details = [
-            'title' => 'Selamat Anda Diterima di Kostan Ernis',
-            'body' => 'selamat anda telah berhasil bla bla, silahkan menghubungi nomor berikut untuk mengkonfirmasi'
+            'nama' => 'Selamat Anda Diterima di Kostan Ernis',
+            'nama_kost' => 'Kost Ernis',
+            "terima" => FALSE,
+            'number' => '082138213872183',
+            'urlkost' => 'https://apikostku.xyz/storage/images/kost/bvBL0jMTDW.jpeg'
         ];
 
         Mail::to('imam.septian11187@gmail.com')->send(new CobaMail($details));

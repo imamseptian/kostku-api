@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Barang;
 use App\Barang_Tambahan_Pendaftar;
 use App\Barang_Tambahan_Penghuni;
+use App\Mail\CobaMail;
 use App\Pendaftar;
 use App\Penghuni;
 use Illuminate\Support\Facades\Validator;
@@ -20,6 +21,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class PendaftarController extends Controller
 {
@@ -479,7 +481,6 @@ class PendaftarController extends Controller
     //     curl_close($ch);
     //     return json_decode($result,true);
     // }
-
 
 
 }

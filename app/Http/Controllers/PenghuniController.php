@@ -12,8 +12,11 @@ use Illuminate\Http\Request;
 use File;
 use Carbon\Carbon;
 use App\Kamar;
+use App\Kost;
+use App\Mail\CobaMail;
 use App\Tagihan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
@@ -143,6 +146,8 @@ class PenghuniController extends Controller
                         $oldpendaftar->save();
                     }
 
+                    $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, '');
+
                     return response()->json([
                         "code" => 200,
                         "success" => TRUE,
@@ -173,6 +178,8 @@ class PenghuniController extends Controller
 
                 $oldpendaftar->save();
             }
+
+            $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
 
             return response()->json([
                 "code" => 200,
@@ -302,5 +309,31 @@ class PenghuniController extends Controller
                 // 'myfile'=>$files
             ]);
         }
+    }
+
+    public function kirimEmail($terima, $nama, $email_penghuni, $id_kost, $alasan)
+    {
+        // $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
+
+        $kost = Kost::where('id', $id_kost)->first();
+        $owner = Kost::where('id', $kost->owner)->first();
+
+        $details = [
+            'nama' => $nama,
+            'nama_kost' => $kost->nama,
+            "terima" => $terima,
+            'number' => $kost->notelp,
+            'urlkost' => 'https://apikostku.xyz/storage/images/kost/' . $kost->foto_kost,
+            'owner' => $owner->nama,
+        ];
+
+        Mail::to($email_penghuni)->send(new CobaMail($details));
+
+        return response()->json([
+            "code" => 200,
+            "success" => TRUE,
+            "message" => "email send",
+
+        ]);
     }
 }
