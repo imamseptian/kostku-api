@@ -351,7 +351,7 @@ class PenghuniController extends Controller
 
         $data = array(
             'number' => $request->notelp,
-            'message' => nl2br('Hai ' . $request->nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\n\nSilahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin\n\nHubungi pengelola kost ernis @' . $kost->notelp . ' untuk informasi lebih lanjut.\n\nTerima Kasih')
+            'message' => 'Hai ' . $request->nama . '\r\n\r\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\r\n\r\nSilahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin\r\n\r\nHubungi pengelola kost ernis @' . $kost->notelp . ' untuk informasi lebih lanjut.\r\n\r\nTerima Kasih'
         );
 
         $payload = json_encode($data);
