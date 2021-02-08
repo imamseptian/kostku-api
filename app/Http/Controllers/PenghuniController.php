@@ -318,15 +318,15 @@ class PenghuniController extends Controller
         // $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
 
         $kost = Kost::where('id', $request->id_kost)->first();
-        $owner = Kost::where('id', $request->kost->owner)->first();
+        $owner = Kost::where('id', $kost->owner)->first();
 
         $details = [
             'nama' => $request->nama,
-            'nama_kost' => $request->kost->nama,
+            'nama_kost' => $kost->nama,
             "terima" => $request->terima,
-            'number' => $request->kost->notelp,
-            'urlkost' => 'https://apikostku.xyz/storage/images/kost/' . $request->kost->foto_kost,
-            'owner' => $request->owner->nama,
+            'number' => $kost->notelp,
+            'urlkost' => 'https://apikostku.xyz/storage/images/kost/' . $kost->foto_kost,
+            'owner' => $owner->nama,
         ];
 
         // Mail::to($email_penghuni)->send(new CobaMail($details));
