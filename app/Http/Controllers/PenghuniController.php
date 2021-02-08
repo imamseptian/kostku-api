@@ -180,7 +180,8 @@ class PenghuniController extends Controller
             }
 
             $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
-            $this->notifikasiWA($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
+            $this->notifikasiWA($request->terima, $request->nama, $request->notelp, $request->id_kost, $request->alasan);
+
 
             return response()->json([
                 "code" => 200,
