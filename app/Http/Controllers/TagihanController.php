@@ -255,6 +255,37 @@ class TagihanController extends Controller
         // $kost = Kost::where('id', $id_kost)->first();
         // $owner = Kost::where('id', $kost->owner)->first();
         $mytime = Carbon::now('Asia/Jakarta');
+        $mybulan = $mytime->format('m');
+        $mytahun = $mytime->format('Y');
+
+        $namabulan = '';
+        if ($mybulan == '01') {
+            $namabulan = 'Januari';
+        } elseif ($mybulan == '02') {
+            $namabulan = 'Februari';
+        } elseif ($mybulan == '03') {
+            $namabulan = 'Maret';
+        } elseif ($mybulan == '04') {
+            $namabulan = 'April';
+        } elseif ($mybulan == '05') {
+            $namabulan = 'Mei';
+        } elseif ($mybulan == '06') {
+            $namabulan = 'Juni';
+        } elseif ($mybulan == '07') {
+            $namabulan = 'Juli';
+        } elseif ($mybulan == '08') {
+            $namabulan = 'Agustus';
+        } elseif ($mybulan == '09') {
+            $namabulan = 'September';
+        } elseif ($mybulan == '10') {
+            $namabulan = 'Oktober';
+        } elseif ($mybulan == '11') {
+            $namabulan = 'November';
+        } else {
+            $namabulan = 'Desember';
+        }
+
+
 
         // $penghuni = Penghuni::where('id', $request->id)->first();
         $penghuni = DB::table('penghuni')
@@ -283,7 +314,7 @@ class TagihanController extends Controller
 
 
         // $pesan = 'Hai ' . $penghuni->nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\nSilahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin\n\nHubungi pengelola kost ernis @' . $kost->notelp . ' untuk informasi lebih lanjut.\nTerima Kasih';
-        $pesan = 'Hai ' . $penghuni->nama . '\n\n Berikut adalah tagihan bulanan sewa kamar kost anda:\n\nBiaya barang bawaan = Rp' . $biaya_barang . '\nBiaya sewa kamar = Rp' . $penghuni->harga_kamar . '\n\nTotal tagihan bulan ini = ' . ($biaya_barang + $penghuni->harga_kamar) . '\n\nSilahkan hubungi pengelola kost pada @' . $penghuni->notelp_kost . ' untuk informasi lebih lanjut.\n\nTerima Kasih\nPengelola' . $penghuni->nama_kost;
+        $pesan = 'Hai ' . $penghuni->nama . '\n\n Berikut adalah tagihan bulanan sewa kamar kost anda periode ' . $namabulan . ' - ' . $mytahun . ':\n\nBiaya barang bawaan = Rp' . $biaya_barang . '\nBiaya sewa kamar = Rp' . $penghuni->harga_kamar . '\n\nTotal tagihan bulan ini = Rp' . ($biaya_barang + $penghuni->harga_kamar) . '\n\nSilahkan hubungi pengelola kost pada @' . $penghuni->notelp_kost . ' untuk informasi lebih lanjut.\n\nTerima Kasih\n-Pengelola ' . $penghuni->nama_kost;
         $pesan1 = str_replace(array("\\n", "\\r"), array("\n", "\r"), $pesan);
 
 
