@@ -312,25 +312,25 @@ class PenghuniController extends Controller
         }
     }
 
-    public function kirimEmail(Request $request)
+    public function kirimEmail($terima, $nama, $email_penghuni, $id_kost, $alasan)
     {
         // $terima, $nama, $email_penghuni, $id_kost, $alasan
         // $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
 
-        $kost = Kost::where('id', $request->id_kost)->first();
+        $kost = Kost::where('id', $id_kost)->first();
         $owner = Kost::where('id', $kost->owner)->first();
 
         $details = [
-            'nama' => $request->nama,
+            'nama' => $nama,
             'nama_kost' => $kost->nama,
-            "terima" => $request->terima,
+            "terima" => $terima,
             'number' => $kost->notelp,
             'urlkost' => 'https://apikostku.xyz/storage/images/kost/' . $kost->foto_kost,
             'owner' => $owner->nama,
         ];
 
         // Mail::to($email_penghuni)->send(new CobaMail($details));
-        Mail::to($request->email_penghuni)->send(new CobaMail($details));
+        Mail::to($email_penghuni)->send(new CobaMail($details));
 
         return response()->json([
             "code" => 200,
@@ -340,18 +340,18 @@ class PenghuniController extends Controller
         ]);
     }
 
-    public function notifikasiWA(Request $request)
+    public function notifikasiWA($terima, $nama, $notelp, $id_kost, $alasan)
     {
         // $terima, $nama, $notelp, $id_kost, $alasan
         // $fields = array('number' => $request->number, 'message' => $request->number);
         // $this->notifikasiWA($request->terima,$request->nama, $request->email, $request->id_kost, $request->alasan);
 
-        $kost = Kost::where('id', $request->id_kost)->first();
+        $kost = Kost::where('id', $id_kost)->first();
         $owner = Kost::where('id', $kost->owner)->first();
-        $pesan = 'Hai ' . $request->nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\nSilahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin\n\nHubungi pengelola kost ernis @' . $kost->notelp . ' untuk informasi lebih lanjut.\nTerima Kasih';
+        $pesan = 'Hai ' . $nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\nSilahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin\n\nHubungi pengelola kost ernis @' . $kost->notelp . ' untuk informasi lebih lanjut.\nTerima Kasih';
         $pesan1 = str_replace(array("\\n", "\\r"), array("\n", "\r"), $pesan);
         $data = array(
-            'number' => $request->notelp,
+            'number' => $notelp,
             'message' => $pesan1
             // 'message' => $pesan
         );
