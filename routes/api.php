@@ -171,7 +171,7 @@ Route::post('/filter_penghuni', 'PenghuniController@FilterPenghuni');
 Route::get('/ayaya', 'PenghuniController@ListPenghuni');
 
 Route::get('/send-email', 'StatistikController@cobaEmail');
-Route::get('/email_penghuni/{terima}/{nama}/{email_penghuni}/{id_kost}/{alasan}', 'PenghuniController@kirimEmail');
+Route::post('/email_penghuni', 'PenghuniController@kirimEmail');
 
 Route::post('/store_gambar', 'BarangController@storeGambar');
 Route::post('/send_wa_notif', 'BarangController@testNotifWa');

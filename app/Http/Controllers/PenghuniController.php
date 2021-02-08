@@ -312,23 +312,25 @@ class PenghuniController extends Controller
         }
     }
 
-    public function kirimEmail($terima, $nama, $email_penghuni, $id_kost, $alasan)
+    public function kirimEmail(Request $request)
     {
+        // $terima, $nama, $email_penghuni, $id_kost, $alasan
         // $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
 
-        $kost = Kost::where('id', $id_kost)->first();
-        $owner = Kost::where('id', $kost->owner)->first();
+        $kost = Kost::where('id', $request->id_kost)->first();
+        $owner = Kost::where('id', $request->kost->owner)->first();
 
         $details = [
-            'nama' => $nama,
-            'nama_kost' => $kost->nama,
-            "terima" => $terima,
-            'number' => $kost->notelp,
-            'urlkost' => 'https://apikostku.xyz/storage/images/kost/' . $kost->foto_kost,
-            'owner' => $owner->nama,
+            'nama' => $request->nama,
+            'nama_kost' => $request->kost->nama,
+            "terima" => $request->terima,
+            'number' => $request->kost->notelp,
+            'urlkost' => 'https://apikostku.xyz/storage/images/kost/' . $request->kost->foto_kost,
+            'owner' => $request->owner->nama,
         ];
 
-        Mail::to($email_penghuni)->send(new CobaMail($details));
+        // Mail::to($email_penghuni)->send(new CobaMail($details));
+        Mail::to($request->email_penghuni)->send(new CobaMail($details));
 
         return response()->json([
             "code" => 200,
