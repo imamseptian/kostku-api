@@ -67,136 +67,136 @@ class PenghuniController extends Controller
     {
 
         $kamar = Kamar::where('id', $request->request_kamar)->first();
-        return response()->json([
-            "code" => 200,
-            "success" => TRUE,
-            "kamar" => $kamar
-        ]);
-        // $kelas = ClassKamar::where('id', $kamar['id_kelas'])->first();
-        // $bawaan = $request->barang_tambahan;
-        // if ($kamar) {
-        //     if ($request->terima === TRUE) {
-        //         $total = Penghuni::where('id_kamar', $request->request_kamar)->get();
-        //         $banyak = count($total);
-        //         if ($kelas->kapasitas > $banyak) {
-        //             $penghuni = new Penghuni();
-        //             $mytime = Carbon::now('Asia/Jakarta');
-        //             $penghuni->nama = $request->nama;
+        // return response()->json([
+        //     "code" => 200,
+        //     "success" => TRUE,
+        //     "kamar" => $kamar
+        // ]);
+        $kelas = ClassKamar::where('id', $kamar->id_kelas)->first();
+        $bawaan = $request->barang_tambahan;
+        if ($kamar) {
+            if ($request->terima === TRUE) {
+                $total = Penghuni::where('id_kamar', $request->request_kamar)->get();
+                $banyak = count($total);
+                if ($kelas->kapasitas > $banyak) {
+                    $penghuni = new Penghuni();
+                    $mytime = Carbon::now('Asia/Jakarta');
+                    $penghuni->nama = $request->nama;
 
-        //             $penghuni->id_kost = $request->id_kost;
-        //             $penghuni->kelamin = $request->kelamin;
-        //             $penghuni->provinsi = $request->provinsi;
-        //             $penghuni->kota = $request->kota;
-        //             $penghuni->alamat = $request->alamat;
-        //             $penghuni->email = $request->email;
-        //             $penghuni->notelp = $request->notelp;
-        //             $penghuni->noktp = $request->noktp;
-        //             $penghuni->id_kamar = $request->request_kamar;
-        //             $penghuni->status_pekerjaan = $request->status_pekerjaan;
-        //             $penghuni->status_hubungan = $request->status_hubungan;
-        //             $penghuni->tempat_kerja_pendidikan = $request->tempat_kerja_pendidikan;
-        //             $penghuni->active = TRUE;
-        //             $penghuni->foto_ktp = $request->foto_ktp;
-        //             $penghuni->foto_diri = $request->foto_diri;
-        //             $penghuni->tanggal_masuk = $mytime;
-        //             $penghuni->tanggal_lahir = Carbon::parse($request->tanggal_lahir);
-
-
-        //             $penghuni->save();
-        //             $mytime = Carbon::now('Asia/Jakarta');
-        //             $biaya_barang_tambahan = 0;
-        //             for ($x = 0; $x < count($bawaan); $x++) {
-        //                 $check_barang = DB::table('barang')->where('nama', $bawaan[$x]['nama'])->first();
-
-        //                 if ($check_barang == null) {
-        //                     $barang_baru = new Barang();
-        //                     $barang_baru->nama =  $bawaan[$x]['nama'];
-        //                     $barang_baru->save();
-
-        //                     $barang_tambahan = new Barang_Tambahan_Penghuni();
-        //                     $barang_tambahan->id_penghuni = $penghuni->id;
-        //                     $barang_tambahan->id_barang = $barang_baru->id;
-        //                     $barang_tambahan->qty = $bawaan[$x]['qty'];
-        //                     $barang_tambahan->total = $bawaan[$x]['total'];
-        //                     $barang_tambahan->tanggal_masuk = $mytime;
-
-        //                     $barang_tambahan->save();
-        //                 } else {
-        //                     $barang_tambahan = new Barang_Tambahan_Penghuni();
-        //                     $barang_tambahan->id_penghuni = $penghuni->id;
-        //                     $barang_tambahan->id_barang = $check_barang->id;
-        //                     $barang_tambahan->qty = $bawaan[$x]['qty'];
-        //                     $barang_tambahan->total = $bawaan[$x]['total'];
-        //                     $barang_tambahan->tanggal_masuk = $mytime;
-        //                     $barang_tambahan->save();
-        //                 }
-        //                 $biaya_barang_tambahan += $bawaan[$x]['total'];
-        //             }
+                    $penghuni->id_kost = $request->id_kost;
+                    $penghuni->kelamin = $request->kelamin;
+                    $penghuni->provinsi = $request->provinsi;
+                    $penghuni->kota = $request->kota;
+                    $penghuni->alamat = $request->alamat;
+                    $penghuni->email = $request->email;
+                    $penghuni->notelp = $request->notelp;
+                    $penghuni->noktp = $request->noktp;
+                    $penghuni->id_kamar = $request->request_kamar;
+                    $penghuni->status_pekerjaan = $request->status_pekerjaan;
+                    $penghuni->status_hubungan = $request->status_hubungan;
+                    $penghuni->tempat_kerja_pendidikan = $request->tempat_kerja_pendidikan;
+                    $penghuni->active = TRUE;
+                    $penghuni->foto_ktp = $request->foto_ktp;
+                    $penghuni->foto_diri = $request->foto_diri;
+                    $penghuni->tanggal_masuk = $mytime;
+                    $penghuni->tanggal_lahir = Carbon::parse($request->tanggal_lahir);
 
 
-        //             $mybulan = $mytime->format('m');
+                    $penghuni->save();
+                    $mytime = Carbon::now('Asia/Jakarta');
+                    $biaya_barang_tambahan = 0;
+                    for ($x = 0; $x < count($bawaan); $x++) {
+                        $check_barang = DB::table('barang')->where('nama', $bawaan[$x]['nama'])->first();
 
-        //             $tagih = new Tagihan();
-        //             $tagih->id_kamar = $request->request_kamar;
-        //             $tagih->id_penghuni = $penghuni->id;
-        //             $tagih->jumlah = $kelas['harga'] + $biaya_barang_tambahan;
-        //             $tagih->tanggal_tagihan = $mytime;
-        //             $tagih->lunas = FALSE;
-        //             $tagih->save();
+                        if ($check_barang == null) {
+                            $barang_baru = new Barang();
+                            $barang_baru->nama =  $bawaan[$x]['nama'];
+                            $barang_baru->save();
 
-        //             $oldpendaftar = Pendaftar::where('id', $request->id)->first();
+                            $barang_tambahan = new Barang_Tambahan_Penghuni();
+                            $barang_tambahan->id_penghuni = $penghuni->id;
+                            $barang_tambahan->id_barang = $barang_baru->id;
+                            $barang_tambahan->qty = $bawaan[$x]['qty'];
+                            $barang_tambahan->total = $bawaan[$x]['total'];
+                            $barang_tambahan->tanggal_masuk = $mytime;
 
-        //             if ($oldpendaftar) {
-        //                 $oldpendaftar->active = FALSE;
-
-        //                 $oldpendaftar->save();
-        //             }
-
-        //             $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, '');
-        //             $this->notifikasiWA($request->terima, $request->notelp, $request->id_kost, $request->alasan, $penghuni->id);
-        //             return response()->json([
-        //                 "code" => 200,
-        //                 "success" => TRUE,
-        //                 "message" => "add penghuni Method berhasil",
-        //                 "data" => $request->terima,
-        //                 // 'myfile'=>$files
-        //             ]);
-        //         }
-        //         return response()->json([
-        //             "code" => 402,
-        //             "success" => FALSE,
-        //             "message" => "add penghuni Method gagal karena kamar penuh",
-        //             "data" => $request->terima,
-        //             // 'myfile'=>$files
-        //         ]);
-        //     }
-
-        //     $oldpendaftar = Pendaftar::where('id', $request->id)->first();
-
-        //     if ($oldpendaftar) {
+                            $barang_tambahan->save();
+                        } else {
+                            $barang_tambahan = new Barang_Tambahan_Penghuni();
+                            $barang_tambahan->id_penghuni = $penghuni->id;
+                            $barang_tambahan->id_barang = $check_barang->id;
+                            $barang_tambahan->qty = $bawaan[$x]['qty'];
+                            $barang_tambahan->total = $bawaan[$x]['total'];
+                            $barang_tambahan->tanggal_masuk = $mytime;
+                            $barang_tambahan->save();
+                        }
+                        $biaya_barang_tambahan += $bawaan[$x]['total'];
+                    }
 
 
-        //         // for ($x = 0; $x < count($bawaan); $x++) {
-        //         //     $check_barang = DB::table('barang')->where('nama', $bawaan[$x]['nama'])->first();
-        //         //     $barang_ditolak = Barang_Tambahan_Pendaftar::where('id_pendaftar', $oldpendaftar->id)->update(['active' => FALSE]);
-        //         // }
-        //         $oldpendaftar->active = FALSE;
+                    $mybulan = $mytime->format('m');
 
-        //         $oldpendaftar->save();
-        //     }
+                    $tagih = new Tagihan();
+                    $tagih->id_kamar = $request->request_kamar;
+                    $tagih->id_penghuni = $penghuni->id;
+                    $tagih->jumlah = $kelas['harga'] + $biaya_barang_tambahan;
+                    $tagih->tanggal_tagihan = $mytime;
+                    $tagih->lunas = FALSE;
+                    $tagih->save();
 
-        //     // $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
-        //     // $this->notifikasiWA($request->terima, $request->nama, $request->notelp, $request->id_kost, $request->alasan);
+                    $oldpendaftar = Pendaftar::where('id', $request->id)->first();
+
+                    if ($oldpendaftar) {
+                        $oldpendaftar->active = FALSE;
+
+                        $oldpendaftar->save();
+                    }
+
+                    $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, '');
+                    $this->notifikasiWA($request->terima, $request->notelp, $request->id_kost, $request->alasan, $penghuni->id);
+                    return response()->json([
+                        "code" => 200,
+                        "success" => TRUE,
+                        "message" => "add penghuni Method berhasil",
+                        "data" => $request->terima,
+                        // 'myfile'=>$files
+                    ]);
+                }
+                return response()->json([
+                    "code" => 402,
+                    "success" => FALSE,
+                    "message" => "add penghuni Method gagal karena kamar penuh",
+                    "data" => $request->terima,
+                    // 'myfile'=>$files
+                ]);
+            }
+
+            $oldpendaftar = Pendaftar::where('id', $request->id)->first();
+
+            if ($oldpendaftar) {
 
 
-        //     return response()->json([
-        //         "code" => 200,
-        //         "success" => TRUE,
-        //         "message" => "TOLAK PENGHUNI berhasil",
-        //         "data" => $request->terima,
-        //         // 'myfile'=>$files
-        //     ]);
-        // }
+                // for ($x = 0; $x < count($bawaan); $x++) {
+                //     $check_barang = DB::table('barang')->where('nama', $bawaan[$x]['nama'])->first();
+                //     $barang_ditolak = Barang_Tambahan_Pendaftar::where('id_pendaftar', $oldpendaftar->id)->update(['active' => FALSE]);
+                // }
+                $oldpendaftar->active = FALSE;
+
+                $oldpendaftar->save();
+            }
+
+            // $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
+            // $this->notifikasiWA($request->terima, $request->nama, $request->notelp, $request->id_kost, $request->alasan);
+
+
+            return response()->json([
+                "code" => 200,
+                "success" => TRUE,
+                "message" => "TOLAK PENGHUNI berhasil",
+                "data" => $request->terima,
+                // 'myfile'=>$files
+            ]);
+        }
     }
 
     public function editPenghuni(Request $request)
