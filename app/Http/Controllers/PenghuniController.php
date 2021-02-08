@@ -381,7 +381,8 @@ class PenghuniController extends Controller
             ->where('penghuni.id', $id_penghuni)
             ->first();
         $pesan = 'Hai ' . $penghuni->nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\nUntuk tagihan sewa bulan pertama anda adalah sebagai berikut:\n\n';
-        $pesan .= 'Biaya barang bawaan = Rp ' . $biaya_barang . '\nBiaya sewa kamar = Rp ' . $penghuni->harga_kamar . '\n\nTotal tagihan bulan ini = Rp ' . ($biaya_barang + $penghuni->harga_kamar);
+        $pesan .= 'Biaya barang bawaan = Rp ' . $biaya_barang . '\nBiaya sewa kamar = Rp ' . $penghuni->harga_kamar . '\n\nTotal tagihan sewa pertama = Rp ' . ($biaya_barang + $penghuni->harga_kamar);
+        $pesan .= '\n\nSilahkan segera persiapkan perpindahan dan melakukan pembayaran sewa bulan pertama ditempat sesuai dengan nominal diatas agar dapat menghuni kamar yang dipesan. ';
         $pesan .= '\n\nHubungi pengelola ' . $kost->nama . ' @' . $kost->notelp . ' untuk informasi lebih lanjut.\nTerima Kasih';
 
         $pesan1 = str_replace(array("\\n", "\\r"), array("\n", "\r"), $pesan);
