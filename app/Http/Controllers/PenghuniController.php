@@ -381,6 +381,7 @@ class PenghuniController extends Controller
 
         return response()->json([
             "code" => 200,
+            "res" => $result,
         ]);
     }
 }
