@@ -28,7 +28,7 @@ class BarangController extends Controller
         $payload = json_encode($data);
 
         // Prepare new cURL resource
-        $ch = curl_init('https://api-whatsapp-kostku.herokuapp.com/send-message');
+        $ch = curl_init('https://kostku-whatsapp-api.herokuapp.com/send-message');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($ch, CURLOPT_POST, true);
