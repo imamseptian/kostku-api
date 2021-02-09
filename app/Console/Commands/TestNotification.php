@@ -41,7 +41,7 @@ class TestNotification extends Command
         $mytime = Carbon::now('Asia/Jakarta')->format('H:i:s');
 
         $notif = array(
-            'title' => "NOTIFIKAS 2Menit : " . $mytime,
+            'title' => "NOTIFIKAS JAM 1 DAN #3 : " . $mytime,
             'body' => '',
         );
 
