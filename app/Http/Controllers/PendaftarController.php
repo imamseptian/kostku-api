@@ -285,7 +285,7 @@ class PendaftarController extends Controller
         }
 
         $mytopic = "kostku-" . $kost_data->id;;
-        $this->cobasend($mytopic, 'test1', 'test2', 'Seseorang Mendaftar Menjadi Penghuni Kost Anda', 'Klik Untuk Meninjau');
+        $this->cobasend($mytopic, 'MainScreen', 'PendaftarStackScreen', 'Seseorang Mendaftar Menjadi Penghuni Kost Anda', 'Klik Untuk Meninjau');
         return response()->json([
             "message" => "Pendaftar Berhasil Ditambahkan",
             "code" => 200,
