@@ -251,16 +251,27 @@ class TagihanController extends Controller
         $data = DB::table('penghuni')
             ->join('tagihan', 'tagihan.id_penghuni', '=', 'penghuni.id')
             ->where('tagihan.lunas', FALSE)
+            ->where('penghuni.id_kost', 1)
             ->select('penghuni.id as id', 'penghuni.nama as nama', DB::raw("count(tagihan.id) as count"))
             ->groupBy('penghuni.id')
             ->get();
 
-        return response()->json([
-            "message" => "Success",
-            "code" => 200,
-            "data" => $data,
+        if (count($data) > 0) {
+            return response()->json([
+                "message" => "ADA TAGIHAN",
+                "code" => 200,
+                "data" => $data,
+                "banyak" => count($data)
 
-        ]);
+            ]);
+        } else {
+            return response()->json([
+                "message" => "LUNAS SEMUA",
+                "code" => 200,
+                "data" => $data,
+                "banyak" => count($data)
+            ]);
+        }
     }
 
     public function notifikasiTagihan(Request $request)
