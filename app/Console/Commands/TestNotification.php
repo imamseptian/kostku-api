@@ -11,7 +11,7 @@ class TestNotification extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'coba:coba1';
 
     /**
      * The console command description.
@@ -37,7 +37,6 @@ class TestNotification extends Command
      */
     public function handle()
     {
-
         $notif = array(
             'title' => "Test Cron",
             'body' => '',
@@ -47,28 +46,32 @@ class TestNotification extends Command
             'screen' => 'PendaftarStackScreen',
         );
 
-        $fields = array('to' => 'kostku-1', 'notification' => $notif, 'data' => $data);
-        // $data = json_encode($json_data);
-        //FCM API end-point
-        $url = 'https://fcm.googleapis.com/fcm/send';
-        //api_key in Firebase Console -> Project Settings -> CLOUD MESSAGING -> Server key
+        $fields = array('to' => '/topics/kostku-1', 'notification' => $notif, 'data' => $data);
+        // //api_key in Firebase Console -> Project Settings -> CLOUD MESSAGING -> Server key
         $server_key = 'AAAA8xTtYLY:APA91bGBMemsYq9dHBuJDHSxajLLeljIoC2hFLEIggcozlNFk5w9Cdc25K0hFMgbVfAyUGLr6P6Zjtfye1VGavnUQc81ivvEjSI2MYtPeRt6suIccraFBHd2f-35dIeFBw94_grF6-oT';
-        //header with content_type api key
-        $headers = array(
-            'Content-Type:application/json',
-            'Authorization:key=' . $server_key
-        );
-        //CURL request to route notification to FCM connection server (provided by Google)
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $payload = json_encode($fields);
+        $ch = curl_init('https://fcm.googleapis.com/fcm/send');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        // curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+        // Set HTTP Header for POST request
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($payload),
+                'Authorization:key=' . $server_key
+            )
+        );
+
+        // Submit the POST request
         $result = curl_exec($ch);
+
+        // Close cURL session handle
         curl_close($ch);
+        echo "done";
     }
 }
