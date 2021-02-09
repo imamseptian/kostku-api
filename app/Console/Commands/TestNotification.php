@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class TestNotification extends Command
@@ -37,10 +38,14 @@ class TestNotification extends Command
      */
     public function handle()
     {
+        $mytime = Carbon::now('Asia/Jakarta')->format('H:i:s');
+
         $notif = array(
-            'title' => "Test Cron",
+            'title' => "NOTIFIKAS : " . $mytime,
             'body' => '',
         );
+
+
         $data = array(
             'stack' => 'MainScreen',
             'screen' => 'PendaftarStackScreen',
