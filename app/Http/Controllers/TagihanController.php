@@ -250,6 +250,7 @@ class TagihanController extends Controller
     {
         $data = DB::table('penghuni')
             ->join('tagihan', 'tagihan.id_penghuni', '=', 'penghuni.id')
+            ->where('tagihan.lunas', FALSE)
             ->select('penghuni.id as id', 'penghuni.nama as nama', DB::raw("count(tagihan.id) as count"))
             ->groupBy('penghuni.id')
             ->get();
