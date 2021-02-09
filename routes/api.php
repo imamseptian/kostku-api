@@ -177,6 +177,7 @@ Route::post('/email_penghuni', 'PenghuniController@kirimEmail');
 Route::post('/store_gambar', 'BarangController@storeGambar');
 Route::post('/send_wa_notif', 'BarangController@testNotifWa');
 Route::post('/notif_tagihan', 'TagihanController@notifikasiTagihan');
+Route::post('/ceknotiftagihan', 'TagihanController@cekTagihan');
 // Route::get('/linkstorage', function () {
 //     Artisan::call('storage:link');
 // });

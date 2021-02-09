@@ -246,6 +246,22 @@ class TagihanController extends Controller
         ]);
     }
 
+    public function cekTagihan()
+    {
+        $data = DB::table('penghuni')
+            ->join('tagihan', 'tagihan.id_penghuni', '=', 'penghuni.id')
+            ->select('penghuni.id as id', 'penghuni.nama as nama', DB::raw("count(tagihan.id) as count"))
+            ->groupBy('penghuni.id')
+            ->get();
+
+        return response()->json([
+            "message" => "Success",
+            "code" => 200,
+            "data" => $data,
+
+        ]);
+    }
+
     public function notifikasiTagihan(Request $request)
     {
         // $terima, $nama, $notelp, $id_kost, $alasan
