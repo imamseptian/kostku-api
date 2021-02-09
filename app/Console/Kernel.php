@@ -26,7 +26,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 
-        $schedule->command('coba:coba1')->twiceDaily(1, 3);
+        // $schedule->command('coba:coba1')->twiceDaily(1, 3);
+        $schedule->command('coba:coba1')->everyMinute();
         // $schedule->command('inspire')->hourly();
         // $schedule->command('tagihan:harian')->everyMinute();
         // $schedule->command('tagihan:pertama')->everyThirtyMinutes();
