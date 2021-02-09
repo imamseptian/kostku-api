@@ -31,9 +31,9 @@ class Kernel extends ConsoleKernel
         // $schedule->command('tagihan:kedua')->hourly();
 
 
-        $schedule->command('tagihan:pertama')->everyMinute()->when(function () {
-            return Cron::shouldIRun('tagihan:pertama', 10); //returns true every 10 minutes
-        });
+        // $schedule->command('tagihan:pertama')->everyMinute()->when(function () {
+        //     return Cron::shouldIRun('tagihan:pertama', 10); //returns true every 10 minutes
+        // });
     }
 
     /**
