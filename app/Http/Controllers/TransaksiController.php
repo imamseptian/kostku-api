@@ -362,6 +362,7 @@ class TransaksiController extends Controller
             ->join('tagihan', 'tagihan.id_penghuni', '=', 'penghuni.id')
             ->select('penghuni.*', 'kamars.nama as nama_kamar', 'class_kamar.harga as harga_kamar', DB::raw("count(tagihan.id) as count"))
             ->where('class_kamar.id_kost', $request->id_kost)
+            ->where('tagihan.lunas', FALSE)
             ->where('penghuni.nama', 'like', '%' . $keyword . '%')
             ->groupBy('penghuni.id')
             ->get();
