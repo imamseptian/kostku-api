@@ -178,8 +178,8 @@ class KostController extends Controller
         ]);
     }
 
-    // function homeScreen($id, Request $request)
-    function homeScreen($id)
+    function homeScreen($id, Request $request)
+    // function homeScreen($id)
     {
         $nowtime = Carbon::now('Asia/Jakarta');
 
@@ -209,6 +209,10 @@ class KostController extends Controller
             ->limit(10)
             ->get();
 
+        for ($x = 0; $x < count($data_transaksi); $x++) {
+
+            $data_transaksi[$x]->tanggal_transaksi = Carbon::parse($data_transaksi[$x]->tanggal_transaksi);
+        }
         // for ($x = 0; $x < count($data_penghuni); $x++) {
         //     $mybulan = Carbon::parse($data_penghuni[$x]['tanggal_masuk'])->format('m');
         //     // $mybulan = $data_penghuni[$x]['tanggal_daftar']->format('m');
