@@ -178,7 +178,8 @@ class KostController extends Controller
         ]);
     }
 
-    function homeScreen($id, Request $request)
+    // function homeScreen($id, Request $request)
+    function homeScreen($id)
     {
         $nowtime = Carbon::now('Asia/Jakarta');
 
@@ -200,7 +201,7 @@ class KostController extends Controller
         $data_transaksi = DB::table('transaksi')
             ->leftJoin('penghuni', 'transaksi.id_penghuni', '=', 'penghuni.id')
             ->leftJoin('kamars', 'penghuni.kamar', '=', 'kamars.id')
-            ->select('transaksi.*', 'penghuni.nama_depan as nama_depan', 'penghuni.nama_belakang as nama_belakang', 'kamars.nama as nama_kamar')
+            ->select('transaksi.*', 'penghuni.nama as nama_penghuni', 'kamars.nama as nama_kamar')
             ->where('transaksi.id_kost', $id)
             ->orderBy('transaksi.tanggal_transaksi', 'desc')
             ->limit(10)
@@ -303,7 +304,7 @@ class KostController extends Controller
             // "data_kamar" => $data1,
             "uang" => $uang,
             "transaksi" => $data_transaksi,
-            "usmer" => $request->user()
+            // "usmer" => $request->user()
         ]);
     }
 
