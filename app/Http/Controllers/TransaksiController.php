@@ -365,6 +365,7 @@ class TransaksiController extends Controller
             ->where('tagihan.lunas', FALSE)
             ->where('penghuni.nama', 'like', '%' . $keyword . '%')
             ->groupBy('penghuni.id')
+            ->orderBy('count', 'desc')
             ->get();
 
 
