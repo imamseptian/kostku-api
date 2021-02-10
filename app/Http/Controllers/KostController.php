@@ -477,26 +477,10 @@ class KostController extends Controller
 
                 $imageName = Str::random(10) . '.' . $extension;
 
-                // // $convert_img = base64_decode($image);
-
-
-                $width = Image::make($image_64)->width();
-                $height = Image::make($image_64)->height();
-
                 $thumbnailImage = Image::make($image_64);
-                if ($width < $height) {
-                    $thumbnailImage->resize(720, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
-                } else {
-                    $thumbnailImage->resize(null, 480, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
-                }
-
-                $thumbnailImage->crop(720, 480);
-                $avatarpath = public_path('/kostdata/kost/foto/');
-                $thumbnailImage->save($avatarpath . $imageName);
+                $thumbnailImage->stream(); // <-- Key point
+                Storage::disk('local')->delete('public/images/kost/' . $kost->foto_kost);
+                Storage::disk('local')->put('public/images/kost/' . $imageName, $thumbnailImage);
             }
             $kost->foto_kost = $imageName;
             $kost->save();
