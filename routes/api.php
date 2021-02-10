@@ -81,7 +81,7 @@ Route::group([
     Route::post('/bayartagihan', 'TransaksiController@bayartagihan');
 
     //Daftar Peghuni , untuk search
-    Route::post('/tagihanpenghuni', 'TransaksiController@getTagihanPenghuni');
+    // Route::post('/tagihanpenghuni', 'TransaksiController@getTagihanPenghuni');
 
     // Cari penghuni dan tagihan by id
     Route::get('/gettagihanbyid/{id}', 'TransaksiController@getTagihanById');
@@ -178,6 +178,7 @@ Route::post('/store_gambar', 'BarangController@storeGambar');
 Route::post('/send_wa_notif', 'BarangController@testNotifWa');
 Route::post('/notif_tagihan', 'TagihanController@notifikasiTagihan');
 Route::get('/ceknotiftagihan', 'TagihanController@cekTagihan');
+Route::post('/tagihanpenghuni', 'TransaksiController@getTagihanPenghuni');
 // Route::get('/linkstorage', function () {
 //     Artisan::call('storage:link');
 // });

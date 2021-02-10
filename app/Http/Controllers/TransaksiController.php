@@ -357,27 +357,29 @@ class TransaksiController extends Controller
     {
         $keyword = $request->keyword;
         $data = DB::table('penghuni')
-            ->leftJoin('kamars', 'penghuni.id_kamar', '=', 'kamars.id')
-            ->leftJoin('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
-            ->select('penghuni.*', 'kamars.nama as nama_kamar', 'class_kamar.harga as harga_kamar')
+            ->join('kamars', 'penghuni.id_kamar', '=', 'kamars.id')
+            ->join('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
+            ->join('tagihan', 'tagihan.id_penghuni', '=', 'penghuni.id')
+            ->select('penghuni.*', 'kamars.nama as nama_kamar', 'class_kamar.harga as harga_kamar', DB::raw("count(tagihan.id) as count"))
             ->where('class_kamar.id_kost', $request->id_kost)
             ->where('penghuni.nama', 'like', '%' . $keyword . '%')
+            ->groupBy('penghuni.id')
             ->get();
 
 
 
-        for ($x = 0; $x < count($data); $x++) {
+        // for ($x = 0; $x < count($data); $x++) {
 
-            $biaya_barang = DB::table('barang_tambahan_penghuni')
-                ->leftJoin('barang', 'barang_tambahan_penghuni.id_barang', '=', 'barang.id')
-                // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
+        //     $biaya_barang = DB::table('barang_tambahan_penghuni')
+        //         ->leftJoin('barang', 'barang_tambahan_penghuni.id_barang', '=', 'barang.id')
+        //         // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
 
-                ->where('barang_tambahan_penghuni.id_penghuni', $data[$x]->id)
-                // ->where('barang_tambahan_penghuni.active', TRUE)
-                ->sum('total');
-            $data[$x]->total = $data[$x]->harga_kamar + $biaya_barang;
-            $data[$x]->tagihan = count(Tagihan::where('id_penghuni', $data[$x]->id)->where('lunas', FALSE)->get());
-        }
+        //         ->where('barang_tambahan_penghuni.id_penghuni', $data[$x]->id)
+        //         // ->where('barang_tambahan_penghuni.active', TRUE)
+        //         ->sum('total');
+
+        //     // $data[$x]->tagihan = count(Tagihan::where('id_penghuni', $data[$x]->id)->where('lunas', FALSE)->get());
+        // }
         return response()->json([
             "code" => 200,
             "success" => TRUE,
