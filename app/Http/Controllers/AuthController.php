@@ -70,9 +70,6 @@ class AuthController extends Controller
 
             $imageName = Str::random(10) . '.' . $extension;
 
-
-
-            $thumbnailImage = Image::make($image_64);
             $thumbnailImage = Image::make($image_64);
             $thumbnailImage->stream(); // <-- Key point
             Storage::disk('local')->put('public/images/users/' . $imageName, $thumbnailImage);
@@ -304,7 +301,7 @@ class AuthController extends Controller
         $data_user->nama = $request->nama ? $request->nama : $data_user->nama;
         // $data_user->save();
 
-        $imageName = $request->foto_profil;
+        $imageName = $data_user->foto_profil;
 
         if ($request->has('newImg')) {
             $image_64 = $request->newImg; //your base64 encoded data
@@ -321,26 +318,10 @@ class AuthController extends Controller
 
             $imageName = Str::random(10) . '.' . $extension;
 
-            // // $convert_img = base64_decode($image);
-
-
-            $width = Image::make($image_64)->width();
-            $height = Image::make($image_64)->height();
-
             $thumbnailImage = Image::make($image_64);
-            if ($width < $height) {
-                $thumbnailImage->resize(512, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-            } else {
-                $thumbnailImage->resize(null, 512, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-            }
-
-            $thumbnailImage->crop(512, 512);
-            $avatarpath = public_path('/kostdata/pemilik/foto/');
-            $thumbnailImage->save($avatarpath . $imageName);
+            $thumbnailImage->stream(); // <-- Key point
+            Storage::disk('local')->delete('public/images/users/' . $data_user->foto_profil);
+            Storage::disk('local')->put('public/images/users/' . $imageName, $thumbnailImage);
         }
         $data_user->foto_profil = $imageName;
         $data_user->save();
@@ -355,7 +336,8 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'Berhasil',
             'foto_baru' => $imageName,
-            'user' => $data_user
+            'user' => $data_user,
+            'oldpic' => $request->foto_profil
 
         ]);
         // return response()->json($request->user());
