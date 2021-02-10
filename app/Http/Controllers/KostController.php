@@ -199,8 +199,9 @@ class KostController extends Controller
 
 
         $data_transaksi = DB::table('transaksi')
-            ->leftJoin('penghuni', 'transaksi.id_penghuni', '=', 'penghuni.id')
-            ->leftJoin('kamars', 'penghuni.kamar', '=', 'kamars.id')
+            ->join('tagihan', 'transaksi.id_tagihan', '=', 'tagihan.id')
+            ->join('penghuni', 'tagihan.id_penghuni', '=', 'penghuni.id')
+            ->join('kamars', 'penghuni.id_kamar', '=', 'kamars.id')
             ->select('transaksi.*', 'penghuni.nama as nama_penghuni', 'kamars.nama as nama_kamar')
             ->where('transaksi.id_kost', $id)
             ->orderBy('transaksi.tanggal_transaksi', 'desc')
