@@ -72,7 +72,7 @@ Route::group([
     Route::post('/daftarpenghuni', 'PenghuniController@getAll');
     // Route::post('/tambah_penghuni', 'PenghuniController@addPenghuni');
 
-    // Route::get('/homescreen/{id}', 'KostController@homeScreen');
+    Route::get('/homescreen/{id}', 'KostController@homeScreen');
 
     // Tagihan seorang penghunii
     // Route::get('/gettagihan/{id}', 'TagihanController@getTagihan');
@@ -179,7 +179,7 @@ Route::post('/send_wa_notif', 'BarangController@testNotifWa');
 Route::post('/notif_tagihan', 'TagihanController@notifikasiTagihan');
 Route::get('/ceknotiftagihan', 'TagihanController@cekTagihan');
 Route::post('/tagihanpenghuni', 'TransaksiController@getTagihanPenghuni');
-Route::get('/homescreen/{id}', 'KostController@homeScreen');
+
 // Route::get('/linkstorage', function () {
 //     Artisan::call('storage:link');
 // });
