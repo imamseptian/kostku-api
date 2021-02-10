@@ -458,6 +458,8 @@ class KostController extends Controller
         $kost = Kost::where('owner', $user['id'])->first();
         if ($kost) {
             $kost->nama = $request->nama ? $request->nama : $kost->nama;
+            $kost->provinsi = $request->provinsi ? $request->provinsi : $kost->provinsi;
+            $kost->kota = $request->kota ? $request->kota : $kost->kota;
             $kost->alamat = $request->alamat ? $request->alamat : $kost->alamat;
             $kost->notelp = $request->notelp ? $request->notelp : $kost->notelp;
             $kost->deskripsi = $request->deskripsi ? $request->deskripsi : $kost->deskripsi;
