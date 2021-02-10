@@ -196,6 +196,16 @@ class KostController extends Controller
             $data_penghuni[$x]['tanggal_lahir'] = Carbon::parse($data_penghuni[$x]['tanggal_lahir']);
         }
 
+
+        $data_transaksi = DB::table('transaksi')
+            ->leftJoin('penghuni', 'transaksi.id_penghuni', '=', 'penghuni.id')
+            ->leftJoin('kamars', 'penghuni.kamar', '=', 'kamars.id')
+            ->select('transaksi.*', 'penghuni.nama_depan as nama_depan', 'penghuni.nama_belakang as nama_belakang', 'kamars.nama as nama_kamar')
+            ->where('transaksi.id_kost', $id)
+            ->orderBy('transaksi.tanggal_transaksi', 'desc')
+            ->limit(10)
+            ->get();
+
         // for ($x = 0; $x < count($data_penghuni); $x++) {
         //     $mybulan = Carbon::parse($data_penghuni[$x]['tanggal_masuk'])->format('m');
         //     // $mybulan = $data_penghuni[$x]['tanggal_daftar']->format('m');
@@ -292,7 +302,7 @@ class KostController extends Controller
             "data_kamar" => $data_kamar,
             // "data_kamar" => $data1,
             "uang" => $uang,
-            // "transaksi" => $data,
+            "transaksi" => $data_transaksi,
             "usmer" => $request->user()
         ]);
     }
