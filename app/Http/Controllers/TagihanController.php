@@ -254,6 +254,7 @@ class TagihanController extends Controller
             ->where('penghuni.id_kost', 1)
             ->select('penghuni.id as id', 'penghuni.nama as nama', DB::raw("count(tagihan.id) as count"))
             ->groupBy('penghuni.id')
+            ->orderBy('count', 'desc')
             ->get();
 
         if (count($data) > 0) {

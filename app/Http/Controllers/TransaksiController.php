@@ -364,6 +364,8 @@ class TransaksiController extends Controller
             ->where('penghuni.nama', 'like', '%' . $keyword . '%')
             ->get();
 
+
+
         for ($x = 0; $x < count($data); $x++) {
 
             $biaya_barang = DB::table('barang_tambahan_penghuni')
