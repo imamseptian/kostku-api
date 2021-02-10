@@ -204,7 +204,7 @@ class KostController extends Controller
             ->leftJoin('kamars', 'penghuni.id_kamar', '=', 'kamars.id')
             ->select('transaksi.*', 'penghuni.nama as nama_penghuni', 'kamars.nama as nama_kamar')
             ->where('transaksi.id_kost', $id)
-            ->where('transaksi.jenis', 2)
+            // ->where('transaksi.jenis', 2)
             ->orderBy('transaksi.tanggal_transaksi', 'desc')
             ->limit(10)
             ->get();
