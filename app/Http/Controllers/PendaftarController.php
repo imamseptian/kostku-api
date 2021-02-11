@@ -294,6 +294,23 @@ class PendaftarController extends Controller
         ]);
     }
 
+    public function kamarPesanan($id)
+    {
+        $data_kamar = DB::table('pendaftar')
+            ->join('kamars', 'kamars.id', '=', 'pendaftar.request_kamar')
+            ->join('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
+            // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
+            ->select('class_kamar.*', 'kamars.nama as nama_kamar')
+            ->where('pendaftar.id', $id)
+            ->first();
+
+        return response()->json([
+
+            "kamar" => $data_kamar,
+
+        ]);
+    }
+
     // function bawaBarang(Request $request)
     // {
     //     $bawaan = $request->barang_tambahan;
