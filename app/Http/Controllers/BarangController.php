@@ -124,8 +124,6 @@ class BarangController extends Controller
 
     function barangPenghuni($id)
     {
-
-
         $data = DB::table('barang_tambahan_penghuni')
             ->leftJoin('barang', 'barang_tambahan_penghuni.id_barang', '=', 'barang.id')
             // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
@@ -134,9 +132,18 @@ class BarangController extends Controller
             ->where('barang_tambahan_penghuni.tanggal_keluar', null)
             ->get();
 
+        $data_kamar = DB::table('penghuni')
+            ->join('kamars', 'kamars.id', '=', 'penghuni.id_kamar')
+            ->join('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
+            // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
+            ->select('class_kamar.*', 'kamars.nama as nama_kamar')
+            ->where('penghuni.id', $id)
+            ->get();
+
         return response()->json([
 
             "barang" => $data,
+            "kamar" => $data_kamar,
 
         ]);
     }
