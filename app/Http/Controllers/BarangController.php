@@ -138,7 +138,7 @@ class BarangController extends Controller
             // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
             ->select('class_kamar.*', 'kamars.nama as nama_kamar')
             ->where('penghuni.id', $id)
-            ->get();
+            ->first();
 
         return response()->json([
 
