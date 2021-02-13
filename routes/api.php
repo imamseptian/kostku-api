@@ -98,7 +98,7 @@ Route::group([
     Route::get('/namapdf/{bulan}/{tahun}', 'PDFController@getNamaPDF');
 });
 
-Route::get('/list-kost', 'KostController@get');
+Route::post('/list-kost', 'KostController@get');
 
 Route::post('/createcustombarang', 'BarangController@customBarangPenghuni');
 Route::post('/caribarang', 'BarangController@cariBarang');
