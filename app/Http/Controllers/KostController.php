@@ -22,7 +22,11 @@ class KostController extends Controller
 {
     function get()
     {
-        $data = Kost::all();
+        $data = DB::table('kosts')
+            ->leftJoin('provinces', 'kosts.provinsi', '=', 'provinces.id')
+            ->leftJoin('regencies', 'kosts.kota', '=', 'regencies.id')
+
+            ->get();
 
         return response()->json([
             "message" => "GET Method Success",
