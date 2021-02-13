@@ -29,7 +29,7 @@ class KostController extends Controller
 
         $data = $data->where('provinsi', 33);
 
-        $data = $data->where('jenis', 3);
+        $data = $data->where('jenis', 3)->get();
 
 
 
