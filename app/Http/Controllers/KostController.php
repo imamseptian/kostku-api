@@ -25,10 +25,9 @@ class KostController extends Controller
         $data = DB::table('kosts')
             ->leftJoin('provinces', 'kosts.provinsi', '=', 'provinces.id')
             ->leftJoin('regencies', 'kosts.kota', '=', 'regencies.id')
-            ->select('kosts.*', 'provinces.name as nama_provinsi', 'regencies.name as nama_kota')
-            ->get();
+            ->select('kosts.*', 'provinces.name as nama_provinsi', 'regencies.name as nama_kota');
 
-        $data2 = $data->newQuery()->where('provinsi', 33)->get();
+        $data2 = $data->where('provinsi', 33)->get();
 
 
 
