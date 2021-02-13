@@ -25,16 +25,17 @@ class KostController extends Controller
         $data = DB::table('kosts')
             ->leftJoin('provinces', 'kosts.provinsi', '=', 'provinces.id')
             ->leftJoin('regencies', 'kosts.kota', '=', 'regencies.id')
-            ->select('kosts.*', 'provinces.name as nama_provinsi', 'regencies.name as nama_kota')
-            ->newQuery();
+            ->select('kosts.*', 'provinces.name as nama_provinsi', 'regencies.name as nama_kota');
 
-        $data->where('kosts.provinsi', 33)->get();
+
+        $data2 = clone $data;
+        $data2->where('kosts.provinsi', 33)->get();
 
 
 
         return response()->json([
             "message" => "GET Method Success",
-            "data" => $data
+            "data" => $data2
         ]);
     }
 
