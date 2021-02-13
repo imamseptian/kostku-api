@@ -13,7 +13,7 @@ class ProvinsiController extends Controller
         return response()->json([
             "code" => 200,
             "success" => TRUE,
-            "message" => "Success create foto",
+            "message" => "Success get provinsi",
             "provinsi" => $data_provinsi,
         ]);
     }
