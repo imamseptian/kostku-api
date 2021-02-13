@@ -180,6 +180,8 @@ Route::post('/notif_tagihan', 'TagihanController@notifikasiTagihan');
 Route::get('/ceknotiftagihan', 'TagihanController@cekTagihan');
 Route::post('/tagihanpenghuni', 'TransaksiController@getTagihanPenghuni');
 Route::get('/kamar_pesanan/{id}', 'PendaftarController@kamarPesanan');
+Route::get('/list_provinsi', 'ProvinsiController@getListProvinsi');
+Route::get('/list_kota/{id}', 'KotaController@getListKota');
 
 // Route::get('/linkstorage', function () {
 //     Artisan::call('storage:link');
