@@ -20,16 +20,19 @@ use Illuminate\Support\Facades\DB;
 
 class KostController extends Controller
 {
-    function get()
+    function get(Request $request)
     {
         $data = DB::table('kosts')
             ->leftJoin('provinces', 'kosts.provinsi', '=', 'provinces.id')
             ->leftJoin('regencies', 'kosts.kota', '=', 'regencies.id')
-            ->select('kosts.*', 'provinces.name as nama_provinsi', 'regencies.name as nama_kota');
+            ->where('kosts.nama', 'like', '%' . $request->keyword . '%')
+            ->select('kosts.*', 'provinces.name as nama_provinsi', 'regencies.name as nama_kota')
+            ->get();
 
-        $data = $data->where('provinsi', 33);
 
-        $data = $data->where('jenis', 1)->get();
+        // $data = $data->where('provinsi', 33);
+
+        // $data = $data->where('jenis', 1)->get();
 
 
 
