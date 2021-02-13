@@ -27,13 +27,15 @@ class KostController extends Controller
             ->leftJoin('regencies', 'kosts.kota', '=', 'regencies.id')
             ->select('kosts.*', 'provinces.name as nama_provinsi', 'regencies.name as nama_kota');
 
-        $data2 = $data->where('provinsi', 33)->get();
+        $data = $data->where('provinsi', 33);
+
+        $data = $data->where('jenis', 3);
 
 
 
         return response()->json([
             "message" => "GET Method Success",
-            "data" => $data2
+            "data" => $data
         ]);
     }
 
