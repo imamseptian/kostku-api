@@ -453,28 +453,20 @@ class ClassKamarController extends Controller
                 ->groupBy('class_kamar.id')
                 ->get();
 
+            if ($data[0]->count > 0) {
+                return response()->json([
+                    "message" => "Kelas masih memiliki penghuni",
+                    "success" => FALSE,
+                ]);
+            }
 
-            // ->get();
+            $kelas_hapus = ClassKamar::where('id', $request->id)->first();
+            $kelas_hapus->active = FALSE;
+            $kelas_hapus->save();
 
-
-            // $data = $data->whereNotNull('tanggal_keluar')->get();
-
-            $penghuni = Penghuni::all();
-
-            // $data = DB::table('penghuni')
-            // ->join('tagihan', 'tagihan.id_penghuni', '=', 'penghuni.id')
-            // ->where('tagihan.lunas', FALSE)
-            // ->where('penghuni.id_kost', 1)
-            // ->select('penghuni.id as id', 'penghuni.nama as nama', DB::raw("count(tagihan.id) as count"))
-            // ->groupBy('penghuni.id')
-            // ->orderBy('count', 'desc')
-            // ->get();
-            // $class_kamar->delete();
             return response()->json([
-                "message" => "KEKW",
-                "data" => $data,
-                "data2" => $data,
-                "penghuni" => $penghuni
+                "message" => "Hapus Kelas Berhasil",
+                "success" => TRUE
             ]);
         }
     }
