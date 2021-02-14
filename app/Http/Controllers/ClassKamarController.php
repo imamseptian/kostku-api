@@ -89,6 +89,21 @@ class ClassKamarController extends Controller
         ]);
     }
 
+    function listKamar($keyword, Request $request)
+    {
+        $dataUser = $request->user();
+
+        // $data = ClassKamar::where('id_kost', $request->id_kost)->where('active', TRUE)->where('nama', 'like', '%' . $request->namakeyword . '%')->get();
+
+
+        return response()->json([
+            "message" => "Method Success",
+            "data" => $dataUser,
+            // "uri" => URL::to('/'),
+            // 'user' => $dataUser['id'],
+        ]);
+    }
+
     function infoKamar($id)
     {
         $kamar = ClassKamar::where("id", $id)->first();
