@@ -286,7 +286,7 @@ class PenghuniController extends Controller
                 ->first();
 
             return response()->json([
-                "message" => "Penghuni masih ada tagihan ",
+                "message" => "Penghuni masih ada tagihan YEP",
                 "success" => TRUE,
                 "count" => $data->count
             ]);
