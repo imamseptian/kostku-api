@@ -444,8 +444,8 @@ class ClassKamarController extends Controller
         $class_kamar = ClassKamar::where('id', $request->id)->first();
         if ($class_kamar) {
             $data =  DB::table('class_kamar')
-                ->join('kamars', 'kamars.id_kelas', '=', 'class_kamar.id')
-                ->join('penghuni', 'kamars.id', '=', 'penghuni.id')
+                ->leftJoin('kamars', 'kamars.id_kelas', '=', 'class_kamar.id')
+                ->leftJoin('penghuni', 'kamars.id', '=', 'penghuni.id')
                 ->whereNull('penghuni.tanggal_keluar')
                 ->where('class_kamar.id', $request->id)
                 // ->where('penghuni.tanggal_keluar', '!=', null)
@@ -454,7 +454,7 @@ class ClassKamarController extends Controller
                 ->groupBy('class_kamar.id')
                 ->get();
 
-            if ($data[0]->count > 0) {
+            if (count($data) > 0) {
                 return response()->json([
                     "message" => "Kelas masih memiliki OII",
                     "success" => FALSE,
