@@ -29,9 +29,9 @@ class KostController extends Controller
             ->select('kosts.*', 'provinces.name as nama_provinsi', 'regencies.name as nama_kota');
 
 
-        // if ($request->provinsi != 0) {
-        $data = $data->where('provinsi', $request->provinsi)->get();
-        // }
+        if ($request->provinsi != 0) {
+            $data = $data->where('provinsi', $request->provinsi)->get();
+        }
 
         // if ($request->provinsi != 0) {
         //     $data = $data->where('kota', $request->kota);
