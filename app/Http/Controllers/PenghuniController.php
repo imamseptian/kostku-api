@@ -280,6 +280,7 @@ class PenghuniController extends Controller
         if ($penghuni) {
             $data =  DB::table('penghuni')
                 ->leftJoin('tagihan', 'penghuni.id', '=', 'tagihan.id_penghuni')
+                ->where('tagihan.lunas', FALSE)
                 ->select('penghuni.*', DB::raw("count(tagihan.id) as count"))
                 ->groupBy('penghuni.id')
                 ->first();
