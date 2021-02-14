@@ -285,7 +285,7 @@ class PenghuniController extends Controller
                 ->select('penghuni.*', DB::raw("count(tagihan.id) as count"))
                 ->groupBy('penghuni.id')
                 // ->select('tagihan.*')
-                ->get();
+                ->first();
 
             return response()->json([
                 "message" => "Penghuni masih ada tagihan YEP",
