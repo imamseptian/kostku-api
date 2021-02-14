@@ -447,6 +447,7 @@ class ClassKamarController extends Controller
                 ->join('kamars', 'kamars.id_kelas', '=', 'class_kamar.id')
                 ->join('penghuni', 'kamars.id', '=', 'penghuni.id')
                 ->whereNull('penghuni.tanggal_keluar')
+                ->where('class_kamar.id', $request->id)
                 // ->where('penghuni.tanggal_keluar', '!=', null)
                 // ->where('penghuni.tanggal_keluar', '!=', "")
                 ->select('class_kamar.*', DB::raw("count(penghuni.id) as count"))
