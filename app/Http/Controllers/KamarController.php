@@ -98,6 +98,53 @@ class KamarController extends Controller
         // return response()->json($user);
     }
 
+    public function pindahKamar(Request $request)
+    {
+
+        $penghuni = Penghuni::where('id', $request->id)->first();
+        if ($penghuni) {
+            $penghuni->id_kamar = $request->id_kamar;
+            $penghuni->save();
+            $mytime = Carbon::now('Asia/Jakarta');
+            $biaya_barang = DB::table('barang_tambahan_penghuni')
+                ->leftJoin('penghuni', 'penghuni.id', '=', 'barang_tambahan_penghuni.id_penghuni')
+                ->leftJoin('barang', 'barang_tambahan_penghuni.id_barang', '=', 'barang.id')
+                // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
+                ->select('barang_tambahan_penghuni.*', 'barang.nama as nama')
+                ->where('barang_tambahan_penghuni.tanggal_masuk', '<=', $mytime)
+                ->where(function ($query) use ($mytime) {
+                    $query->where('barang_tambahan_penghuni.tanggal_keluar', '>=', $mytime)
+                        ->orWhere('barang_tambahan_penghuni.tanggal_keluar', null);
+                    // $query->where(function ($query) use ($tanggal_tagihan) {
+                    //     $query->where('barang_tambahan_penghuni.tanggal_masuk', '<=', Carbon::parse($tanggal_tagihan));
+                    // })->orWhere('barang_tambahan_penghuni.tanggal_keluar', null);
+                })
+                ->where('penghuni.id', $request->id)
+                ->sum('barang_tambahan_penghuni.total');
+
+            $class_kamar = ClassKamar::where('id', $request->id_kelas)->first();
+
+            $tagih = new Tagihan();
+            $tagih->id_kamar = $request->id_kamar;
+            $tagih->id_penghuni = $request->id;
+            $tagih->jumlah = $class_kamar->harga + $biaya_barang;
+            $tagih->tanggal_tagihan = $mytime;
+            $tagih->lunas = FALSE;
+
+            $tagih->save();
+
+            return response()->json([
+                "message" => "Method Success",
+                "success" => TRUE
+            ]);
+        }
+
+        return response()->json([
+            "message" => "Method Success",
+            "success" => FALSE
+        ]);
+    }
+
     // function getByKelas($id)
     // {
     //     $data = Kamar::where('kelas', $id)->orderBy('nama')->get();
