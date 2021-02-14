@@ -295,7 +295,26 @@ class PenghuniController extends Controller
         }
 
         return response()->json([
-            "message" => "Kamar tidak ditemukan",
+            "message" => "Penghuni tidak ditemukan",
+            "success" => FALSE
+        ]);
+    }
+
+    function hapusPenghuni(Request $request)
+    {
+        $penghuni = Penghuni::where('id', $request->id)->first();
+        if ($penghuni) {
+            $penghuni->active = FALSE;
+            $penghuni->save();
+
+            return response()->json([
+                "message" => "Penghuni berhasil dihapus",
+                "success" => TRUE
+            ]);
+        }
+
+        return response()->json([
+            "message" => "Penghuni tidak ditemukan",
             "success" => FALSE
         ]);
     }
