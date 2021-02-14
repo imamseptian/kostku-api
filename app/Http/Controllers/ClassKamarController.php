@@ -454,14 +454,14 @@ class ClassKamarController extends Controller
                 ->groupBy('class_kamar.id')
                 ->first();
 
-            // if (count($data) > 0) {
-            return response()->json([
-                "message" => "Kelas masih memiliki OII",
-                "success" => FALSE,
-                "banyak" => $data->count,
-                "data" => $data
-            ]);
-            // }
+            if ($data->count > 0) {
+                return response()->json([
+                    "message" => "Kelas masih memiliki OII",
+                    "success" => FALSE,
+                    "banyak" => $data->count,
+                    "data" => $data
+                ]);
+            }
 
             // $kelas_hapus = ClassKamar::where('id', $request->id)->first();
             // $kelas_hapus->active = FALSE;
