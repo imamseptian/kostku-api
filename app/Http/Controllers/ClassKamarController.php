@@ -438,4 +438,31 @@ class ClassKamarController extends Controller
             "message" => "Delete Kamar dengan id " . $id . " Tidak Ditemukan"
         ], 400);
     }
+
+    function deleteKelas(Request $request)
+    {
+        $class_kamar = ClassKamar::where('id', $request->id)->first();
+        if ($class_kamar) {
+            $data =  DB::table('class_kamar')
+                ->join('kamars', 'kamars.id_kelas', '=', 'class_kamar.id')
+                ->join('penghuni', 'kamars.id', '=', 'penghuni.id')
+                ->select('class_kamar.*', DB::raw("count(penghuni.id) as count"))
+                ->groupBy('class_kamar.id')
+                ->get();
+
+            // $data = DB::table('penghuni')
+            // ->join('tagihan', 'tagihan.id_penghuni', '=', 'penghuni.id')
+            // ->where('tagihan.lunas', FALSE)
+            // ->where('penghuni.id_kost', 1)
+            // ->select('penghuni.id as id', 'penghuni.nama as nama', DB::raw("count(tagihan.id) as count"))
+            // ->groupBy('penghuni.id')
+            // ->orderBy('count', 'desc')
+            // ->get();
+            // $class_kamar->delete();
+            return response()->json([
+                "message" => "KEKW",
+                "data" => $data
+            ]);
+        }
+    }
 }

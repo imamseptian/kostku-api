@@ -182,6 +182,7 @@ Route::post('/tagihanpenghuni', 'TransaksiController@getTagihanPenghuni');
 Route::get('/kamar_pesanan/{id}', 'PendaftarController@kamarPesanan');
 Route::get('/list_provinsi', 'ProvinsiController@getListProvinsi');
 Route::get('/list_kota/{id}', 'KotaController@getListKota');
+Route::post('/delete_class', 'ClassKamarController@deleteKelas');
 
 // Route::get('/linkstorage', function () {
 //     Artisan::call('storage:link');
