@@ -452,16 +452,16 @@ class ClassKamarController extends Controller
                 // ->where('penghuni.tanggal_keluar', '!=', "")
                 ->select('class_kamar.*', DB::raw("count(penghuni.id) as count"))
                 ->groupBy('class_kamar.id')
-                ->get();
+                ->first();
 
-            if (count($data) > 0) {
-                return response()->json([
-                    "message" => "Kelas masih memiliki OII",
-                    "success" => FALSE,
-                    "banyak" => $data[0]->count,
-                    "data" => $data
-                ]);
-            }
+            // if (count($data) > 0) {
+            return response()->json([
+                "message" => "Kelas masih memiliki OII",
+                "success" => FALSE,
+                "banyak" => $data[0]->count,
+                "data" => $data
+            ]);
+            // }
 
             // $kelas_hapus = ClassKamar::where('id', $request->id)->first();
             // $kelas_hapus->active = FALSE;
