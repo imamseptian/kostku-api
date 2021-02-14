@@ -158,7 +158,7 @@ class KamarController extends Controller
             $data =  DB::table('kamars')
                 ->leftJoin('penghuni', 'kamars.id', '=', 'penghuni.id')
                 ->whereNull('penghuni.tanggal_keluar')
-                ->where('class_kamar.id', $request->id)
+                ->where('kamars.id', $request->id)
                 // ->where('penghuni.tanggal_keluar', '!=', null)
                 // ->where('penghuni.tanggal_keluar', '!=', "")
                 ->select('kamars.*', DB::raw("count(penghuni.id) as count"))
