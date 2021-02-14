@@ -62,6 +62,41 @@ class KamarController extends Controller
         ]);
     }
 
+    function listKamar(Request $request)
+    {
+        $user = auth('api')->user();
+        // $kost
+
+
+        // $data = ClassKamar::where('id_kost', $request->id_kost)->where('active', TRUE)->where('nama', 'like', '%' . $request->namakeyword . '%')->get();
+
+        $data = DB::table('kamars')
+            ->leftJoin('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
+            ->leftJoin('kosts', 'kosts.id', '=', 'class_kamar.id_kost')
+            ->leftJoin('users', 'kosts.owner', '=', 'users.id')
+            ->where('users.id', $user->id)
+            ->where('kamars.nama', 'like', '%' . $request->keyword . '%')
+            ->where('kamars.active', TRUE)
+            ->select('kamars.*',)
+            ->get();
+
+        for ($x = 0; $x < count($data); $x++) {
+            $penghuni = Penghuni::where('id_kamar', $data[$x]->id)->get();
+
+            // $data[$x]['kapasitas'] = $data_kelas->kapasitas;
+            // $banyak_penghuni = count($penghuni);
+            // $potong_penghuni = Penghuni::where('kamar',$data[$x]['id'])->limit(2);
+            $data[$x]->penghuni = $penghuni;
+            // $data[$x]['banyak_penghuni']=$banyak_penghuni;
+        }
+
+        return response()->json([
+            "message" => "Method Success",
+            "data" => $data
+        ]);
+        // return response()->json($user);
+    }
+
     // function getByKelas($id)
     // {
     //     $data = Kamar::where('kelas', $id)->orderBy('nama')->get();

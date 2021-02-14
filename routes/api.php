@@ -187,6 +187,7 @@ Route::post('/hapus_kamar', 'KamarController@hapusKamar');
 Route::post('/konfirmasi_hapus', 'PenghuniController@konfirmasiHapus');
 Route::post('/hapus_penghuni', 'PenghuniController@hapusPenghuni');
 Route::post('/list_kelas', 'ClassKamarController@listKelas');
+Route::post('/list_kamar', 'KamarController@listKamar');
 
 
 // Route::get('/linkstorage', function () {
