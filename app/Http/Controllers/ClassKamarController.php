@@ -89,7 +89,7 @@ class ClassKamarController extends Controller
         ]);
     }
 
-    function listKamar($keyword, Request $request)
+    function listKelas(Request $request)
     {
         $dataUser = $request->user();
 
