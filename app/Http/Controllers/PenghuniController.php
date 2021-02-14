@@ -274,7 +274,7 @@ class PenghuniController extends Controller
         ]);
     }
 
-    function hapusPenghuni(Request $request)
+    function konfirmasiHapus(Request $request)
     {
         $penghuni = Penghuni::where('id', $request->id)->first();
         if ($penghuni) {
@@ -284,24 +284,10 @@ class PenghuniController extends Controller
                 ->groupBy('penghuni.id')
                 ->first();
 
-            if ($data->count > 0) {
-                return response()->json([
-                    "message" => "Penghuni masih ada tagihan ",
-                    "success" => FALSE,
-                    "count" => $data->count
-                ]);
-            }
-
-            // $kelas_hapus = Kamar::where('id', $request->id)->first();
-            // $kelas_hapus->active = FALSE;
-            // $kelas_hapus->save();
-
-            // $kirim = Kamar::all();
-
             return response()->json([
-                "message" => "Hapus Penghuni Berhasil",
+                "message" => "Penghuni masih ada tagihan ",
                 "success" => TRUE,
-                // "data" => $kirim
+                "count" => $data->count
             ]);
         }
 

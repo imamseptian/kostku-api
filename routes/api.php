@@ -184,7 +184,7 @@ Route::get('/list_provinsi', 'ProvinsiController@getListProvinsi');
 Route::get('/list_kota/{id}', 'KotaController@getListKota');
 Route::post('/hapus_kelas', 'ClassKamarController@hapusKelas');
 Route::post('/hapus_kamar', 'KamarController@hapusKamar');
-Route::post('/hapus_penghuni', 'PenghuniController@hapusPenghuni');
+Route::post('/konfirmasi_hapus', 'PenghuniController@konfirmasiHapus');
 
 // Route::get('/linkstorage', function () {
 //     Artisan::call('storage:link');
