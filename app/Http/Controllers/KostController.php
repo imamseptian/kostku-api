@@ -26,10 +26,22 @@ class KostController extends Controller
             ->leftJoin('provinces', 'kosts.provinsi', '=', 'provinces.id')
             ->leftJoin('regencies', 'kosts.kota', '=', 'regencies.id')
             ->where('kosts.nama', 'like', '%' . $request->keyword . '%')
-            ->select('kosts.*', 'provinces.name as nama_provinsi', 'regencies.name as nama_kota')
-            ->get();
+            ->select('kosts.*', 'provinces.name as nama_provinsi', 'regencies.name as nama_kota');
 
 
+        if ($request->provinsi != 0) {
+            $data = $data->where('provinsi', $request->provinsi);
+        }
+
+        if ($request->provinsi != 0) {
+            $data = $data->where('kota', $request->kota);
+        }
+
+        if ($request->provinsi != 0) {
+            $data = $data->where('jenis', $request->jenis);
+        }
+
+        $data = $data->get();
         // $data = $data->where('provinsi', 33);
 
         // $data = $data->where('jenis', 1)->get();
