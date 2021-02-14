@@ -40,7 +40,7 @@ class KostController extends Controller
             $data = $data->where('jenis', $request->jenis);
         }
 
-        $data = $data->get();
+        $data = $data->paginate(10);
 
 
 
