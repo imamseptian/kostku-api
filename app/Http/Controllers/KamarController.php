@@ -75,6 +75,7 @@ class KamarController extends Controller
             ->leftJoin('kosts', 'kosts.id', '=', 'class_kamar.id_kost')
             ->leftJoin('users', 'kosts.owner', '=', 'users.id')
             ->where('users.id', $user->id)
+            ->where('class_kamar.id', $request->id_kelas)
             ->where('kamars.nama', 'like', '%' . $request->keyword . '%')
             ->where('kamars.active', TRUE)
             ->select('kamars.*',)
