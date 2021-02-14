@@ -461,9 +461,9 @@ class ClassKamarController extends Controller
                 ]);
             }
 
-            // $kelas_hapus = ClassKamar::where('id', $request->id)->first();
-            // $kelas_hapus->active = FALSE;
-            // $kelas_hapus->save();
+            $kelas_hapus = ClassKamar::where('id', $request->id)->first();
+            $kelas_hapus->active = FALSE;
+            $kelas_hapus->save();
 
             return response()->json([
                 "message" => "Hapus Kelas Berhasil",
