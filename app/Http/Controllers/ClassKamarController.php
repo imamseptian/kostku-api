@@ -455,7 +455,7 @@ class ClassKamarController extends Controller
 
             if ($data[0]->count > 0) {
                 return response()->json([
-                    "message" => "Kelas masih memiliki penghuni",
+                    "message" => "Kelas masih memiliki OII",
                     "success" => FALSE,
                     "banyak" => $data[0]->count,
                     "data" => $data
