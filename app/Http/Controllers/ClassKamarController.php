@@ -97,7 +97,7 @@ class ClassKamarController extends Controller
         // $data = ClassKamar::where('id_kost', $request->id_kost)->where('active', TRUE)->where('nama', 'like', '%' . $request->namakeyword . '%')->get();
 
         $data = DB::table('class_kamar')
-            ->leftJoin('kosts', 'kosts.id', '=', 'class_kamar.id_kosts')
+            ->leftJoin('kosts', 'kosts.id', '=', 'class_kamar.id_kost')
             ->leftJoin('users', 'kosts.owner', '=', 'users.id')
             ->select('class_kamar.*')
             ->where('users.id', $user->id)
