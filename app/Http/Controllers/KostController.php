@@ -50,7 +50,10 @@ class KostController extends Controller
 
         return response()->json([
             "message" => "GET Method Success",
-            "data" => $data
+            "data" => $data,
+            "provinsi" => $request->provinsi,
+            "kota" => $request->kota,
+            "jenis" => $request->jenis,
         ]);
     }
 
