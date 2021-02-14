@@ -451,6 +451,8 @@ class ClassKamarController extends Controller
                 ->groupBy('class_kamar.id')
                 ->get();
 
+            $penghuni = Penghuni::all();
+
             // $data = DB::table('penghuni')
             // ->join('tagihan', 'tagihan.id_penghuni', '=', 'penghuni.id')
             // ->where('tagihan.lunas', FALSE)
@@ -462,7 +464,8 @@ class ClassKamarController extends Controller
             // $class_kamar->delete();
             return response()->json([
                 "message" => "KEKW",
-                "data" => $data
+                "data" => $data,
+                "penghuni" => $penghuni
             ]);
         }
     }
