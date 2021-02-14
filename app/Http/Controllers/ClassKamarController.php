@@ -458,7 +458,7 @@ class ClassKamarController extends Controller
             return response()->json([
                 "message" => "Kelas masih memiliki OII",
                 "success" => FALSE,
-                "banyak" => $data[0]->count,
+                "banyak" => $data->count,
                 "data" => $data
             ]);
             // }
