@@ -176,9 +176,12 @@ class KamarController extends Controller
             $kelas_hapus->active = FALSE;
             $kelas_hapus->save();
 
+            $kirim = Kamar::all();
+
             return response()->json([
                 "message" => "Hapus Kelas Berhasil",
-                "success" => TRUE
+                "success" => TRUE,
+                "data" => $kirim
             ]);
         }
 
