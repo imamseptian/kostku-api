@@ -151,6 +151,43 @@ class KamarController extends Controller
         ], 400);
     }
 
+    function hapusKamar(Request $request)
+    {
+        $class_kamar = Kamar::where('id', $request->id)->first();
+        if ($class_kamar) {
+            $data =  DB::table('kamars')
+                ->leftJoin('penghuni', 'kamars.id', '=', 'penghuni.id')
+                ->whereNull('penghuni.tanggal_keluar')
+                ->where('class_kamar.id', $request->id)
+                // ->where('penghuni.tanggal_keluar', '!=', null)
+                // ->where('penghuni.tanggal_keluar', '!=', "")
+                ->select('kamars.*', DB::raw("count(penghuni.id) as count"))
+                ->groupBy('kamars.id')
+                ->first();
+
+            if ($data->count > 0) {
+                return response()->json([
+                    "message" => "Kamar masih memiliki Penghuni",
+                    "success" => FALSE,
+                ]);
+            }
+
+            // $kelas_hapus = ClassKamar::where('id', $request->id)->first();
+            // $kelas_hapus->active = FALSE;
+            // $kelas_hapus->save();
+
+            return response()->json([
+                "message" => "Hapus Kelas Berhasil",
+                "success" => TRUE
+            ]);
+        }
+
+        return response()->json([
+            "message" => "Kamar tidak ditemukan",
+            "success" => FALSE
+        ]);
+    }
+
     public function allKamars()
     {
         // $kamars= Kamar::paginate(10,['*'],'page');

@@ -439,7 +439,7 @@ class ClassKamarController extends Controller
         ], 400);
     }
 
-    function deleteKelas(Request $request)
+    function hapusKelas(Request $request)
     {
         $class_kamar = ClassKamar::where('id', $request->id)->first();
         if ($class_kamar) {
