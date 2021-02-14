@@ -32,16 +32,17 @@ class KostController extends Controller
         if ($request->provinsi != 0) {
             $data = $data->where('provinsi', $request->provinsi);
         }
+        if ($request->kota != 0) {
+            $data = $data->where('kota', $request->kota);
+        }
+
+        if ($request->jenis != 0) {
+            $data = $data->where('jenis', $request->jenis);
+        }
 
         $data = $data->get();
 
-        // if ($request->provinsi != 0) {
-        //     $data = $data->where('kota', $request->kota);
-        // }
 
-        // if ($request->provinsi != 0) {
-        //     $data = $data->where('jenis', $request->jenis);
-        // }
 
         // $data = $data->get();
         // $data = $data->where('provinsi', 33);
