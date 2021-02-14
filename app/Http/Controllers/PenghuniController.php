@@ -281,14 +281,15 @@ class PenghuniController extends Controller
             $data =  DB::table('penghuni')
                 ->leftJoin('tagihan', 'penghuni.id', '=', 'tagihan.id_penghuni')
                 ->where('tagihan.lunas', FALSE)
-                ->select('penghuni.*', DB::raw("count(tagihan.id) as count"))
-                ->groupBy('penghuni.id')
-                ->first();
+                // ->select('penghuni.*', DB::raw("count(tagihan.id) as count"))
+                ->select('tagihan.*')
+                // ->groupBy('penghuni.id')
+                ->get();
 
             return response()->json([
                 "message" => "Penghuni masih ada tagihan YEP",
                 "success" => TRUE,
-                "count" => $data->count
+                "count" => $data
             ]);
         }
 
