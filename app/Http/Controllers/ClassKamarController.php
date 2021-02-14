@@ -91,17 +91,16 @@ class ClassKamarController extends Controller
 
     function listKelas(Request $request)
     {
-        $dataUser = $request->user();
+        $user = $request->user();
 
         // $data = ClassKamar::where('id_kost', $request->id_kost)->where('active', TRUE)->where('nama', 'like', '%' . $request->namakeyword . '%')->get();
 
 
-        return response()->json([
-            "message" => "Method Success",
-            "data" => $dataUser,
-            // "uri" => URL::to('/'),
-            // 'user' => $dataUser['id'],
-        ]);
+        // return response()->json([
+        //     "message" => "Method Success",
+        //     "data" => $dataUser,
+        // ]);
+        return response()->json($user);
     }
 
     function infoKamar($id)
