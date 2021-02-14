@@ -96,11 +96,11 @@ class ClassKamarController extends Controller
         // $data = ClassKamar::where('id_kost', $request->id_kost)->where('active', TRUE)->where('nama', 'like', '%' . $request->namakeyword . '%')->get();
 
 
-        // return response()->json([
-        //     "message" => "Method Success",
-        //     "data" => $dataUser,
-        // ]);
-        return response()->json($user);
+        return response()->json([
+            "message" => "Method Success",
+            "data" => auth('api')->user()
+        ]);
+        // return response()->json($user);
     }
 
     function infoKamar($id)
