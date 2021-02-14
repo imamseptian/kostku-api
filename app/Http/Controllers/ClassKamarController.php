@@ -470,5 +470,10 @@ class ClassKamarController extends Controller
                 "success" => TRUE
             ]);
         }
+
+        return response()->json([
+            "message" => "Kamar tidak ditemukan",
+            "success" => FALSE
+        ]);
     }
 }
