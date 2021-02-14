@@ -447,11 +447,12 @@ class ClassKamarController extends Controller
                 ->join('kamars', 'kamars.id_kelas', '=', 'class_kamar.id')
                 ->join('penghuni', 'kamars.id', '=', 'penghuni.id')
                 ->select('class_kamar.*', DB::raw("count(penghuni.id) as count"))
-                ->groupBy('class_kamar.id');
+                ->groupBy('class_kamar.id')
+                ->get();
             // ->get();
 
 
-            $data = $data->whereNotNull('tanggal_keluar')->get();
+            // $data = $data->whereNotNull('tanggal_keluar')->get();
 
             $penghuni = Penghuni::all();
 
