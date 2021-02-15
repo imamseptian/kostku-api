@@ -184,7 +184,7 @@ class PenghuniController extends Controller
 
                 $oldpendaftar->save();
             }
-
+            $this->notifikasiTolakWA("085899559983", $request->id_kost, "Alasan Kurang Info", $request->id);
             // $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
             // $this->notifikasiWA($request->terima, $request->nama, $request->notelp, $request->id_kost, $request->alasan);
 
@@ -392,11 +392,59 @@ class PenghuniController extends Controller
         ]);
     }
 
+    public function notifikasiTolakWA($notelp, $id_kost, $alasan, $id_pendaftar)
+    {
+
+        $kost = Kost::where('id', $id_kost)->first();
+        $owner = Kost::where('id', $kost->owner)->first();
+        $pendaftar = Pendaftar::where('id', $id_pendaftar)->first();
+
+        $pesan = 'Hai ' . $pendaftar->nama . '\n\nMaaf anda belum bisa menjadi penghuni ' . $kost->nama . ' karena keputusan dari pemilik/pengelola kost.\n\n';
+        $pesan .= 'Alasan penolakan dikarenakan:\n\n"' . $alasan . '"\n\nJika ada pertanyaan silahkan hubungi pengelola ' . $kost->nama . ' di @' . $kost->notelp . '\n\nTerima kasih';
+
+        $pesan1 = str_replace(array("\\n", "\\r"), array("\n", "\r"), $pesan);
+        $data = array(
+            'number' => $notelp,
+            'message' => $pesan1
+            // 'message' => $pesan
+        );
+
+        $payload = json_encode($data);
+
+        // Prepare new cURL resource
+        $ch = curl_init('https://kostku-whatsapp-api.herokuapp.com/send-message');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+        // Set HTTP Header for POST request
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($payload)
+            )
+        );
+
+        // Submit the POST request
+        $result = curl_exec($ch);
+
+        // Close cURL session handle
+        curl_close($ch);
+
+        return response()->json([
+            "code" => 200,
+            "res" => $result,
+            "message" => $pesan,
+            "message1" => $pesan1
+        ]);
+    }
+
+
     public function notifikasiWA($terima, $notelp, $id_kost, $alasan, $id_penghuni)
     {
-        // $terima, $nama, $notelp, $id_kost, $alasan
-        // $fields = array('number' => $request->number, 'message' => $request->number);
-        // $this->notifikasiWA($request->terima,$request->nama, $request->email, $request->id_kost, $request->alasan);
 
         $kost = Kost::where('id', $id_kost)->first();
         $owner = Kost::where('id', $kost->owner)->first();
