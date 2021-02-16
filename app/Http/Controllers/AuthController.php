@@ -254,11 +254,12 @@ class AuthController extends Controller
     public function profile(Request $request)
     {
         $user = $request->user();
-        $kost = Kost::where('owner', $user['id'])->first();
-        $kamarku = DB::table('kosts')
+        // $kost = Kost::where('owner', $user['id'])->first();
+        $kost = DB::table('kosts')
             ->join('provinces', 'kosts.provinsi', '=', 'provinces.id')
             ->join('regencies', 'kosts.kota', '=', 'regencies.id')
             ->select('kosts.*', 'regencies.name as nama_kota', 'provinces.name as nama_provinsi')
+            ->where('kosts.owner', $user['id'])
             ->first();
 
 
