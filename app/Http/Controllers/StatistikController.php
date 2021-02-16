@@ -88,85 +88,90 @@ class StatistikController extends Controller
 
     function ChartKeuangan($id)
     {
+        $data_pendapatan = [];
+        $data_pengeluaran = [];
         $data_terakhir = Transaksi::where('id_kost', $id)->where('jenis', 1)->orderBy('tanggal_transaksi', 'desc')->first();
         $data_pertama = Transaksi::where('id_kost', $id)->where('jenis', 1)->orderBy('tanggal_transaksi', 'asc')->first();
 
-        $date1 = strtotime($data_pertama->tanggal_transaksi);
-        $date2 = strtotime($data_terakhir->tanggal_transaksi);
+        if ($data_pertama) {
+            $date1 = strtotime($data_pertama->tanggal_transaksi);
+            $date2 = strtotime($data_terakhir->tanggal_transaksi);
 
-        $diff = abs($date2 - $date1);
+            $diff = abs($date2 - $date1);
 
-        $years = floor($diff / (365 * 60 * 60 * 24));
+            $years = floor($diff / (365 * 60 * 60 * 24));
 
-        $months = floor(($diff - $years * 365 * 60 * 60 * 24)
-            / (30 * 60 * 60 * 24));
+            $months = floor(($diff - $years * 365 * 60 * 60 * 24)
+                / (30 * 60 * 60 * 24));
 
-        $data_pendapatan = [];
+            $data_pendapatan = [];
 
-        if ($months > 6) {
-            for ($x = 0; $x <= 6; $x++) {
-                $mytime = Carbon::parse($data_terakhir->tanggal_transaksi)->subMonth($x);
+            if ($months > 6) {
+                for ($x = 0; $x <= 6; $x++) {
+                    $mytime = Carbon::parse($data_terakhir->tanggal_transaksi)->subMonth($x);
 
-                $nominal = Transaksi::where('id_kost', $id)->where('jenis', 1)->whereMonth('tanggal_transaksi', $mytime->format('m'))->sum('jumlah');
-                $array_pendapatan = array(
-                    'value' => $nominal,
-                    'tanggal_transaksi' => $mytime
-                );
-                array_unshift($data_pendapatan, $array_pendapatan);
-            }
-        } else {
-            for ($x = 0; $x <= $months; $x++) {
-                $mytime = Carbon::parse($data_terakhir->tanggal_transaksi)->subMonth($x);
+                    $nominal = Transaksi::where('id_kost', $id)->where('jenis', 1)->whereMonth('tanggal_transaksi', $mytime->format('m'))->sum('jumlah');
+                    $array_pendapatan = array(
+                        'value' => $nominal,
+                        'tanggal_transaksi' => $mytime
+                    );
+                    array_unshift($data_pendapatan, $array_pendapatan);
+                }
+            } else {
+                for ($x = 0; $x <= $months; $x++) {
+                    $mytime = Carbon::parse($data_terakhir->tanggal_transaksi)->subMonth($x);
 
-                $nominal = Transaksi::where('id_kost', $id)->where('jenis', 1)->whereMonth('tanggal_transaksi', $mytime->format('m'))->sum('jumlah');
-                $array_pendapatan = array(
-                    'value' => $nominal,
-                    'tanggal_transaksi' => $mytime
-                );
-                array_unshift($data_pendapatan, $array_pendapatan);
+                    $nominal = Transaksi::where('id_kost', $id)->where('jenis', 1)->whereMonth('tanggal_transaksi', $mytime->format('m'))->sum('jumlah');
+                    $array_pendapatan = array(
+                        'value' => $nominal,
+                        'tanggal_transaksi' => $mytime
+                    );
+                    array_unshift($data_pendapatan, $array_pendapatan);
+                }
             }
         }
 
         $data_terakhir = Transaksi::where('id_kost', $id)->where('jenis', 2)->orderBy('tanggal_transaksi', 'desc')->first();
         $data_pertama = Transaksi::where('id_kost', $id)->where('jenis', 2)->orderBy('tanggal_transaksi', 'asc')->first();
 
+        if ($data_pertama) {
+            $date1 = strtotime($data_pertama->tanggal_transaksi);
+            $date2 = strtotime($data_terakhir->tanggal_transaksi);
 
+            $diff = abs($date2 - $date1);
 
-        $date1 = strtotime($data_pertama->tanggal_transaksi);
-        $date2 = strtotime($data_terakhir->tanggal_transaksi);
+            $years = floor($diff / (365 * 60 * 60 * 24));
 
-        $diff = abs($date2 - $date1);
+            $months = floor(($diff - $years * 365 * 60 * 60 * 24)
+                / (30 * 60 * 60 * 24));
 
-        $years = floor($diff / (365 * 60 * 60 * 24));
+            $data_pengeluaran = [];
+            // $data_label = [];
+            if ($months > 6) {
+                for ($x = 0; $x <= 6; $x++) {
+                    $mytime = Carbon::parse($data_terakhir->tanggal_transaksi)->subMonth($x);
 
-        $months = floor(($diff - $years * 365 * 60 * 60 * 24)
-            / (30 * 60 * 60 * 24));
+                    $nominal = Transaksi::where('id_kost', $id)->where('jenis', 2)->whereMonth('tanggal_transaksi', $mytime->format('m'))->sum('jumlah');
+                    $array_pengeluaran = array(
+                        'value' => $nominal,
+                        'tanggal_transaksi' => $mytime
+                    );
+                    array_unshift($data_pengeluaran, $array_pengeluaran);
+                }
+            } else {
+                for ($x = 0; $x <= $months; $x++) {
+                    $mytime = Carbon::parse($data_terakhir->tanggal_transaksi)->subMonth($x);
 
-        $data_pengeluaran = [];
-        // $data_label = [];
-        if ($months > 6) {
-            for ($x = 0; $x <= 6; $x++) {
-                $mytime = Carbon::parse($data_terakhir->tanggal_transaksi)->subMonth($x);
-
-                $nominal = Transaksi::where('id_kost', $id)->where('jenis', 2)->whereMonth('tanggal_transaksi', $mytime->format('m'))->sum('jumlah');
-                $array_pengeluaran = array(
-                    'value' => $nominal,
-                    'tanggal_transaksi' => $mytime
-                );
-                array_unshift($data_pengeluaran, $array_pengeluaran);
-            }
-        } else {
-            for ($x = 0; $x <= $months; $x++) {
-                $mytime = Carbon::parse($data_terakhir->tanggal_transaksi)->subMonth($x);
-
-                $nominal = Transaksi::where('id_kost', $id)->where('jenis', 2)->whereMonth('tanggal_transaksi', $mytime->format('m'))->sum('jumlah');
-                $array_pengeluaran = array(
-                    'value' => $nominal,
-                    'tanggal_transaksi' => $mytime
-                );
-                array_unshift($data_pengeluaran, $array_pengeluaran);
+                    $nominal = Transaksi::where('id_kost', $id)->where('jenis', 2)->whereMonth('tanggal_transaksi', $mytime->format('m'))->sum('jumlah');
+                    $array_pengeluaran = array(
+                        'value' => $nominal,
+                        'tanggal_transaksi' => $mytime
+                    );
+                    array_unshift($data_pengeluaran, $array_pengeluaran);
+                }
             }
         }
+
 
 
         return response()->json([
