@@ -137,6 +137,14 @@ class KostController extends Controller
         if ($kost) {
             $owner = User::where('id', $kost->owner)->first();
             $kelas = ClassKamar::where('id_kost', $id)->get();
+            $kostku =  DB::table('kosts')
+                ->join('provinces', 'kosts.id', '=', 'provinces.id')
+                ->join('regencies', 'kosts.id', '=', 'regencies.id')
+                ->rightJoin('fasilitas', 'kamar_fasilitas.id_fasilitas', '=', 'fasilitas.id')
+                ->select('kosts.*', 'provinces.name as nama_provinsi', 'regencies.name as nama_kota')
+                ->where('kosts.id', $id)
+
+                ->first();
             // $coba =  ClassKamar::select('class_kamar.*', DB::raw('count(kelamin) quantity'))->orderByDesc('quantity')->groupBy('kelamin')->get();
             // foreach ($kelas as &$value) {
             //     // $value->jml_kamar = count(Kamar::where('id_kelas', $value->id));
@@ -166,7 +174,7 @@ class KostController extends Controller
             return response()->json([
                 "code" => 200,
                 "success" => TRUE,
-                "kost" => $kost,
+                "kost" => $kostku,
                 "owner" => $owner,
                 "kelas" => $kelas,
             ]);
