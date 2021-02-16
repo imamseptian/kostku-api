@@ -76,7 +76,7 @@
         @if($details['terima'])
             Selamat anda sudah diterima menjadi penghuni {{$details['nama_kost']}}. Untuk informasi seputar tagihan sewa bulan pertama pihak kost sudah mengirim pesan WhatsApp ke nomor yang anda daftarkan. Silahkan segera persiapkan perpindahan dan melakukan pembayaran sewa bulan pertama ditempat agar dapat menghuni kamar yang dipesan.
         @else
-            TIDAK DITERIMA
+            Maaf anda belum bisa diterima  menjadi penghuni kost {{$details['nama_kost']}}. Hal ini dikarenakan "{{$details['nama_kost']}}".
         @endif
 
         </span></p>

@@ -185,7 +185,7 @@ class PenghuniController extends Controller
                 $oldpendaftar->save();
             }
             $this->notifikasiTolakWA($request->notelp, $request->id_kost, $request->alasan, $request->id);
-            // $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
+            $this->kirimEmail($request->terima, $request->nama, $request->email, $request->id_kost, $request->alasan);
             // $this->notifikasiWA($request->terima, $request->nama, $request->notelp, $request->id_kost, $request->alasan);
 
 
