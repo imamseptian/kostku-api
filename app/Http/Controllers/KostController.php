@@ -238,8 +238,8 @@ class KostController extends Controller
             ->limit(10);
 
         for ($x = 0; $x < count($data_penghuni); $x++) {
-            $data_penghuni[$x]['tanggal_masuk'] = Carbon::parse($data_penghuni[$x]['tanggal_masuk']);
-            $data_penghuni[$x]['tanggal_lahir'] = Carbon::parse($data_penghuni[$x]['tanggal_lahir']);
+            $data_penghuni[$x]->tanggal_masuk = Carbon::parse($data_penghuni[$x]->tanggal_masuk);
+            $data_penghuni[$x]->tanggal_lahir = Carbon::parse($data_penghuni[$x]->tanggal_lahir);
         }
 
 
