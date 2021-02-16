@@ -202,16 +202,12 @@ class KamarController extends Controller
 
 
         if ($kost) {
-            $kost->kamar = $request->kamar ? $request->kamar : $kost->kamar;
-            $kost->harga = $request->harga ? $request->harga : $kost->harga;
-            $kost->fasilitas = $request->fasilitas ? $request->fasilitas : $kost->fasilitas;
-            $kost->active = $request->active ? $request->active : $kost->active;
-
+            $kost->nama = $request->nama ? $request->nama : $kost->nama;
             $kost->save();
             return response()->json([
                 "message" => "Put Successs ",
                 "data" => $kost,
-                "harga" => $request->harga
+
             ]);
         }
         return response()->json([
