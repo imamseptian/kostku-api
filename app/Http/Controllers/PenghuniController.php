@@ -219,9 +219,9 @@ class PenghuniController extends Controller
                 'status_pekerjaan' => 'required',
                 'status_hubungan' => 'required',
                 'tempat_kerja_pendidikan' => 'required',
-                'request_kamar' => 'required',
+
                 'tanggal_lahir' => 'required|date|before:-17 years',
-                'barang_tambahan.*.nama' => 'required'
+
             ],
             [
                 'nama.required' => 'Nama perlu diisi',
@@ -243,7 +243,7 @@ class PenghuniController extends Controller
                 'request_kamar.required' => 'Silahkan pilih kamar yang ingin dihuni',
                 'tanggal_lahir.required' => 'Tanggal lahir perlu diisi',
                 'tanggal_lahir.before' => 'Harus berumur minimal 18 tahun untuk dapat mendaftar',
-                'barang_tambahan.*.nama.required' => 'Nama barang tidak boleh kosong',
+
             ]
         );
 
