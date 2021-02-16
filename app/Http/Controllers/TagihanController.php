@@ -538,13 +538,12 @@ class TagihanController extends Controller
 
             // Close cURL session handle
             curl_close($ch);
-
-            return response()->json([
-                "code" => 200,
-                "res" => $result,
-                "message" => $pesan,
-                "message1" => $pesan1
-            ]);
+            // return response()->json([
+            //     "code" => 200,
+            //     "res" => $result,
+            //     "message" => $pesan,
+            //     "message1" => $pesan1
+            // ]);
         }
 
         return response()->json([
