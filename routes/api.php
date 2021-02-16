@@ -45,6 +45,7 @@ Route::group([
 
     // Kelas
     Route::post('/classes', 'ClassKamarController@get'); //get daftar kelas kamar
+    Route::post('/addfasilitas', 'FasilitasController@addKamarFasilitas'); //Add Fasilitas
     Route::put('/fasilitas/{id}', 'FasilitasController@editFasilitas'); //Edit Fasilitas
     Route::delete('/hapuskamarfasilitas/{id}', 'FasilitasController@hapusKamarFasilitas'); //Hapus fasilitas
 
@@ -110,9 +111,6 @@ Route::post('/list-kost', 'KostController@filterKost');
 Route::post('/createcustombarang', 'BarangController@customBarangPenghuni');
 Route::post('/caribarang', 'BarangController@cariBarang');
 Route::get('/allbarang', 'BarangController@allBarang');
-
-Route::post('/addfasilitas', 'FasilitasController@addKamarFasilitas');
-
 
 
 Route::post('/kamar', 'KamarController@post');
