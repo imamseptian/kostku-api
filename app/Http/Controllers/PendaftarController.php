@@ -37,7 +37,7 @@ class PendaftarController extends Controller
         // } else {
         //     $data = Pendaftar::where('id_kost', $kost->id)->where('active', TRUE)->orderBy('isread', 'desc')->paginate(10);
         // }
-        $data = Pendaftar::where('id_kost', $kost->id)->where('active', TRUE)->where('nama', 'like', '%' . $mykeyword . '%')->orderBy($request->sortname, $request->orderby)->paginate(10);
+        // $data = Pendaftar::where('id_kost', $kost->id)->where('active', TRUE)->where('nama', 'like', '%' . $mykeyword . '%')->orderBy($request->sortname, $request->orderby)->paginate(10);
         $data = DB::table('pendaftar')
             ->leftJoin('provinces', 'provinces.id', '=', 'pendaftar.provinsi')
             ->leftJoin('regencies', 'regencies.id', '=', 'pendaftar.kota')

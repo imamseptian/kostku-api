@@ -43,7 +43,7 @@ Route::group([
     Route::put('editprofil', 'AuthController@editProfil');
     Route::put('editkost', 'KostController@editKost');
 
-    // Route::post('/classes', 'ClassKamarController@get');
+    Route::post('/classes', 'ClassKamarController@get'); //get daftar kelas kamar
     Route::get('/class/{id}', 'ClassKamarController@getById');
     // Route::post('/class', 'ClassKamarController@post');
     Route::put('/class/{id}', 'ClassKamarController@put');
@@ -115,7 +115,7 @@ Route::post('/edit_penghuni', 'PenghuniController@editPenghuni');
 
 
 Route::post('/class', 'ClassKamarController@post');
-Route::post('/classes', 'ClassKamarController@get');
+// Route::post('/classes', 'ClassKamarController@get');
 
 Route::post('catattransaksi', 'TransaksiController@catatTransaksiBayar');
 Route::post('make_custom_tagihan', 'TagihanController@createCustomTagihan');
