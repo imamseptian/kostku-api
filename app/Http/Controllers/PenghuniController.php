@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Barang;
+use Illuminate\Support\Facades\Validator;
 use App\Barang_Tambahan_Pendaftar;
 use App\Barang_Tambahan_Penghuni;
 use App\Penghuni;
@@ -201,6 +202,55 @@ class PenghuniController extends Controller
 
     public function editPenghuni(Request $request)
     {
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'nama' => 'required',
+                'email' => 'required',
+                'kelamin' => 'required',
+                'provinsi' => 'required',
+                'kota' => 'required',
+                'alamat' => 'required',
+                'notelp' => 'required|min:10|max:13',
+                'noktp' => 'required|min:16',
+                'foto_ktp' => 'required',
+                'foto_diri' => 'required',
+                'status_pekerjaan' => 'required',
+                'status_hubungan' => 'required',
+                'tempat_kerja_pendidikan' => 'required',
+                'request_kamar' => 'required',
+                'tanggal_lahir' => 'required|date|before:-17 years',
+                'barang_tambahan.*.nama' => 'required'
+            ],
+            [
+                'nama.required' => 'Nama perlu diisi',
+                'email.required' => 'Email Perlu Diisi',
+                'kelamin.required' => 'Jenis kelamin perlu diisi',
+                'provinsi.required' => 'Pronvisi asal perlu diisi',
+                'kota.required' => 'Kota asal perlu diisi',
+                'alamat.required' => 'Alamat asal perlu diisi',
+                'noktp.required' => 'Nomor KTP perlu diisi',
+                'noktp.min' => 'Nomor KTP harus lengkap',
+                'notelp.required' => 'Nomor Telepon perlu diisi',
+                'notelp.min' => 'Nomor Telepon minimal 10 digit',
+                'notelp.max' => 'Nomor Telepon maximal 14 digit',
+                'foto_ktp.required' => 'Foto KTP perlu diunggah',
+                'foto_diri.required' => 'Foto Diri perlu diunggah',
+                'status_pekerjaan.required' => 'Status pekerjaan perlu diisi',
+                'status_hubungan.required' => 'Status hubungan perlu diisi',
+                'tempat_kerja_pendidikan.required' => 'Tempat kerja atau pendidikan perlu diisi',
+                'request_kamar.required' => 'Silahkan pilih kamar yang ingin dihuni',
+                'tanggal_lahir.required' => 'Tanggal lahir perlu diisi',
+                'tanggal_lahir.before' => 'Harus berumur minimal 18 tahun untuk dapat mendaftar',
+                'barang_tambahan.*.nama.required' => 'Nama barang tidak boleh kosong',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(["message" => "ada error", 'errors' => $validator->errors()->messages()]);
+        }
+
         $data_penghuni = Penghuni::where('id', $request->id)->first();
         if ($data_penghuni) {
             $nama_foto_diri = $data_penghuni->foto_diri;
