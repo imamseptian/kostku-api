@@ -138,8 +138,8 @@ class KostController extends Controller
             $owner = User::where('id', $kost->owner)->first();
             $kelas = ClassKamar::where('id_kost', $id)->get();
             $kostku =  DB::table('kosts')
-                ->join('provinces', 'kosts.id', '=', 'provinces.id')
-                ->join('regencies', 'kosts.id', '=', 'regencies.id')
+                ->join('provinces', 'kosts.provinsi', '=', 'provinces.id')
+                ->join('regencies', 'kosts.kota', '=', 'regencies.id')
                 ->select('kosts.*', 'provinces.name as nama_provinsi', 'regencies.name as nama_kota')
                 ->where('kosts.id', $id)
 
