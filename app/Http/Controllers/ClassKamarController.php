@@ -51,7 +51,7 @@ class ClassKamarController extends Controller
             ->select('class_kamar.*', DB::raw("count(penghuni.id) as count_penghuni"), DB::raw("count(kamars.id) as count_kamar"))
             ->orderBy($request->sortname, $request->orderby)
             ->groupBy('class_kamar.id')
-            ->get();
+            ->paginate(10);
 
         // $data = DB::table('class_kamar')
         //     ->leftJoin('kamars', 'class_kamar.id', '=', 'kamars.id_kelas')
