@@ -323,45 +323,31 @@ class PenghuniController extends Controller
     {
         if ($request->kelamin) {
             $data = Penghuni::where('id_kost', $request->id_kost)->where('kelamin', $request->kelamin)->orderBy('nama', 'asc')->get();
-
-            return response()->json([
-                "code" => 200,
-                "success" => TRUE,
-                "message" => "Success",
-                "data" => $data,
-                // 'myfile'=>$files
-            ]);
         } else if ($request->provinsi) {
             if ($request->multi) {
                 $data = Penghuni::where('id_kost', $request->id_kost)->whereIn('provinsi', $request->provinsi)->orderBy('nama', 'asc')->get();
             } else {
                 $data = Penghuni::where('id_kost', $request->id_kost)->where('provinsi', $request->provinsi)->orderBy('nama', 'asc')->get();
             }
-            return response()->json([
-                "code" => 200,
-                "success" => TRUE,
-                "message" => "Success",
-                "data" => $data,
-                "multi" => $request->multi
-                // "data" => $data,
-                // 'myfile'=>$files
-            ]);
-        } else if ($request->kota) {
+        } else {
             if ($request->multi) {
                 $data = Penghuni::where('id_kost', $request->id_kost)->whereIn('kota', $request->kota)->orderBy('nama', 'asc')->get();
             } else {
                 $data = Penghuni::where('id_kost', $request->id_kost)->where('kota', $request->kota)->orderBy('nama', 'asc')->get();
             }
-            return response()->json([
-                "code" => 200,
-                "success" => TRUE,
-                "message" => "Success",
-                "data" => $data,
-                "multi" => $request->multi
-                // "data" => $data,
-                // 'myfile'=>$files
-            ]);
         }
+
+        for ($x = 0; $x < count($data); $x++) {
+            $data[$x]['tanggal_lahir'] = Carbon::parse($data[$x]['tanggal_lahir']);
+        }
+
+        return response()->json([
+            "code" => 200,
+            "success" => TRUE,
+            "message" => "Success",
+            "data" => $data,
+            // 'myfile'=>$files
+        ]);
     }
 
     public function kirimEmail($terima, $nama, $email_penghuni, $id_kost, $alasan)
