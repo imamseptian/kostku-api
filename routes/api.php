@@ -44,6 +44,9 @@ Route::group([
     Route::put('editkost', 'KostController@editKost');
 
     Route::post('/classes', 'ClassKamarController@get'); //get daftar kelas kamar
+    Route::get('/getfasilitas/{id}', 'FasilitasController@getFasilitas'); //get fasilitas kamar
+
+
     Route::get('/class/{id}', 'ClassKamarController@getById');
     // Route::post('/class', 'ClassKamarController@post');
     Route::put('/class/{id}', 'ClassKamarController@put');
@@ -105,7 +108,7 @@ Route::post('/caribarang', 'BarangController@cariBarang');
 Route::get('/allbarang', 'BarangController@allBarang');
 
 Route::post('/addfasilitas', 'FasilitasController@addKamarFasilitas');
-Route::get('/getfasilitas/{id}', 'FasilitasController@getFasilitas');
+
 Route::put('/fasilitas/{id}', 'FasilitasController@editFasilitas');
 Route::delete('/hapuskamarfasilitas/{id}', 'FasilitasController@hapusKamarFasilitas');
 Route::post('/kamar', 'KamarController@post');
@@ -189,56 +192,3 @@ Route::post('/hapus_penghuni', 'PenghuniController@hapusPenghuni');
 Route::post('/list_kelas', 'ClassKamarController@listKelas');
 Route::post('/list_kamar', 'KamarController@listKamar');
 Route::post('/pindah_kamar', 'KamarController@pindahKamar');
-
-
-// Route::get('/linkstorage', function () {
-//     Artisan::call('storage:link');
-// });
-
-// Route::get('/link', function () {
-//     $target = '/home/apikostk/APIKost/storage/app/public';
-//     $shortcut = '/home/public_html/public/storage';
-//     symlink($target, $shortcut);
-// });
-// Route::get('/mypdf/{bulan}/{tahun}', 'PDFController@pdfku');
-
-
-
-
-
-
-
-
-
-
-// Route::get('/classes','ClassKamarController@get');
-// Route::get('/class/{id}','ClassKamarController@getById');
-// Route::post('/class','ClassKamarController@post');
-// Route::put('/class/{id}','ClassKamarController@put');
-// Route::delete('/class/{id}','ClassKamarController@delete');
-
-// Route::get('/kamars','KamarController@get');
-// Route::get('/daftarkamar/{id}','KamarController@getByKelas');
-// Route::get('/searchkamar/{id}/{search}','KamarController@searchKamar');
-// Route::get('/kamar/{id}','KamarController@getById');
-// Route::post('/kamar','KamarController@post');
-// Route::put('/kamar/{id}','KamarController@put');
-// Route::delete('/kamar/{id}','KamarController@delete');
-
-// Route::post('/kost',function(){
-//     return response()->json([
-//         "message"=>"POST Method SUCCESS"
-//     ]);
-// });
-
-// Route::put('/kost/{id}',function($id){
-//     return response()->json([
-//         "message"=>"PUT Method SUCCESS, id = ".$id
-//     ]);
-// });
-
-// Route::delete('/kost/{id}',function($id){
-//     return response()->json([
-//         "message"=>"delete Method SUCCESS, id =".$id
-//     ]);
-// });
