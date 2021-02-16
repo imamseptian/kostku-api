@@ -356,10 +356,10 @@ class TransaksiController extends Controller
     function getTagihanPenghuni(Request $request)
     {
         $keyword = $request->keyword;
-        $data = DB::table('penghuni')
-            ->leftJoin('tagihan', 'tagihan.id_penghuni', '=', 'penghuni.id')
+        $data = DB::table('tagihan')
+            ->leftJoin('penghuni', 'tagihan.id_penghuni', '=', 'penghuni.id')
             ->leftJoin('kamars', 'penghuni.id_kamar', '=', 'kamars.id')
-            ->join('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
+            ->leftJoin('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
             ->select('penghuni.*', 'kamars.nama as nama_kamar', 'class_kamar.harga as harga_kamar', DB::raw("count(tagihan.id) as count"))
             ->where('class_kamar.id_kost', $request->id_kost)
             ->where('tagihan.lunas', FALSE)
