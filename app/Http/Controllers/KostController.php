@@ -373,6 +373,7 @@ class KostController extends Controller
                 'deskripsi' => 'required',
                 'owner' => 'required',
                 'jenis' => 'required',
+                'foto_kost' => 'required',
             ],
             [
                 'nama.required' => 'Nama Kost perlu diisi',
@@ -383,6 +384,7 @@ class KostController extends Controller
                 'deskripsi.required' => 'Deskripsi kost perlu diisi',
                 'owner.required' => 'Pemilik harus diisi',
                 'jenis.required' => 'Jenis kost perlu diisi',
+                'foto_kost.required' => 'Foto kost anda perlu diunggah'
 
             ]
         );
@@ -417,7 +419,7 @@ class KostController extends Controller
             $kost->provinsi = $request->provinsi;
             $kost->kota = $request->kota;
             $kost->alamat = $request->alamat;
-            $kost->notelp = "+62" . $request->notelp;
+            $kost->notelp = $request->notelp;
             $kost->foto_kost = $imageName;
             $kost->deskripsi = $request->deskripsi;
             $kost->owner = $request->owner;
@@ -440,7 +442,7 @@ class KostController extends Controller
         $kost->provinsi = $request->provinsi;
         $kost->kota = $request->kota;
         $kost->alamat = $request->alamat;
-        $kost->notelp = "+62" . $request->notelp;
+        $kost->notelp = $request->notelp;
         $kost->deskripsi = $request->deskripsi;
         $kost->owner = $request->owner;
         $kost->jenis = $request->jenis;
