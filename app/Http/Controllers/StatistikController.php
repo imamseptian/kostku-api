@@ -42,7 +42,7 @@ class StatistikController extends Controller
         // $data_provinsi = Penghuni::select('provinsi', DB::raw('count(provinsi) quantity'))->orderByDesc('quantity')->groupBy('provinsi')->get();
         $data_provinsi =  DB::table('penghuni')
             ->join('provinces', 'provinces.id', '=', 'penghuni.provinsi')
-            ->select('penghuni.provinsi as id_provinsi', 'provices.name as nama_provinsi', DB::raw('count(penghuni.provinsi) quantity'))->orderByDesc('quantity')->groupBy('penghuni.provinsi')
+            ->select('penghuni.provinsi as id_provinsi', 'provinces.name as nama_provinsi', DB::raw('count(penghuni.provinsi) quantity'))->orderByDesc('quantity')->groupBy('penghuni.provinsi')
             ->get();
         $data_kota = Penghuni::select('kota', DB::raw('count(kota) quantity'))->orderByDesc('quantity')->groupBy('kota')->get();
 
