@@ -166,7 +166,7 @@ Route::post('/kirimchat', 'TransaksiController@cobaWa');
 
 // chart penghuni
 Route::post('/statistik_pie', 'StatistikController@StatistikPie');
-Route::post('/chart_pendapatan', 'StatistikController@ChartPendapatan');
+Route::post('/chart_pendapatan', 'StatistikController@ChartPendapatan'); // CHART PENDAPATAN
 Route::get('/get_transaksi/{id}/{jenis}/{month}/{year}', 'TransaksiController@getTransaksi');
 
 Route::post('/create_transaksi', 'TransaksiController@createCustomTransaksi');
