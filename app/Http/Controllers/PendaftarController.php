@@ -41,7 +41,7 @@ class PendaftarController extends Controller
         $data = DB::table('pendaftar')
             ->leftJoin('provinces', 'provinces.id', '=', 'pendaftar.provinsi')
             ->leftJoin('regencies', 'regencies.id', '=', 'pendaftar.kota')
-            ->select('pendaftar.*', 'regencies.nama as nama_kota', 'provinces.name as nama_provinsi')
+            ->select('pendaftar.*', 'regencies.name as nama_kota', 'provinces.name as nama_provinsi')
             ->where('id_kost', $kost->id)->where('active', TRUE)
             ->where('nama', 'like', '%' . $mykeyword . '%')
             ->orderBy($request->sortname, $request->orderby)
