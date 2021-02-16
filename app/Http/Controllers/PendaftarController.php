@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Barang;
 use App\Barang_Tambahan_Pendaftar;
 use App\Barang_Tambahan_Penghuni;
+use App\Kost;
 use App\Mail\CobaMail;
 use App\Pendaftar;
 use App\Penghuni;
@@ -29,16 +30,30 @@ class PendaftarController extends Controller
     function getPendaftar(Request $request)
     {
         $owner = $request->user();
+        $kost = Kost::where('owner', $owner->id)->first();
         $mykeyword = $request->namakeyword;
-        if ($request->has('sortname')) {
-            $data = Pendaftar::where('id_kost', $request->id_kost)->where('active', TRUE)->where('nama', 'like', '%' . $mykeyword . '%')->orderBy($request->sortname, $request->orderby)->paginate(10);
-        } else {
-            $data = Pendaftar::where('id_kost', $request->id_kost)->where('active', TRUE)->orderBy('isread', 'desc')->paginate(10);
-        }
+        // if ($request->has('sortname')) {
+        //     $data = Pendaftar::where('id_kost', $kost->id)->where('active', TRUE)->where('nama', 'like', '%' . $mykeyword . '%')->orderBy($request->sortname, $request->orderby)->paginate(10);
+        // } else {
+        //     $data = Pendaftar::where('id_kost', $kost->id)->where('active', TRUE)->orderBy('isread', 'desc')->paginate(10);
+        // }
+        $data = Pendaftar::where('id_kost', $kost->id)->where('active', TRUE)->where('nama', 'like', '%' . $mykeyword . '%')->orderBy($request->sortname, $request->orderby)->paginate(10);
+        $data = DB::table('pendaftar')
+            ->leftJoin('provinces', 'provinces.id', '=', 'pendaftar.provinsi')
+            ->leftJoin('regencies', 'regencies.id', '=', 'pendaftar.kota')
+            ->select('pendaftar.*', 'regencies.nama as nama_kota', 'provinces.name as nama_provinsi')
+            ->where('id_kost', $kost->id)->where('active', TRUE)
+            ->where('nama', 'like', '%' . $mykeyword . '%')
+            ->orderBy($request->sortname, $request->orderby)
+            ->paginate(10);
 
         for ($x = 0; $x < count($data); $x++) {
-            $data[$x]['tanggal_daftar'] = Carbon::parse($data[$x]['tanggal_daftar']);
-            $data[$x]['tanggal_lahir'] = Carbon::parse($data[$x]['tanggal_lahir']);
+            $data[$x]->tanggal_daftar = Carbon::parse($data[$x]->tanggal_daftar);
+            $data[$x]->tanggal_lahir = Carbon::parse($data[$x]->tanggal_lahir);
+
+            // $data[$x]['tanggal_daftar'] = Carbon::parse($data[$x]['tanggal_daftar']);
+            // $data[$x]['tanggal_lahir'] = Carbon::parse($data[$x]['tanggal_lahir']);
+
             // $mybulan = Carbon::parse($data[$x]['tanggal_daftar'])->format('m');
             // $mybulan = $data[$x]['tanggal_daftar']->format('m');
             // $namabulan = '';

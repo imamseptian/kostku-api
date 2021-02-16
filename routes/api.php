@@ -60,7 +60,7 @@ Route::group([
 
 
     Route::get('/kost/{id}', 'KostController@getById');
-    Route::get('/firsttime', 'KostController@checkFirstTime');
+    Route::get('/firsttime', 'KostController@checkFirstTime'); //Check First Time Login
     Route::post('/kost', 'KostController@post');
     Route::put('/kost/{id}', 'KostController@put');
     Route::delete('/kamar/{id}', 'KostController@delete');
@@ -72,7 +72,7 @@ Route::group([
     Route::post('/daftarpenghuni', 'PenghuniController@getAll');
     // Route::post('/tambah_penghuni', 'PenghuniController@addPenghuni');
 
-    Route::get('/homescreen/{id}', 'KostController@homeScreen');
+    Route::get('/homescreen/{id}', 'KostController@homeScreen'); //Fungsi Fetch Data HomeScreen
 
     // Tagihan seorang penghunii
     // Route::get('/gettagihan/{id}', 'TagihanController@getTagihan');
