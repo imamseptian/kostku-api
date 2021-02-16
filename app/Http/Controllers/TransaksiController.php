@@ -357,9 +357,9 @@ class TransaksiController extends Controller
     {
         $keyword = $request->keyword;
         $data = DB::table('penghuni')
-            ->join('kamars', 'penghuni.id_kamar', '=', 'kamars.id')
+            ->leftJoin('tagihan', 'tagihan.id_penghuni', '=', 'penghuni.id')
+            ->leftJoin('kamars', 'penghuni.id_kamar', '=', 'kamars.id')
             ->join('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
-            ->join('tagihan', 'tagihan.id_penghuni', '=', 'penghuni.id')
             ->select('penghuni.*', 'kamars.nama as nama_kamar', 'class_kamar.harga as harga_kamar', DB::raw("count(tagihan.id) as count"))
             ->where('class_kamar.id_kost', $request->id_kost)
             ->where('tagihan.lunas', FALSE)
