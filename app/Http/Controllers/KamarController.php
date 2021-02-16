@@ -198,15 +198,15 @@ class KamarController extends Controller
     function put($id, Request $request)
     {
 
-        $kost = Kost::where('id', $id)->first();
+        $kamar = Kamar::where('id', $id)->first();
 
 
-        if ($kost) {
-            $kost->nama = $request->nama ? $request->nama : $kost->nama;
-            $kost->save();
+        if ($kamar) {
+            $kamar->nama = $request->nama ? $request->nama : $kamar->nama;
+            $kamar->save();
             return response()->json([
                 "message" => "Put Successs ",
-                "data" => $kost,
+                "data" => $kamar,
 
             ]);
         }
