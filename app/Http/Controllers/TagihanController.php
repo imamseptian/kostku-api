@@ -392,4 +392,165 @@ class TagihanController extends Controller
             "message1" => $pesan1
         ]);
     }
+
+
+    public function createGlobalTagihan()
+    {
+
+
+        $kamarku = DB::table('penghuni')
+            ->leftJoin('kamars', 'penghuni.id_kamar', '=', 'kamars.id')
+            ->leftJoin('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
+            ->select('penghuni.*', 'kamars.id as id_kamar', 'kamars.nama as nama_kamar', 'class_kamar.harga as harga_kamar')
+            ->get();
+        $mytime = Carbon::now('Asia/Jakarta');
+
+        // $kamarku[$x]->yaya = $kamarku[$x]->harga_kamar - 100;
+
+        // jika kurang dari tagihan kurang dari 0 tidak perlu karena berarti memiliki kelebihan bayar
+
+
+        for ($x = 0; $x < count($kamarku); $x++) {
+
+            $biaya_barang = DB::table('barang_tambahan_penghuni')
+                ->leftJoin('penghuni', 'penghuni.id', '=', 'barang_tambahan_penghuni.id_penghuni')
+                ->leftJoin('barang', 'barang_tambahan_penghuni.id_barang', '=', 'barang.id')
+                // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
+                ->select('barang_tambahan_penghuni.*', 'barang.nama as nama')
+                ->where('barang_tambahan_penghuni.tanggal_masuk', '<=', $mytime)
+                ->where(function ($query) use ($mytime) {
+                    $query->where('barang_tambahan_penghuni.tanggal_keluar', '>=', $mytime)
+                        ->orWhere('barang_tambahan_penghuni.tanggal_keluar', null);
+                    // $query->where(function ($query) use ($tanggal_tagihan) {
+                    //     $query->where('barang_tambahan_penghuni.tanggal_masuk', '<=', Carbon::parse($tanggal_tagihan));
+                    // })->orWhere('barang_tambahan_penghuni.tanggal_keluar', null);
+                })
+                ->where('penghuni.id', $kamarku[$x]->id)
+                ->sum('barang_tambahan_penghuni.total');
+
+            $tagih = new Tagihan();
+            $tagih->id_kamar = $kamarku[$x]->id_kamar;
+            $tagih->id_penghuni = $kamarku[$x]->id;
+            $tagih->jumlah = $kamarku[$x]->harga_kamar + $biaya_barang;
+            $tagih->tanggal_tagihan = $mytime;
+            $tagih->lunas = FALSE;
+
+            $tagih->save();
+
+            $mytime = Carbon::now('Asia/Jakarta');
+            $mybulan = $mytime->format('m');
+            $mytahun = $mytime->format('Y');
+
+            $namabulan = '';
+            if ($mybulan == '01') {
+                $namabulan = 'Januari';
+            } elseif ($mybulan == '02') {
+                $namabulan = 'Februari';
+            } elseif ($mybulan == '03') {
+                $namabulan = 'Maret';
+            } elseif ($mybulan == '04') {
+                $namabulan = 'April';
+            } elseif ($mybulan == '05') {
+                $namabulan = 'Mei';
+            } elseif ($mybulan == '06') {
+                $namabulan = 'Juni';
+            } elseif ($mybulan == '07') {
+                $namabulan = 'Juli';
+            } elseif ($mybulan == '08') {
+                $namabulan = 'Agustus';
+            } elseif ($mybulan == '09') {
+                $namabulan = 'September';
+            } elseif ($mybulan == '10') {
+                $namabulan = 'Oktober';
+            } elseif ($mybulan == '11') {
+                $namabulan = 'November';
+            } else {
+                $namabulan = 'Desember';
+            }
+
+
+
+            // $penghuni = Penghuni::where('id', $request->id)->first();
+            $penghuni = DB::table('penghuni')
+                ->join('kamars', 'penghuni.id_kamar', '=', 'kamars.id')
+                ->join('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
+                ->join('kosts', 'class_kamar.id_kost', '=', 'kosts.id')
+                ->select('penghuni.*', 'class_kamar.harga as harga_kamar', 'class_kamar.nama as nama_kamar', 'kosts.nama as nama_kost', 'kosts.notelp as notelp_kost')
+                ->where('penghuni.id', $kamarku[$x]->id)
+                ->first();
+
+            $biaya_barang = DB::table('barang_tambahan_penghuni')
+                ->leftJoin('penghuni', 'penghuni.id', '=', 'barang_tambahan_penghuni.id_penghuni')
+                ->leftJoin('barang', 'barang_tambahan_penghuni.id_barang', '=', 'barang.id')
+                // ->select('barang_tambahan_penghuni.id as id', 'barang.nama as nama', 'barang_tambahan_penghuni.qty as qty', 'barang_tambahan_penghuni.total as total')
+                ->select('barang_tambahan_penghuni.*', 'barang.nama as nama')
+                ->where('barang_tambahan_penghuni.tanggal_masuk', '<=', $mytime)
+                ->where(function ($query) use ($mytime) {
+                    $query->where('barang_tambahan_penghuni.tanggal_keluar', '>=', $mytime)
+                        ->orWhere('barang_tambahan_penghuni.tanggal_keluar', null);
+                    // $query->where(function ($query) use ($tanggal_tagihan) {
+                    //     $query->where('barang_tambahan_penghuni.tanggal_masuk', '<=', Carbon::parse($tanggal_tagihan));
+                    // })->orWhere('barang_tambahan_penghuni.tanggal_keluar', null);
+                })
+                ->where('penghuni.id', $kamarku[$x]->id)
+                ->sum('barang_tambahan_penghuni.total');
+
+
+            // $pesan = 'Hai ' . $penghuni->nama . '\n\nAnda telah diterima menjadi penghuni ' . $kost->nama . '\nSilahkan persiapkan perpindahan dan segera datang ke kost sesegera mungkin\n\nHubungi pengelola kost ernis @' . $kost->notelp . ' untuk informasi lebih lanjut.\nTerima Kasih';
+            $pesan = 'Hai ' . $penghuni->nama . '\n\nBerikut adalah tagihan bulanan sewa kamar kost anda periode ' . $namabulan . '-' . $mytahun . ' :\n\nBiaya barang bawaan = Rp ' . $biaya_barang . '\nBiaya sewa kamar = Rp ' . $penghuni->harga_kamar . '\n\nTotal tagihan bulan ini = Rp ' . ($biaya_barang + $penghuni->harga_kamar) . '\n\nSilahkan hubungi pengelola kost pada @' . $penghuni->notelp_kost . ' untuk informasi lebih lanjut.\n\nTerima Kasih\n-Pengelola ' . $penghuni->nama_kost;
+            $pesan1 = str_replace(array("\\n", "\\r"), array("\n", "\r"), $pesan);
+
+
+
+            // return response()->json([
+            //     "code" => 200,
+            //     "penghuni" => $penghuni,
+            //     "biaya" => $biaya_barang,
+            //     "pesan" => $pesan
+            // ]);
+            $data = array(
+                'number' => $kamarku[$x]->notelp,
+                'message' => $pesan1
+                // 'message' => $pesan
+            );
+
+            $payload = json_encode($data);
+
+            // Prepare new cURL resource
+            $ch = curl_init('https://kostku-whatsapp-api.herokuapp.com/send-message');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+            // Set HTTP Header for POST request
+            curl_setopt(
+                $ch,
+                CURLOPT_HTTPHEADER,
+                array(
+                    'Content-Type: application/json',
+                    'Content-Length: ' . strlen($payload)
+                )
+            );
+
+            // Submit the POST request
+            $result = curl_exec($ch);
+
+            // Close cURL session handle
+            curl_close($ch);
+
+            return response()->json([
+                "code" => 200,
+                "res" => $result,
+                "message" => $pesan,
+                "message1" => $pesan1
+            ]);
+        }
+
+        return response()->json([
+            "code" => 200,
+            "success" => TRUE,
+            "mytime" => $mytime,
+        ]);
+    }
 }
