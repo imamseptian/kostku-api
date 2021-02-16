@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Fasilitas;
 use App\Kamar_Fasilitas;
+use App\Kost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

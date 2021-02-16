@@ -43,7 +43,10 @@ Route::group([
     Route::put('editprofil', 'AuthController@editProfil');
     Route::put('editkost', 'KostController@editKost');
 
+    // Kelas
     Route::post('/classes', 'ClassKamarController@get'); //get daftar kelas kamar
+    Route::put('/fasilitas/{id}', 'FasilitasController@editFasilitas'); //Edit Fasilitas
+    Route::delete('/hapuskamarfasilitas/{id}', 'FasilitasController@hapusKamarFasilitas'); //Hapus fasilitas
 
 
     Route::get('/class/{id}', 'ClassKamarController@getById');
@@ -110,8 +113,8 @@ Route::get('/allbarang', 'BarangController@allBarang');
 
 Route::post('/addfasilitas', 'FasilitasController@addKamarFasilitas');
 
-Route::put('/fasilitas/{id}', 'FasilitasController@editFasilitas');
-Route::delete('/hapuskamarfasilitas/{id}', 'FasilitasController@hapusKamarFasilitas');
+
+
 Route::post('/kamar', 'KamarController@post');
 Route::post('/testtanggal', 'KamarController@ayaya');
 Route::post('/tambah_penghuni', 'PenghuniController@addPenghuni');
