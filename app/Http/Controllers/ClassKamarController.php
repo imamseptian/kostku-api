@@ -42,8 +42,8 @@ class ClassKamarController extends Controller
         //     ->paginate(10);
 
         $data =  DB::table('class_kamar')
-            ->leftJoin('kamars', 'kamars.id_kelas', '=', 'class_kamar.id')
-            ->leftJoin('penghuni', 'kamars.id', '=', 'penghuni.id')
+            ->join('kamars', 'kamars.id_kelas', '=', 'class_kamar.id')
+            ->join('penghuni', 'kamars.id', '=', 'penghuni.id')
             ->whereNull('penghuni.tanggal_keluar')
             ->where('class_kamar.id_kost', $kost->id)
             ->where('class_kamar.active', TRUE)
