@@ -17,7 +17,7 @@ class FasilitasController extends Controller
             ->select('kamar_fasilitas.*', 'fasilitas.nama as nama')
             ->where('class_kamar.id', $id)
             ->where('kamar_fasilitas.active', TRUE)
-            ->orderBy('fasilitas.nama', 'asc')
+            ->orderBy('kamar_fasilitas.id', 'asc')
             ->get();
 
         return response()->json([
