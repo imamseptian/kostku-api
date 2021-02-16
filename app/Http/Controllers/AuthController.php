@@ -271,14 +271,14 @@ class AuthController extends Controller
         //     ->get();
 
         if ($kost) {
-            $jenisku = ClassKamar::where('id_kost', $kost['id'])->where('active', TRUE)->get();
+            $jenisku = ClassKamar::where('id_kost', $kost->id)->where('active', TRUE)->get();
             $kamarku = DB::table('kamars')
                 ->leftJoin('class_kamar', 'kamars.id_kelas', '=', 'class_kamar.id')
                 ->select('kamars.*', 'class_kamar.nama as nama_kelas')
-                ->where('class_kamar.id_kost', $kost['id'])
+                ->where('class_kamar.id_kost', $kost->id)
                 ->get();
 
-            $penghuniku = Penghuni::where('id_kost', $kost['id'])->where('active', TRUE)->get();
+            $penghuniku = Penghuni::where('id_kost', $kost->id)->where('active', TRUE)->get();
             return response()->json([
                 'code' => 200,
                 'success' => TRUE,
