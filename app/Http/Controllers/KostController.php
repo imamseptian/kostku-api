@@ -140,7 +140,6 @@ class KostController extends Controller
             $kostku =  DB::table('kosts')
                 ->join('provinces', 'kosts.id', '=', 'provinces.id')
                 ->join('regencies', 'kosts.id', '=', 'regencies.id')
-                ->rightJoin('fasilitas', 'kamar_fasilitas.id_fasilitas', '=', 'fasilitas.id')
                 ->select('kosts.*', 'provinces.name as nama_provinsi', 'regencies.name as nama_kota')
                 ->where('kosts.id', $id)
 
