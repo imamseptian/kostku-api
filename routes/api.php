@@ -44,7 +44,6 @@ Route::group([
     Route::put('editkost', 'KostController@editKost');
 
     Route::post('/classes', 'ClassKamarController@get'); //get daftar kelas kamar
-    Route::get('/getfasilitas/{id}', 'FasilitasController@getFasilitas'); //get fasilitas kamar
 
 
     Route::get('/class/{id}', 'ClassKamarController@getById');
@@ -101,6 +100,8 @@ Route::group([
     Route::get('/namapdf/{bulan}/{tahun}', 'PDFController@getNamaPDF');
 });
 
+Route::get('/getfasilitas/{id}', 'FasilitasController@getFasilitas'); //get fasilitas kamar
+
 Route::post('/list-kost', 'KostController@filterKost');
 
 Route::post('/createcustombarang', 'BarangController@customBarangPenghuni');
@@ -142,7 +143,7 @@ Route::get('/cek_kost/{id}', 'KostController@checkExist');
 Route::get('/getkost/{id}', 'KostController@getKelasKost');
 Route::get('/getkamar/{id}', 'KostController@getKamarKost');
 Route::get('/checkkamar/{id}', 'KostController@cobaKamar');
-Route::get('/infokost/{id}', 'KostController@getKost');
+Route::get('/infokost/{id}', 'KostController@getKost'); // GET KOST FOR WEB DAFTAR
 Route::get('/infokamar/{id}', 'ClassKamarController@infoKamar');
 
 Route::get('/allkamarku', 'KostController@allKamarkost');
