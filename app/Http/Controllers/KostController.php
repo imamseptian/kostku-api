@@ -228,7 +228,15 @@ class KostController extends Controller
             ->where('jenis', 1)
             ->sum('jumlah');
         // $data_penghuni = Penghuni::where('id_kost', $id)->orderBy('tagihan', 'desc')->limit(10)->get();
-        $data_penghuni = Penghuni::where('id_kost', $id)->orderBy('nama', 'asc')->limit(10)->get();
+        // $data_penghuni = Penghuni::where('id_kost', $id)->orderBy('nama', 'asc')->limit(10)->get();
+
+        $data_penghuni = DB::table('penghuni')
+            ->leftJoin('provinces', 'provinces.id', '=', 'penghuni.provinsi')
+            ->leftJoin('regencies', 'regencies.id', '=', 'penghuni.kota')
+            ->select('penghuni.*', 'regencies.name as nama_kota', 'provinces.name as nama_provinsi')
+            ->where('penghuni.id_kost', $id)->where('penghuni.active', TRUE)
+            ->limit(10);
+
         for ($x = 0; $x < count($data_penghuni); $x++) {
             $data_penghuni[$x]['tanggal_masuk'] = Carbon::parse($data_penghuni[$x]['tanggal_masuk']);
             $data_penghuni[$x]['tanggal_lahir'] = Carbon::parse($data_penghuni[$x]['tanggal_lahir']);
