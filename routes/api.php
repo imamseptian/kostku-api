@@ -103,6 +103,13 @@ Route::group([
     Route::post('/filterpemasukan', 'TransaksiController@filterPemasukan');
     Route::get('/mypdf/{bulan}/{tahun}', 'PDFController@pdfku');
     Route::get('/namapdf/{bulan}/{tahun}', 'PDFController@getNamaPDF');
+
+    #CHART
+    Route::get('/chart_keuangan/{id}', 'StatistikController@ChartKeuangan');
+    Route::get('/statistik_pie/{id}', 'StatistikController@StatistikPie'); //CHART PENGHUNI DAN DAERAH
+    Route::post('/chart_pendapatan', 'StatistikController@ChartPendapatan'); // CHART PENDAPATAN
+    Route::get('/get_transaksi/{id}/{jenis}/{month}/{year}', 'TransaksiController@getTransaksi'); //get penghuni on linechart
+    Route::post('/filter_penghuni', 'PenghuniController@FilterPenghuni'); //modal di chart daerah
 });
 
 Route::get('/getfasilitas/{id}', 'FasilitasController@getFasilitas'); //get fasilitas kamar
@@ -165,14 +172,11 @@ Route::post('/kirimchat', 'TransaksiController@cobaWa');
 
 
 // chart penghuni
-Route::get('/statistik_pie', 'StatistikController@StatistikPie'); //CHART PENGHUNI DAN DAERAH
-Route::post('/chart_pendapatan', 'StatistikController@ChartPendapatan'); // CHART PENDAPATAN
-Route::get('/get_transaksi/{id}/{jenis}/{month}/{year}', 'TransaksiController@getTransaksi'); //get penghuni on linechart
-Route::post('/filter_penghuni', 'PenghuniController@FilterPenghuni'); //modal di chart daerah
+
 
 Route::post('/create_transaksi', 'TransaksiController@createCustomTransaksi');
 Route::get('/hapus_nanti', 'TransaksiController@hapusNanti');
-Route::get('/chart_keuangan/{id}', 'StatistikController@ChartKeuangan');
+
 Route::post('/modal_keuangan', 'StatistikController@modalKeuangan');
 Route::get('/ayaya', 'PenghuniController@ListPenghuni');
 

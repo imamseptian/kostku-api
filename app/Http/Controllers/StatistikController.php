@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Mail;
 
 class StatistikController extends Controller
 {
-    function StatistikPie(Request $request)
+    function StatistikPie($id, Request $request)
     {
 
 
@@ -37,16 +37,18 @@ class StatistikController extends Controller
         // }
 
         // $ayaya = Penghuni::select('kelamin', DB::raw('count(kelamin) quantity'))->groupBy('kelamin')->get();
-        $data_penghuni = Penghuni::select('kelamin', DB::raw('count(kelamin) quantity'))->orderByDesc('quantity')->groupBy('kelamin')->get();
+        $data_penghuni = Penghuni::select('kelamin', DB::raw('count(kelamin) quantity'))->where('id_kost', $id)->orderByDesc('quantity')->groupBy('kelamin')->get();
         // $provcount = Penghuni::select('provinsi', DB::raw('count(provinsi) quantity'))->orderByDesc('quantity')->groupBy('provinsi')->get();
         // $data_provinsi = Penghuni::select('provinsi', DB::raw('count(provinsi) quantity'))->orderByDesc('quantity')->groupBy('provinsi')->get();
         $data_provinsi =  DB::table('penghuni')
             ->join('provinces', 'provinces.id', '=', 'penghuni.provinsi')
+            ->where('penghuni.id_kost', $id)
             ->select('penghuni.provinsi as id', 'provinces.name as nama', DB::raw('count(penghuni.provinsi) quantity'))->orderByDesc('quantity')->groupBy('penghuni.provinsi')
             ->get();
 
         $data_kota =  DB::table('penghuni')
             ->join('regencies', 'regencies.id', '=', 'penghuni.kota')
+            ->where('penghuni.id_kost', $id)
             ->select('penghuni.kota as id', 'regencies.name as nama', DB::raw('count(penghuni.kota) quantity'))->orderByDesc('quantity')->groupBy('penghuni.kota')
             ->get();
 
