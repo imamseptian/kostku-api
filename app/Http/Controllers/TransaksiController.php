@@ -363,9 +363,10 @@ class TransaksiController extends Controller
             ->where('penghuni.nama', 'like', '%' . $keyword . '%')
             ->where('class_kamar.id_kost', $request->id_kost)
             ->where('tagihan.lunas', FALSE)
+            // ->select('penghuni.*', 'kamars.nama as nama_kamar', 'class_kamar.harga as harga_kamar', DB::raw("count(tagihan.id) as count"))
             ->select('penghuni.*', 'kamars.nama as nama_kamar', 'class_kamar.harga as harga_kamar', DB::raw("count(tagihan.id) as count"))
-            // ->groupBy('penghuni.id')
-            ->groupBy(DB::Raw('IFNULL( penghuni.id , 0 )'))
+            ->groupBy('penghuni.id')
+            // ->groupBy(DB::Raw('IFNULL( penghuni.id , 0 )'))
             ->orderBy('count', 'desc')
             ->get();
 
