@@ -35,32 +35,34 @@ class ClassKamarController extends Controller
         $kost = Kost::where('owner', $owner->id)->first();
         $mykeyword = $request->namakeyword;
         // $data = ClassKamar::where('owner',$dataUser['id'])->paginate(10);
-        // $data = ClassKamar::where('id_kost', $request->id_kost)
-        //     ->where('active', TRUE)
-        //     ->where('nama', 'like', '%' . $request->namakeyword . '%')
-        //     ->orderBy($request->sortname, $request->orderby)
-        //     ->paginate(10);
-
-        $data =  DB::table('class_kamar')
-            ->join('kamars', 'kamars.id_kelas', '=', 'class_kamar.id')
-            ->join('penghuni', 'kamars.id', '=', 'penghuni.id')
-            ->whereNull('penghuni.tanggal_keluar')
-            ->where('class_kamar.id_kost', $kost->id)
-            ->where('class_kamar.active', TRUE)
-            ->where('class_kamar.nama', 'like', '%' . $request->namakeyword . '%')
-            ->select('class_kamar.*', DB::raw("count(penghuni.id) as count_penghuni"), DB::raw("count(kamars.id) as count_kamar"))
+        $data = ClassKamar::where('id_kost', $kost->id)
+            ->where('active', TRUE)
+            ->where('nama', 'like', '%' . $request->namakeyword . '%')
             ->orderBy($request->sortname, $request->orderby)
-            ->groupBy('class_kamar.id')
             ->paginate(10);
 
-        // $data = DB::table('class_kamar')
-        //     ->leftJoin('kamars', 'class_kamar.id', '=', 'kamars.id_kelas')
-        //     ->leftJoin('penghuni', 'penghuni.id_kamar', '=', 'kamars.id')
-        //     ->select('pendaftar.*', 'regencies.name as nama_kota', 'provinces.name as nama_provinsi')
-        //     ->where('id_kost', $kost->id)->where('active', TRUE)
-        //     ->where('nama', 'like', '%' . $mykeyword . '%')
+        for ($x = 0; $x < count($data); $x++) {
+
+            // $data_kamar = Kamar::where('id_kelas',$data[$x]->id)->get();
+            $data_kamar = Kamar::where('id_kelas', $data[$x]->id)->pluck('id')->toArray();
+            // $myarr = $kamar_tersedia->where('jml_penghuni', '<', $kamar->kapasitas)->pluck('id')->toArray();
+            $data_penghuni = Penghuni::whereIn('id_kamar', $data_kamar)->get();
+            $data[$x]->count_kamar = count($data_kamar);
+            $data[$x]->count_penghuni = count($data_penghuni);
+        }
+
+        // $data =  DB::table('class_kamar')
+        //     ->leftJoin('kamars', 'kamars.id_kelas', '=', 'class_kamar.id')
+        //     ->leftJoin('penghuni', 'kamars.id', '=', 'penghuni.id')
+        //     ->whereNull('penghuni.tanggal_keluar')
+        //     ->where('class_kamar.id_kost', $kost->id)
+        //     ->where('class_kamar.active', TRUE)
+        //     ->where('class_kamar.nama', 'like', '%' . $request->namakeyword . '%')
+        //     ->select('class_kamar.*', DB::raw("count(penghuni.id) as count_penghuni"), DB::raw("count(kamars.id) as count_kamar"))
         //     ->orderBy($request->sortname, $request->orderby)
+        //     ->groupBy('class_kamar.id')
         //     ->paginate(10);
+
 
 
 
