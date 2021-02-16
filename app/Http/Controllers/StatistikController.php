@@ -178,7 +178,7 @@ class StatistikController extends Controller
             "message" => "Success",
             "code" => 200,
 
-            "selisih" => $months,
+            // "selisih" => $months,
             "pendapatan" => $data_pendapatan,
             "pengeluaran" => $data_pengeluaran
         ]);
