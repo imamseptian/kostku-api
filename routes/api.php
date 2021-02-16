@@ -56,11 +56,12 @@ Route::group([
     Route::delete('/class/{id}', 'ClassKamarController@delete');
 
     Route::get('/kamars', 'KamarController@get');
-    // Route::get('/daftarkamar/{id}','KamarController@getByKelas');
-    Route::post('/daftarkamar', 'KamarController@daftarKamar');
+
+    Route::post('/daftarkamar', 'KamarController@daftarKamar'); // Get Daftar Kamar
+
     Route::get('/searchkamar/{id}/{search}', 'KamarController@searchKamar');
     Route::get('/kamar/{id}', 'KamarController@getById');
-    // Route::post('/kamar', 'KamarController@post');
+    Route::post('/kamar', 'KamarController@post');
     Route::put('/kamar/{id}', 'KamarController@put');
     Route::delete('/kamar/{id}', 'KamarController@delete');
 
@@ -113,7 +114,7 @@ Route::post('/caribarang', 'BarangController@cariBarang');
 Route::get('/allbarang', 'BarangController@allBarang');
 
 
-Route::post('/kamar', 'KamarController@post');
+
 Route::post('/testtanggal', 'KamarController@ayaya');
 Route::post('/tambah_penghuni', 'PenghuniController@addPenghuni');
 Route::post('/edit_penghuni', 'PenghuniController@editPenghuni');
