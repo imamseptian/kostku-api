@@ -28,22 +28,22 @@ class PenghuniController extends Controller
     {
         // $pendaftar = Calon_Penghuni::where('id',$id)->first();
         $owner = $request->user();
+        $kost = Kost::where('owner', $owner->id)->first();
         $mykeyword = $request->namakeyword;
-        $data = Penghuni::where('id_kost', $request->id_kost)->where('active', TRUE)->where('nama', 'like', '%' . $mykeyword . '%')->orderBy($request->sortname, $request->orderby)->paginate(10);
 
-        // if ($request->has('sortname')) {
-        //     // $data = Penghuni::where('id_kost',$owner['id'])->where('active',TRUE)->where('nama', 'ilike','%'. $request->namakeyword.'%')->orderBy($request->sortname, $request->orderby)->paginate(10);
-        //     $data = Penghuni::where('id_kost', $request->id_kost)->where('active', TRUE)->where(function ($query) use ($mykeyword) {
-        //         $query->where('nama_depan', 'ilike', '%' . $mykeyword . '%')
-        //             ->orWhere('nama_belakang', 'ilike', '%' . $mykeyword . '%');
-        //     })->orderBy($request->sortname, $request->orderby)->paginate(10);
-        // } else {
-        //     $data = Penghuni::where('id_kost', $owner['id'])->where('active', TRUE)->orderBy('nama', 'asc')->paginate(10);
-        // }
+
+        $data = DB::table('penghuni')
+            ->leftJoin('provinces', 'provinces.id', '=', 'penghuni.provinsi')
+            ->leftJoin('regencies', 'regencies.id', '=', 'penghuni.kota')
+            ->select('penghuni.*', 'regencies.name as nama_kota', 'provinces.name as nama_provinsi')
+            ->where('id_kost', $kost->id)->where('active', TRUE)
+            ->where('nama', 'like', '%' . $mykeyword . '%')
+            ->orderBy($request->sortname, $request->orderby)
+            ->paginate(10);
 
         for ($x = 0; $x < count($data); $x++) {
-            $data[$x]['tanggal_masuk'] = Carbon::parse($data[$x]['tanggal_masuk']);
-            $data[$x]['tanggal_lahir'] = Carbon::parse($data[$x]['tanggal_lahir']);
+            $data[$x]->tanggal_masuk = Carbon::parse($data[$x]->tanggal_masuk);
+            $data[$x]->tanggal_lahir = Carbon::parse($data[$x]->tanggal_lahir);
         }
 
         return response()->json([

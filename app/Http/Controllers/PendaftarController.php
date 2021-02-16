@@ -50,44 +50,6 @@ class PendaftarController extends Controller
         for ($x = 0; $x < count($data); $x++) {
             $data[$x]->tanggal_daftar = Carbon::parse($data[$x]->tanggal_daftar);
             $data[$x]->tanggal_lahir = Carbon::parse($data[$x]->tanggal_lahir);
-
-            // $data[$x]['tanggal_daftar'] = Carbon::parse($data[$x]['tanggal_daftar']);
-            // $data[$x]['tanggal_lahir'] = Carbon::parse($data[$x]['tanggal_lahir']);
-
-            // $mybulan = Carbon::parse($data[$x]['tanggal_daftar'])->format('m');
-            // $mybulan = $data[$x]['tanggal_daftar']->format('m');
-            // $namabulan = '';
-            // if ($mybulan == '01') {
-            //     $namabulan = 'Januari';
-            // } elseif ($mybulan == '02') {
-            //     $namabulan = 'Februari';
-            // } elseif ($mybulan == '03') {
-            //     $namabulan = 'Maret';
-            // } elseif ($mybulan == '04') {
-            //     $namabulan = 'April';
-            // } elseif ($mybulan == '05') {
-            //     $namabulan = 'Mei';
-            // } elseif ($mybulan == '06') {
-            //     $namabulan = 'Juni';
-            // } elseif ($mybulan == '07') {
-            //     $namabulan = 'Juli';
-            // } elseif ($mybulan == '08') {
-            //     $namabulan = 'Agustus';
-            // } elseif ($mybulan == '09') {
-            //     $namabulan = 'September';
-            // } elseif ($mybulan == '10') {
-            //     $namabulan = 'Oktober';
-            // } elseif ($mybulan == '11') {
-            //     $namabulan = 'November';
-            // } else {
-            //     $namabulan = 'Desember';
-            // }
-            // // $temp_decode = json_decode($data[$x]['barang_tambahan']);
-
-            // $data[$x]['hari'] = Carbon::parse($data[$x]['tanggal_daftar'])->format('d');
-            // $data[$x]['bulan'] = $namabulan;
-            // $data[$x]['tahun'] = Carbon::parse($data[$x]['tanggal_daftar'])->format('Y');
-            // $data[$x]['barang_tambahan'] = json_decode($data[$x]['barang_tambahan']);
         }
 
         return response()->json([
