@@ -382,6 +382,8 @@ class TransaksiController extends Controller
 
             $data[$x]->count = count(Tagihan::where('id_penghuni', $data[$x]->id)->where('lunas', FALSE)->get());
         }
+
+        $data = $data->orderBy('count', 'desc')->get();
         return response()->json([
             "code" => 200,
             "success" => TRUE,
