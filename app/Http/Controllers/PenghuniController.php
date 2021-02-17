@@ -372,18 +372,18 @@ class PenghuniController extends Controller
     function FilterPenghuni(Request $request)
     {
         if ($request->kelamin) {
-            $data = Penghuni::where('id_kost', $request->id_kost)->where('kelamin', $request->kelamin)->whereNull('tanggal_keluar')->orderBy('nama', 'asc')->get();
+            $data = Penghuni::where('id_kost', $request->id_kost)->where('kelamin', $request->kelamin)->where('active', TRUE)->orderBy('nama', 'asc')->get();
         } else if ($request->provinsi) {
             if ($request->multi) {
-                $data = Penghuni::where('id_kost', $request->id_kost)->whereIn('provinsi', $request->provinsi)->whereNull('tanggal_keluar')->orderBy('nama', 'asc')->get();
+                $data = Penghuni::where('id_kost', $request->id_kost)->whereIn('provinsi', $request->provinsi)->where('active', TRUE)->orderBy('nama', 'asc')->get();
             } else {
-                $data = Penghuni::where('id_kost', $request->id_kost)->where('provinsi', $request->provinsi)->whereNull('tanggal_keluar')->orderBy('nama', 'asc')->get();
+                $data = Penghuni::where('id_kost', $request->id_kost)->where('provinsi', $request->provinsi)->where('active', TRUE)->orderBy('nama', 'asc')->get();
             }
         } else {
             if ($request->multi) {
-                $data = Penghuni::where('id_kost', $request->id_kost)->whereIn('kota', $request->kota)->whereNull('tanggal_keluar')->orderBy('nama', 'asc')->get();
+                $data = Penghuni::where('id_kost', $request->id_kost)->whereIn('kota', $request->kota)->where('active', TRUE)->orderBy('nama', 'asc')->get();
             } else {
-                $data = Penghuni::where('id_kost', $request->id_kost)->where('kota', $request->kota)->whereNull('tanggal_keluar')->orderBy('nama', 'asc')->get();
+                $data = Penghuni::where('id_kost', $request->id_kost)->where('kota', $request->kota)->where('active', TRUE)->orderBy('nama', 'asc')->get();
             }
         }
 
