@@ -73,7 +73,7 @@
               </tr>
 
           </table>
-          <h4>Data Pengeluaran</h4>
+          <h4>Data Pengeluaran Operasional</h4>
           <table class="customers">
             <tr>
               <th>No</th>
@@ -97,6 +97,39 @@
                 <td colspan="3" class="total"> <b>TOTAL BULAN INI</b></td>
                 <td> <b>{{ rupiah($total_pengeluaran) }}</b> </td>
               </tr>
+
+          </table>
+
+          <h4>Perhitungan Laba Rugi</h4>
+          <table class="customers">
+            <tr>
+                <td>Total Pemasukan</td>
+
+                <td>{{ rupiah($total_pemasukan)  }}</td>
+
+              </tr>
+
+              <tr>
+                <td>Total Biaya Pengeluaran Operasional</td>
+
+                <td>{{ rupiah($total_pengeluaran)  }}</td>
+
+              </tr>
+
+              <tr>
+                <td>Total
+                    @if($total_pemasukan > $total_pengeluaran)
+                    Laba
+                @else
+                    Rugi
+                @endif
+                </td>
+
+                <td>{{ rupiah($total_pemasukan-$total_pengeluaran)  }}</td>
+
+              </tr>
+
+
 
           </table>
     </body>
